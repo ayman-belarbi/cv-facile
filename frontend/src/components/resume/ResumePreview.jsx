@@ -8,10 +8,13 @@ import ColorPicker from "./ColorPicker";
 import FontPicker from "./FontPicker";
 import { useMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/context/ThemeContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { Check } from "lucide-react";
 
 const ResumePreview = ({ data, updateResumeSettings }) => {
   const isMobile = useMobile();
   const { theme } = useTheme();
+  const { language } = useLanguage();
   
   const renderTemplate = () => {
     switch (data.settings.template) {
@@ -40,45 +43,44 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
     updateResumeSettings({ font });
   };
 
+  const templates = [
+    { id: "classic", name: language === 'fr' ? 'Classique' : 'Classic' },
+    { id: "modern", name: language === 'fr' ? 'Moderne' : 'Modern' },
+    { id: "creative", name: language === 'fr' ? 'Créatif' : 'Creative' },
+    { id: "medical", name: language === 'fr' ? 'Médical' : 'Medical' }
+  ];
+
   return (
-    <div className="space-y-6">
-      <div className={`p-4 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
-        <h3 className={`mb-3 text-base font-medium flex items-center ${theme === 'dark' ? 'text-white' : ''}`}>Modèle de CV</h3>
-        <div className={`grid grid-cols-2 gap-3 ${!isMobile ? 'md:grid-cols-4' : ''}`}>
-          {["classic", "modern", "creative", "medical"].map((template) => (
-            <div
-              key={template}
-              onClick={() => handleTemplateChange(template)}
-              className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-                data.settings.template === template
-                  ? theme === 'dark' 
-                    ? 'border-cvfacile-primary bg-gray-700' 
-                    : 'border-cvfacile-primary bg-blue-50'
+    <div className="space-y-4">
+      <div className={`p-3 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+        <h3 className={`mb-3 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
+          {language === 'fr' ? 'Modèle de CV' : 'CV Template'}
+        </h3>
+        <div className="flex flex-wrap justify-between">
+          {templates.map((template) => (
+            <button
+              key={template.id}
+              onClick={() => handleTemplateChange(template.id)}
+              className={`px-12 py-1.5 text-sm rounded-md transition-colors flex items-center gap-1.5 ${
+                data.settings.template === template.id
+                  ? theme === 'dark'
+                    ? 'bg-cvfacile-primary text-white'
+                    : 'bg-cvfacile-primary text-white'
                   : theme === 'dark'
-                    ? 'border-gray-700'
-                    : 'border-gray-200'
+                    ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              <div className={`mb-2 text-sm text-center capitalize ${theme === 'dark' ? 'text-white' : ''}`}>{template}</div>
-              <div 
-                className={`w-full h-24 rounded-md overflow-hidden flex items-center justify-center ${
-                  data.settings.template === template 
-                    ? "border-2 border-cvfacile-primary" 
-                    : theme === 'dark' 
-                      ? "border border-gray-700 bg-gray-700" 
-                      : "border bg-white"
-                }`}
-              >
-                <span className={`text-xs uppercase font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
-                  Aperçu
-                </span>
-              </div>
-            </div>
+              {data.settings.template === template.id && (
+                <Check className="w-4 h-4" />
+              )}
+              {template.name}
+            </button>
           ))}
         </div>
       </div>
 
-      <div className={`grid grid-cols-1 gap-4 ${!isMobile ? 'md:grid-cols-2' : ''}`}>
+      <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2`}>
         <ColorPicker
           selectedScheme={data.settings.colorScheme}
           onChange={handleColorSchemeChange}
@@ -94,7 +96,7 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
         <PDFButton resumeData={data} previewId="resume-preview" />
       </div>
 
-      <div id="resume-preview" className={`w-full overflow-x-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-6 flex justify-center`}>
+      <div id="resume-preview" className={`w-full overflow-x-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-4 flex justify-center`}>
         {renderTemplate()}
       </div>
     </div>

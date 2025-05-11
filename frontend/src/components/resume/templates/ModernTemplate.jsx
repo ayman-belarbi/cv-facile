@@ -3,8 +3,10 @@ import { Phone, Mail, Globe, MapPin, Linkedin, Calendar } from "lucide-react";
 import { fontMappings } from "@/lib/resumeData";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UserCircle } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const ModernTemplate = ({ data = {} }) => {
+  const { language } = useLanguage();
   const {
     personalInfo = {},
     experiences = [],
@@ -90,7 +92,7 @@ const ModernTemplate = ({ data = {} }) => {
               className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
               style={{ borderColor: settings.colorScheme.primary }}
             >
-              Profil
+              {language === 'fr' ? 'Profil' : 'Profile'}
             </h2>
             <p className={`${fonts.body}`}>{personalInfo.summary}</p>
           </div>
@@ -106,7 +108,7 @@ const ModernTemplate = ({ data = {} }) => {
                   className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
                   style={{ borderColor: settings.colorScheme.primary }}
                 >
-                  Expérience Professionnelle
+                  {language === 'fr' ? 'Expérience Professionnelle' : 'Professional Experience'}
                 </h2>
                 
                 <div className="space-y-6">
@@ -118,7 +120,7 @@ const ModernTemplate = ({ data = {} }) => {
                           className="px-3 py-1 text-xs font-medium text-white rounded-full"
                           style={{ backgroundColor: settings.colorScheme.accent }}
                         >
-                          {exp.startDate} - {exp.current ? "Présent" : exp.endDate}
+                          {exp.startDate} - {exp.current ? (language === 'fr' ? "Présent" : "Present") : exp.endDate}
                         </span>
                       </div>
                       
@@ -151,7 +153,7 @@ const ModernTemplate = ({ data = {} }) => {
                   className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
                   style={{ borderColor: settings.colorScheme.primary }}
                 >
-                  Formation
+                  {language === 'fr' ? 'Formation' : 'Education'}
                 </h2>
                 
                 <div className="space-y-4">
@@ -159,7 +161,7 @@ const ModernTemplate = ({ data = {} }) => {
                     <div key={edu.id} className="grid grid-cols-4 gap-4">
                       <div className="col-span-1">
                         <div className={`font-medium ${fonts.body}`}>
-                          {edu.startDate} - {edu.current ? "Présent" : edu.endDate}
+                          {edu.startDate} - {edu.current ? (language === 'fr' ? "Présent" : "Present") : edu.endDate}
                         </div>
                       </div>
                       
@@ -192,7 +194,7 @@ const ModernTemplate = ({ data = {} }) => {
                   className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
                   style={{ borderColor: settings.colorScheme.primary }}
                 >
-                  Adresse
+                  {language === 'fr' ? 'Adresse' : 'Address'}
                 </h2>
                 <div className="flex items-start">
                   <MapPin className="flex-shrink-0 w-5 h-5 mr-2 mt-0.5" style={{ color: settings.colorScheme.primary }} />
@@ -208,25 +210,23 @@ const ModernTemplate = ({ data = {} }) => {
                   className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
                   style={{ borderColor: settings.colorScheme.primary }}
                 >
-                  Compétences
+                  {language === 'fr' ? 'Compétences' : 'Skills'}
                 </h2>
-                
-                <div className="space-y-3">
+                <div className="space-y-2">
                   {skills.map((skill) => (
                     <div key={skill.id}>
-                      <div className="flex items-center justify-between mb-1">
+                      <div className="flex items-center justify-between">
                         <span className={`${fonts.body}`}>{skill.name}</span>
-                        <span className="text-xs">{skill.level}/5</span>
-                      </div>
-                      
-                      <div className="w-full h-2 overflow-hidden bg-gray-200 rounded-full">
-                        <div
-                          style={{
-                            width: `${(skill.level / 5) * 100}%`,
-                            backgroundColor: settings.colorScheme.primary
-                          }}
-                          className="h-full rounded-full"
-                        ></div>
+                        <div className="flex items-center">
+                          {[1, 2, 3, 4].map((level) => (
+                            <div
+                              key={level}
+                              className={`w-2 h-2 rounded-full mx-0.5 ${
+                                level <= skill.level ? 'bg-cvfacile-primary' : 'bg-gray-200'
+                              }`}
+                            />
+                          ))}
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -241,22 +241,16 @@ const ModernTemplate = ({ data = {} }) => {
                   className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
                   style={{ borderColor: settings.colorScheme.primary }}
                 >
-                  Langues
+                  {language === 'fr' ? 'Langues' : 'Languages'}
                 </h2>
-                
-                <ul className="space-y-2">
+                <div className="space-y-2">
                   {languages.map((lang) => (
-                    <li key={lang.id} className="flex items-center justify-between">
+                    <div key={lang.id} className="flex items-center justify-between">
                       <span className={`${fonts.body}`}>{lang.name}</span>
-                      <span
-                        className="px-2 py-1 text-xs font-medium text-white rounded"
-                        style={{ backgroundColor: settings.colorScheme.accent }}
-                      >
-                        {lang.level}
-                      </span>
-                    </li>
+                      <span className="text-sm text-gray-600">{lang.level}</span>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
             
@@ -267,26 +261,19 @@ const ModernTemplate = ({ data = {} }) => {
                   className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
                   style={{ borderColor: settings.colorScheme.primary }}
                 >
-                  Certifications
+                  {language === 'fr' ? 'Certifications' : 'Certifications'}
                 </h2>
-                
-                <ul className="space-y-3">
+                <div className="space-y-3">
                   {certifications.map((cert) => (
-                    <li key={cert.id} className={`${fonts.body}`}>
-                      <div
-                        className="font-medium"
-                        style={{ color: settings.colorScheme.primary }}
-                      >
-                        {cert.name}
+                    <div key={cert.id}>
+                      <div className={`font-medium ${fonts.body}`}>{cert.name}</div>
+                      <div className="text-sm text-gray-600">{cert.issuer}</div>
+                      <div className="text-xs text-gray-500">
+                        {cert.date} {cert.expiry ? ` - ${cert.expiry}` : ""}
                       </div>
-                      <div className="text-sm">{cert.issuer}</div>
-                      <div className="flex items-center mt-1 text-xs text-gray-600">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        {cert.date}
-                      </div>
-                    </li>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
             )}
           </div>

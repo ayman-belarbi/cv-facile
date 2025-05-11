@@ -2,9 +2,11 @@ import React from 'react';
 import { fontMappings } from '@/lib/resumeData';
 import { Check } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 const FontPicker = ({ selectedFont, onChange }) => {
   const { theme } = useTheme();
+  const { language } = useLanguage();
 
   const fonts = [
     {
@@ -12,27 +14,29 @@ const FontPicker = ({ selectedFont, onChange }) => {
       name: 'Inter',
       headingClass: 'font-inter',
       bodyClass: 'font-inter',
-      description: 'Modern and highly readable'
+      description: language === 'fr' ? 'Moderne et très lisible' : 'Modern and highly readable'
     },
     {
       id: 'poppins',
       name: 'Poppins',
       headingClass: 'font-poppins',
       bodyClass: 'font-poppins',
-      description: 'Clean and professional'
+      description: language === 'fr' ? 'Propre et professionnel' : 'Clean and professional'
     },
     {
       id: 'montserrat',
       name: 'Montserrat',
       headingClass: 'font-montserrat',
       bodyClass: 'font-montserrat',
-      description: 'Versatile and responsive'
+      description: language === 'fr' ? 'Polyvalent et réactif' : 'Versatile and responsive'
     }
   ];
 
   return (
     <div className={`p-3 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
-      <h3 className={`mb-2 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>Police du CV</h3>
+      <h3 className={`mb-2 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
+        {language === 'fr' ? 'Police du CV' : 'CV Font'}
+      </h3>
       <div className="grid grid-cols-3 gap-2">
         {fonts.map((font) => (
           <div 

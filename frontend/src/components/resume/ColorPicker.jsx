@@ -2,13 +2,17 @@ import React from 'react';
 import { colorSchemes } from '@/lib/resumeData';
 import { Check } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
+import { useLanguage } from '@/context/LanguageContext';
 
 const ColorPicker = ({ selectedScheme, onChange }) => {
   const { theme } = useTheme();
+  const { language } = useLanguage();
 
   return (
     <div className={`p-4 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
-      <h3 className={`mb-3 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>Couleur du CV</h3>
+      <h3 className={`mb-3 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
+        {language === 'fr' ? 'Couleur du CV' : 'CV Color'}
+      </h3>
       <div className="grid grid-cols-5 gap-3">
         {Object.entries(colorSchemes).map(([name, scheme]) => (
           <div 

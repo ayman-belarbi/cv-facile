@@ -1,105 +1,111 @@
 import React, { useState, useRef } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Upload, UserCircle } from 'lucide-react';
-import { useMobile } from '@/hooks/use-mobile';
-import { toast } from 'sonner';
+import { Button } from '@/components/ui/button';
+import { Upload, X } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
+import { useLanguage } from '@/context/LanguageContext';
 
-const ProfileUpload = ({ profileImage, onImageChange }) => {
-  const [previewUrl, setPreviewUrl] = useState(profileImage);
+const ProfileUpload = ({ onImageChange, currentImage }) => {
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef(null);
-  const isMobile = useMobile();
+  const { theme } = useTheme();
+  const { language } = useLanguage();
 
-  const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 5 * 1024 * 1024) {
-        toast.error("L'image est trop volumineuse. Maximum 5MB.");
-        return;
-      }
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
 
-      if (!file.type.startsWith('image/')) {
-        toast.error("Veuillez sélectionner une image valide.");
-        return;
-      }
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    handleFile(file);
+  };
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        const result = reader.result;
-        setPreviewUrl(result);
-        onImageChange(result);
-        toast.success("Photo de profil mise à jour");
-      };
-      reader.readAsDataURL(file);
+  const handleFileInput = (e) => {
+    const file = e.target.files[0];
+    handleFile(file);
+  };
+
+  const handleFile = (file) => {
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert(language === 'fr' ? 'Veuillez sélectionner une image valide.' : 'Please select a valid image.');
+      return;
     }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert(language === 'fr' ? 'L\'image est trop volumineuse. Maximum 5MB.' : 'Image is too large. Maximum 5MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      onImageChange(e.target.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleRemoveImage = () => {
-    setPreviewUrl(null);
     onImageChange(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
-    toast.success("Photo de profil supprimée");
   };
 
   return (
-    <Card className="w-full border shadow-sm">
-      <CardContent className="p-4 space-y-4">
-        <div className="flex flex-col items-center space-y-4">
-          <Avatar className={`${isMobile ? 'w-24 h-24' : 'w-32 h-32'} border-2 border-cvfacile-primary`}>
-            {previewUrl ? (
-              <AvatarImage src={previewUrl} alt="Photo de profil" />
-            ) : (
-              <AvatarFallback className="bg-cvfacile-primary/10 text-cvfacile-primary">
-                <UserCircle className={`${isMobile ? 'w-12 h-12' : 'w-16 h-16'}`} />
-              </AvatarFallback>
-            )}
-          </Avatar>
-          
-          <div className="grid grid-cols-2 gap-2 w-full">
-            <Button 
-              type="button" 
-              variant="outline" 
-              onClick={handleUploadClick}
-              className="flex items-center justify-center"
-            >
-              <Upload className="w-4 h-4 mr-2" />
-              {isMobile ? 'Upload' : 'Télécharger'}
-            </Button>
-            
-            <Button 
-              type="button" 
-              variant="outline" 
+    <div className="space-y-4">
+      <div
+        className={`relative border-2 border-dashed rounded-lg p-6 text-center ${
+          isDragging ? 'border-primary bg-primary/5' : 'border-gray-300'
+        } ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        {currentImage ? (
+          <div className="relative">
+            <img
+              src={currentImage}
+              alt="Profile"
+              className="w-32 h-32 mx-auto rounded-full object-cover"
+            />
+            <button
               onClick={handleRemoveImage}
-              disabled={!previewUrl}
-              className="flex items-center justify-center"
+              className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
             >
-              Supprimer
-            </Button>
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            className="hidden"
-            accept="image/jpeg, image/png, image/gif, image/webp"
-          />
-          
-          <p className="text-xs text-gray-500 text-center">
-            Formats acceptés: JPG, PNG, GIF, WebP (max 5MB)
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+        ) : (
+          <div className="space-y-2">
+            <Upload className="w-8 h-8 mx-auto text-gray-400" />
+            <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+              {language === 'fr' ? 'Glissez-déposez votre photo ici ou' : 'Drag and drop your photo here or'}
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              {language === 'fr' ? 'Télécharger' : 'Upload'}
+            </Button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileInput}
+              className="hidden"
+            />
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

@@ -5,8 +5,10 @@ import { Phone, Mail, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 import { fontMappings } from "@/lib/resumeData";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UserCircle } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const ClassicTemplate = ({ data }) => {
+  const { language } = useLanguage();
   if (!data) {
     return <div>Loading resume data...</div>;
   }
