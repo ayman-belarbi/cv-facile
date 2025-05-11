@@ -48,6 +48,11 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
     date: "",
     expiry: "",
   });
+  const [editingSkillId, setEditingSkillId] = useState(null);
+  const [editingCertificationId, setEditingCertificationId] = useState(null);
+  const [editingExperienceId, setEditingExperienceId] = useState(null);
+  const [editingLanguageId, setEditingLanguageId] = useState(null);
+  const [editingEducationId, setEditingEducationId] = useState(null);
 
   const updatePersonalInfo = (field, value) => {
     setResumeData({
@@ -257,11 +262,169 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
     toast.success(language === 'fr' ? "Certification supprimée" : "Certification removed");
   };
 
+  const addOrUpdateSkill = () => {
+    if (!newSkill.name) {
+      toast.error(language === 'fr' ? "Veuillez entrer le nom de la compétence" : "Please enter the skill name");
+      return;
+    }
+    if (editingSkillId) {
+      setResumeData({
+        ...resumeData,
+        skills: resumeData.skills.map(skill =>
+          skill.id === editingSkillId ? { ...skill, ...newSkill } : skill
+        ),
+      });
+      setEditingSkillId(null);
+      toast.success(language === 'fr' ? "Compétence modifiée" : "Skill updated");
+    } else {
+      const skill = {
+        id: uuidv4(),
+        name: newSkill.name,
+        level: newSkill.level,
+      };
+      setResumeData({
+        ...resumeData,
+        skills: [...(resumeData.skills || []), skill],
+      });
+      toast.success(language === 'fr' ? "Compétence ajoutée" : "Skill added");
+    }
+    setNewSkill({ name: "", level: 3 });
+  };
+
+  const addOrUpdateCertification = () => {
+    if (!newCertification.name || !newCertification.issuer) {
+      toast.error(language === 'fr' ? "Veuillez remplir le nom et l'émetteur de la certification" : "Please fill in the certification name and issuer");
+      return;
+    }
+    if (editingCertificationId) {
+      setResumeData({
+        ...resumeData,
+        certifications: resumeData.certifications.map(cert =>
+          cert.id === editingCertificationId ? { ...cert, ...newCertification } : cert
+        ),
+      });
+      setEditingCertificationId(null);
+      toast.success(language === 'fr' ? "Certification modifiée" : "Certification updated");
+    } else {
+      const certification = {
+        ...newCertification,
+        id: uuidv4(),
+      };
+      setResumeData({
+        ...resumeData,
+        certifications: [...(resumeData.certifications || []), certification],
+      });
+      toast.success(language === 'fr' ? "Certification ajoutée avec succès" : "Certification added successfully");
+    }
+    setNewCertification({ name: "", issuer: "", date: "", expiry: "" });
+  };
+
+  const addOrUpdateExperience = () => {
+    if (!newExperience.company || !newExperience.position) {
+      toast.error(language === 'fr' ? "Veuillez remplir l'entreprise et le poste" : "Please fill in the company and position");
+      return;
+    }
+    if (editingExperienceId) {
+      setResumeData({
+        ...resumeData,
+        experiences: resumeData.experiences.map(exp =>
+          exp.id === editingExperienceId ? { ...exp, ...newExperience, achievements: newExperience.achievements.filter((a) => a.trim() !== "") } : exp
+        ),
+      });
+      setEditingExperienceId(null);
+      toast.success(language === 'fr' ? "Expérience modifiée" : "Experience updated");
+    } else {
+      const experience = {
+        ...newExperience,
+        id: uuidv4(),
+        achievements: newExperience.achievements.filter((a) => a.trim() !== ""),
+      };
+      setResumeData({
+        ...resumeData,
+        experiences: [...(resumeData.experiences || []), experience],
+      });
+      toast.success(language === 'fr' ? "Expérience ajoutée avec succès" : "Experience added successfully");
+    }
+    setNewExperience({
+      company: "",
+      position: "",
+      startDate: "",
+      endDate: "",
+      current: false,
+      description: "",
+      achievements: [""]
+    });
+  };
+
+  const addOrUpdateLanguage = () => {
+    if (!newLanguage.name) {
+      toast.error(language === 'fr' ? "Veuillez entrer le nom de la langue" : "Please enter the language name");
+      return;
+    }
+    if (editingLanguageId) {
+      setResumeData({
+        ...resumeData,
+        languages: resumeData.languages.map(lang =>
+          lang.id === editingLanguageId ? { ...lang, ...newLanguage } : lang
+        ),
+      });
+      setEditingLanguageId(null);
+      toast.success(language === 'fr' ? "Langue modifiée" : "Language updated");
+    } else {
+      const languageItem = {
+        ...newLanguage,
+        id: uuidv4(),
+      };
+      setResumeData({
+        ...resumeData,
+        languages: [...(resumeData.languages || []), languageItem],
+      });
+      toast.success(language === 'fr' ? "Langue ajoutée" : "Language added");
+    }
+    setNewLanguage({ name: "", level: language === 'fr' ? "Intermédiaire" : "Intermediate" });
+  };
+
+  const addOrUpdateEducation = () => {
+    if (!newEducation.institution || !newEducation.degree) {
+      toast.error(language === 'fr' ? "Veuillez remplir l'institution et le diplôme" : "Please fill in the institution and degree");
+      return;
+    }
+    if (editingEducationId) {
+      setResumeData({
+        ...resumeData,
+        education: resumeData.education.map(edu =>
+          edu.id === editingEducationId ? { ...edu, ...newEducation } : edu
+        ),
+      });
+      setEditingEducationId(null);
+      toast.success(language === 'fr' ? "Formation modifiée" : "Education updated");
+    } else {
+      const education = {
+        ...newEducation,
+        id: uuidv4(),
+      };
+      setResumeData({
+        ...resumeData,
+        education: [...(resumeData.education || []), education],
+      });
+      toast.success(language === 'fr' ? "Formation ajoutée avec succès" : "Education added successfully");
+    }
+    setNewEducation({
+      institution: "",
+      degree: "",
+      field: "",
+      startDate: "",
+      endDate: "",
+      current: false,
+      description: "",
+    });
+  };
+
   return (
     <Card className="w-full overflow-hidden border shadow-lg">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className={`grid w-full ${isMobile ? 'grid-cols-3' : 'grid-cols-6'} overflow-x-auto`}>
-          <TabsTrigger value="personal">{language === 'fr' ? 'Informations personnelles' : 'Personal Info'}</TabsTrigger>
+          <TabsTrigger value="personal">{language === 'fr' ? 'Infos Pers' : 'Personal Info'}</TabsTrigger>
           <TabsTrigger value="experience">{language === 'fr' ? 'Expérience' : 'Experience'}</TabsTrigger>
           <TabsTrigger value="education">{language === 'fr' ? 'Formation' : 'Education'}</TabsTrigger>
           <TabsTrigger value="skills">{language === 'fr' ? 'Compétences' : 'Skills'}</TabsTrigger>
@@ -272,7 +435,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
         {/* Personal Information */}
         <TabsContent value="personal" className="p-4 space-y-4">
           <ProfileUpload 
-            profileImage={resumeData.personalInfo.profileImage || null} 
+            currentImage={resumeData.personalInfo.profileImage || null} 
             onImageChange={handleProfileImageChange} 
           />
           
@@ -463,10 +626,12 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
             </div>
 
             <Button 
-              onClick={addExperience}
+              onClick={addOrUpdateExperience}
               className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90"
             >
-              {language === 'fr' ? 'Ajouter cette expérience' : 'Add this experience'}
+              {editingExperienceId
+                ? (language === 'fr' ? 'Mettre à jour cette expérience' : 'Update this experience')
+                : (language === 'fr' ? 'Ajouter cette expérience' : 'Add this experience')}
             </Button>
           </div>
 
@@ -479,17 +644,14 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 {resumeData.experiences.map((exp) => (
                   <AccordionItem key={exp.id} value={exp.id} className="border rounded-lg">
                     <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                      <div className="flex items-center justify-between w-full text-left">
-                        <div>
-                          <div className="font-medium">{exp.position}</div>
-                          <div className="text-sm text-gray-600">{exp.company}</div>
-                        </div>
-                        <ChevronDown className="w-5 h-5 shrink-0 transition-transform duration-200" />
+                      <div>
+                        <div className="font-medium">{exp.position}</div>
+                        <div className="text-sm text-gray-600">{exp.company}</div>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="px-4 pb-3 pt-1">
                       <div className="mb-2 text-sm">
-                        <span className="font-medium">Période: </span> 
+                        <span className="font-medium">{language === 'fr' ? 'Période' : 'Period'}: </span> 
                         {exp.startDate} - {exp.current ? (language === 'fr' ? 'Présent' : 'Present') : exp.endDate}
                       </div>
                       <p className="mb-2 text-sm">{exp.description}</p>
@@ -505,14 +667,34 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                         </div>
                       )}
                       
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => removeExperience(exp.id)}
-                        className="flex items-center"
-                      >
-                        <Trash2 className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Supprimer' : 'Remove'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setNewExperience({
+                              company: exp.company,
+                              position: exp.position,
+                              startDate: exp.startDate,
+                              endDate: exp.endDate,
+                              current: exp.current,
+                              description: exp.description,
+                              achievements: exp.achievements
+                            });
+                            setEditingExperienceId(exp.id);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => removeExperience(exp.id)}
+                          className="flex items-center"
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Supprimer' : 'Remove'}
+                        </Button>
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
@@ -600,10 +782,12 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
             </div>
 
             <Button 
-              onClick={addEducation}
+              onClick={addOrUpdateEducation}
               className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90"
             >
-              {language === 'fr' ? 'Ajouter cette formation' : 'Add this education'}
+              {editingEducationId
+                ? (language === 'fr' ? 'Mettre à jour cette formation' : 'Update this education')
+                : (language === 'fr' ? 'Ajouter cette formation' : 'Add this education')}
             </Button>
           </div>
 
@@ -616,17 +800,14 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 {resumeData.education.map((edu) => (
                   <AccordionItem key={edu.id} value={edu.id} className="border rounded-lg">
                     <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                      <div className="flex items-center justify-between w-full text-left">
-                        <div>
-                          <div className="font-medium">{edu.degree}</div>
-                          <div className="text-sm text-gray-600">{edu.institution}</div>
-                        </div>
-                        <ChevronDown className="w-5 h-5 shrink-0 transition-transform duration-200" />
+                      <div>
+                        <div className="font-medium">{edu.degree}</div>
+                        <div className="text-sm text-gray-600">{edu.institution}</div>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="px-4 pb-3 pt-1">
                       <div className="mb-2 text-sm">
-                        <span className="font-medium">Période: </span> 
+                        <span className="font-medium">{language === 'fr' ? 'Période' : 'Period'}: </span> 
                         {edu.startDate} - {edu.current ? (language === 'fr' ? 'En cours' : 'Currently studying') : edu.endDate}
                       </div>
                       <div className="mb-2 text-sm">
@@ -635,14 +816,34 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                       </div>
                       {edu.description && <p className="mb-3 text-sm">{edu.description}</p>}
                       
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => removeEducation(edu.id)}
-                        className="flex items-center"
-                      >
-                        <Trash2 className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Supprimer' : 'Remove'}
-                      </Button>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => {
+                            setNewEducation({
+                              institution: edu.institution,
+                              degree: edu.degree,
+                              field: edu.field,
+                              startDate: edu.startDate,
+                              endDate: edu.endDate,
+                              current: edu.current,
+                              description: edu.description
+                            });
+                            setEditingEducationId(edu.id);
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          onClick={() => removeEducation(edu.id)}
+                          className="flex items-center"
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Supprimer' : 'Remove'}
+                        </Button>
+                      </div>
                     </AccordionContent>
                   </AccordionItem>
                 ))}
@@ -667,7 +868,8 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
               <select
                 value={newSkill.level}
                 onChange={(e) => setNewSkill({ ...newSkill, level: parseInt(e.target.value) || 1 })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cvfacile-primary"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cvfacile-primary
+                  bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
               >
                 <option value="1">{language === 'fr' ? 'Débutant' : 'Beginner'}</option>
                 <option value="2">{language === 'fr' ? 'Intermédiaire' : 'Intermediate'}</option>
@@ -678,10 +880,12 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
           </div>
 
           <Button 
-            onClick={addSkill}
+            onClick={addOrUpdateSkill}
             className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90"
           >
-            {language === 'fr' ? 'Ajouter cette compétence' : 'Add this skill'}
+            {editingSkillId
+              ? (language === 'fr' ? 'Mettre à jour la compétence' : 'Update skill')
+              : (language === 'fr' ? 'Ajouter cette compétence' : 'Add this skill')}
           </Button>
 
           <div className="mt-6">
@@ -704,13 +908,27 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                         <span className="text-xs font-medium">{skill.level}/5</span>
                       </div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeSkill(skill.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setNewSkill({ name: skill.name, level: skill.level });
+                          setEditingSkillId(skill.id);
+                        }}
+                        className="ml-5"
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeSkill(skill.id)}
+                        className="flex items-center"
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Supprimer' : 'Remove'}
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -734,7 +952,8 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
               <select
                 value={newLanguage.level}
                 onChange={(e) => setNewLanguage({ ...newLanguage, level: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cvfacile-primary"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cvfacile-primary
+                  bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
               >
                 <option value={language === 'fr' ? 'Débutant' : 'Beginner'}>{language === 'fr' ? 'Débutant' : 'Beginner'}</option>
                 <option value={language === 'fr' ? 'Intermédiaire' : 'Intermediate'}>{language === 'fr' ? 'Intermédiaire' : 'Intermediate'}</option>
@@ -747,10 +966,12 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
           </div>
 
           <Button 
-            onClick={addLanguage}
+            onClick={addOrUpdateLanguage}
             className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90"
           >
-            {language === 'fr' ? 'Ajouter cette langue' : 'Add this language'}
+            {editingLanguageId
+              ? (language === 'fr' ? 'Mettre à jour cette langue' : 'Update this language')
+              : (language === 'fr' ? 'Ajouter cette langue' : 'Add this language')}
           </Button>
 
           <div className="mt-6">
@@ -765,13 +986,29 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                       <div className="font-medium">{language.name}</div>
                       <div className="text-sm text-gray-600">{language.level}</div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeLanguage(language.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setNewLanguage({
+                            name: language.name,
+                            level: language.level
+                          });
+                          setEditingLanguageId(language.id);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeLanguage(language.id)}
+                        className="flex items-center"
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Supprimer' : 'Remove'}
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -820,10 +1057,12 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
           </div>
 
           <Button 
-            onClick={addCertification}
+            onClick={addOrUpdateCertification}
             className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90"
           >
-            {language === 'fr' ? 'Ajouter cette certification' : 'Add this certification'}
+            {editingCertificationId
+              ? (language === 'fr' ? 'Mettre à jour cette certification' : 'Update this certification')
+              : (language === 'fr' ? 'Ajouter cette certification' : 'Add this certification')}
           </Button>
 
           <div className="mt-6">
@@ -841,13 +1080,31 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                         {cert.date} {cert.expiry ? ` - ${cert.expiry}` : ""}
                       </div>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => removeCertification(cert.id)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setNewCertification({
+                            name: cert.name,
+                            issuer: cert.issuer,
+                            date: cert.date,
+                            expiry: cert.expiry
+                          });
+                          setEditingCertificationId(cert.id);
+                        }}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeCertification(cert.id)}
+                        className="flex items-center"
+                      >
+                        <Trash2 className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Supprimer' : 'Remove'}
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>

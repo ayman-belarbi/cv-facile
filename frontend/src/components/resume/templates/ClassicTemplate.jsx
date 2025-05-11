@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import { ResumeData } from "@/lib/resumeData";
 import { Phone, Mail, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 import { fontMappings } from "@/lib/resumeData";
@@ -7,177 +7,159 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UserCircle } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
-const ClassicTemplate = ({ data }) => {
+const ClassicTemplate = ({ data = {} }) => {
   const { language } = useLanguage();
-  if (!data) {
-    return <div>Loading resume data...</div>;
-  }
-
-  const { personalInfo = {}, experiences, education, skills, languages, certifications, settings = {} } = data;
-  const fonts = fontMappings[settings.font] || {};
+  const {
+    personalInfo = {},
+    experiences = [],
+    education = [],
+    skills = [],
+    languages = [],
+    certifications = [],
+    settings = { colorScheme: {}, font: "" },
+  } = data;
+  const fonts = fontMappings[settings.font] || fontMappings["inter"];
 
   return (
     <div 
       className="w-full h-full shadow-lg bg-white resume-shadow"
       style={{ 
-        color: settings.colorScheme?.text || '#000',
-        maxWidth: '794px',
-        minHeight: '1123px',
+        color: settings.colorScheme.text,
+        maxWidth: "794px",
+        minHeight: "1123px",
       }}
     >
+      {/* Header */}
       <div 
-        className="px-6 py-8"
-        style={{ backgroundColor: settings.colorScheme?.primary || '#000' }}
+        className="px-8 py-6"
+        style={{
+          backgroundColor: settings.colorScheme.primary,
+          color: "white",
+        }}
       >
-        <div className="flex items-center gap-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className={`text-3xl font-bold ${fonts.heading}`}>
+              {personalInfo.firstName} {personalInfo.lastName}
+        </h1>
+            <p className={`mt-1 text-lg ${fonts.body}`}>{personalInfo.title}</p>
+          </div>
           <Avatar className="w-24 h-24 border-2 border-white">
             {personalInfo.profileImage ? (
-              <AvatarImage src={personalInfo.profileImage} alt={`${personalInfo.firstName} ${personalInfo.lastName}`} />
+              <AvatarImage
+                src={personalInfo.profileImage}
+                alt={`${personalInfo.firstName} ${personalInfo.lastName}`}
+                className="object-cover"
+              />
             ) : (
               <AvatarFallback className="bg-white/10">
                 <UserCircle className="w-12 h-12 text-white" />
               </AvatarFallback>
             )}
           </Avatar>
-          <div>
-            <h1 className={`text-3xl font-bold text-white ${fonts.heading || ''}`}>
-              {personalInfo.firstName || ''} {personalInfo.lastName || ''}
-            </h1>
-            <p className={`mt-1 text-xl text-white/90 ${fonts.body || ''}`}>{personalInfo.title || ''}</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-3 gap-6 p-6">
-        <div className="col-span-1">
-          <div className="mb-6">
-            <h2 className={`mb-3 text-lg font-semibold ${fonts.heading || ''}`} style={{ color: settings.colorScheme?.primary || '#000' }}>
-              Contact
-            </h2>
-            <ul className={`space-y-2 ${fonts.body || ''}`}>
-              <li className="flex items-start">
-                <Phone className="flex-shrink-0 w-4 h-4 mt-1 mr-2" style={{ color: settings.colorScheme?.secondary || '#000' }} />
-                <span>{personalInfo.phone || ''}</span>
-              </li>
-              <li className="flex items-start">
-                <Mail className="flex-shrink-0 w-4 h-4 mt-1 mr-2" style={{ color: settings.colorScheme?.secondary || '#000' }} />
-                <span>{personalInfo.email || ''}</span>
-              </li>
-              <li className="flex items-start">
-                <MapPin className="flex-shrink-0 w-4 h-4 mt-1 mr-2" style={{ color: settings.colorScheme?.secondary || '#000' }} />
-                <span>{personalInfo.address || ''}</span>
-              </li>
-              {personalInfo.website && (
-                <li className="flex items-start">
-                  <Globe className="flex-shrink-0 w-4 h-4 mt-1 mr-2" style={{ color: settings.colorScheme?.secondary || '#000' }} />
-                  <span>{personalInfo.website}</span>
-                </li>
-              )}
-              {personalInfo.linkedin && (
-                <li className="flex items-start">
-                  <Linkedin className="flex-shrink-0 w-4 h-4 mt-1 mr-2" style={{ color: settings.colorScheme?.secondary || '#000' }} />
-                  <span>{personalInfo.linkedin}</span>
-                </li>
-              )}
-            </ul>
-          </div>
-
-          {skills && Array.isArray(skills) && skills.length > 0 && (
-            <div className="mb-6">
-              <h2 className={`mb-3 text-lg font-semibold ${fonts.heading || ''}`} style={{ color: settings.colorScheme?.primary || '#000' }}>
-                Compétences
-              </h2>
-              <ul className="space-y-3">
-                {skills.map((skill) => (
-                  <li key={skill.id} className="flex flex-col">
-                    <div className="flex items-center justify-between">
-                      <span className={fonts.body || ''}>{skill.name || ''}</span>
-                      <span className="text-xs">{skill.level || 0}/5</span>
                     </div>
-                    <div className="w-full h-2 mt-1 overflow-hidden bg-gray-200 rounded-full">
-                      <div 
-                        className="h-full rounded-full" 
-                        style={{ 
-                          width: `${((skill.level || 0) / 5) * 100}%`,
-                          backgroundColor: settings.colorScheme?.accent || '#000'
-                        }}
-                      ></div>
+
+        {/* Contact info in header */}
+        <div className="flex flex-wrap items-center gap-4 mt-4">
+          {personalInfo.phone && (
+            <div className="flex items-center">
+              <Phone className="w-4 h-4 mr-1" />
+              <span className="text-sm">{personalInfo.phone}</span>
                     </div>
-                  </li>
-                ))}
-              </ul>
+          )}
+
+          {personalInfo.email && (
+            <div className="flex items-center">
+              <Mail className="w-4 h-4 mr-1" />
+              <span className="text-sm">{personalInfo.email}</span>
             </div>
           )}
 
-          {languages && Array.isArray(languages) && languages.length > 0 && (
-            <div className="mb-6">
-              <h2 className={`mb-3 text-lg font-semibold ${fonts.heading || ''}`} style={{ color: settings.colorScheme?.primary || '#000' }}>
-                Langues
-              </h2>
-              <ul className="space-y-2">
-                {languages.map((language) => (
-                  <li key={language.id} className="flex items-center justify-between">
-                    <span className={fonts.body || ''}>{language.name || ''}</span>
-                    <span className="text-sm text-gray-600">{language.level || ''}</span>
-                  </li>
-                ))}
-              </ul>
+          {personalInfo.website && (
+            <div className="flex items-center">
+              <Globe className="w-4 h-4 mr-1" />
+              <span className="text-sm">{personalInfo.website}</span>
             </div>
           )}
 
-          {certifications && Array.isArray(certifications) && certifications.length > 0 && (
-            <div className="mb-6">
-              <h2 className={`mb-3 text-lg font-semibold ${fonts.heading || ''}`} style={{ color: settings.colorScheme?.primary || '#000' }}>
-                Certifications
-              </h2>
-              <ul className="space-y-3">
-                {certifications.map((cert) => (
-                  <li key={cert.id} className={fonts.body || ''}>
-                    <div className="font-medium">{cert.name || ''}</div>
-                    <div className="text-sm">{cert.issuer || ''}</div>
-                    <div className="flex items-center mt-1 text-xs text-gray-600">
-                      <Calendar className="w-3 h-3 mr-1" />
-                      {cert.date || ''}
-                    </div>
-                  </li>
-                ))}
-              </ul>
+          {personalInfo.linkedin && (
+            <div className="flex items-center">
+              <Linkedin className="w-4 h-4 mr-1" />
+              <span className="text-sm">{personalInfo.linkedin}</span>
             </div>
           )}
         </div>
+        </div>
 
-        <div className="col-span-2">
+      {/* Main content */}
+      <div className="p-8">
+        {/* Summary */}
           {personalInfo.summary && (
-            <div className="mb-6">
-              <h2 className={`mb-3 text-lg font-semibold ${fonts.heading || ''}`} style={{ color: settings.colorScheme?.primary || '#000' }}>
-                Profil
+          <div className="mb-8">
+            <h2
+              className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
+              style={{ borderColor: settings.colorScheme.primary }}
+            >
+              {language === "fr" ? "Profil" : "Profile"}
               </h2>
-              <p className={fonts.body || ''}>{personalInfo.summary}</p>
+            <p className={`${fonts.body}`}>{personalInfo.summary}</p>
             </div>
           )}
 
-          {experiences && Array.isArray(experiences) && experiences.length > 0 && (
-            <div className="mb-6">
-              <h2 className={`mb-4 text-lg font-semibold ${fonts.heading || ''}`} style={{ color: settings.colorScheme?.primary || '#000' }}>
-                Expérience Professionnelle
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+          {/* Main column */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Experience */}
+            {Array.isArray(experiences) && experiences.length > 0 && (
+              <div>
+                <h2
+                  className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
+                  style={{ borderColor: settings.colorScheme.primary }}
+                >
+                  {language === "fr"
+                    ? "Expérience Professionnelle"
+                    : "Professional Experience"}
               </h2>
-              <div className="space-y-4">
+
+                <div className="space-y-6">
                 {experiences.map((exp) => (
-                  <div key={exp.id} className="pb-4 border-b border-gray-200 last:border-0">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className={`font-medium ${fonts.heading || ''}`}>{exp.position || ''}</h3>
-                        <p className="text-sm font-medium text-gray-600">{exp.company || ''}</p>
+                    <div key={exp.id}>
+                      <div className="flex items-center justify-between">
+                        <h3
+                          className={`text-lg font-semibold ${fonts.heading}`}
+                        >
+                          {exp.position}
+                        </h3>
+                        <span
+                          className="px-3 py-1 text-xs font-medium text-white rounded-full"
+                          style={{
+                            backgroundColor: settings.colorScheme.accent,
+                          }}
+                        >
+                          {exp.startDate} -{" "}
+                          {exp.current
+                            ? language === "fr"
+                              ? "Présent"
+                              : "Present"
+                            : exp.endDate}
+                        </span>
                       </div>
-                      <div className={`text-sm text-gray-600 ${fonts.body || ''}`}>
-                        {exp.startDate || ''} - {exp.current ? "Présent" : exp.endDate || ''}
+
+                      <div
+                        className={`mb-2 text-base font-medium ${fonts.body}`}
+                        style={{ color: settings.colorScheme.primary }}
+                      >
+                        {exp.company}
                       </div>
-                    </div>
-                    <p className={`mt-2 text-sm ${fonts.body || ''}`}>{exp.description || ''}</p>
-                    {exp.achievements && Array.isArray(exp.achievements) && exp.achievements.length > 0 && (
-                      <ul className="pl-5 mt-2 space-y-1 text-sm list-disc">
-                        {exp.achievements.map((achievement, index) => (
-                          <li key={index} className={fonts.body || ''}>{achievement || ''}</li>
+
+                      <p className={`mb-3 ${fonts.body}`}>{exp.description}</p>
+
+                      {exp.achievements.length > 0 && (
+                        <ul className="pl-5 space-y-1 list-disc">
+                          {exp.achievements.map((achievement, idx) => (
+                            <li key={idx} className={`${fonts.body}`}>
+                              {achievement}
+                            </li>
                         ))}
                       </ul>
                     )}
@@ -187,32 +169,176 @@ const ClassicTemplate = ({ data }) => {
             </div>
           )}
 
-          {education && Array.isArray(education) && education.length > 0 && (
+            {/* Education */}
+            {education.length > 0 && (
             <div>
-              <h2 className={`mb-4 text-lg font-semibold ${fonts.heading || ''}`} style={{ color: settings.colorScheme?.primary || '#000' }}>
-                Formation
+                <h2
+                  className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
+                  style={{ borderColor: settings.colorScheme.primary }}
+                >
+                  {language === "fr" ? "Formation" : "Education"}
               </h2>
-              <div className="space-y-4">
+
+                <div className="space-y-6">
                 {education.map((edu) => (
-                  <div key={edu.id} className="pb-4 border-b border-gray-200 last:border-0">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <h3 className={`font-medium ${fonts.heading || ''}`}>{edu.degree || ''}</h3>
-                        <p className={`text-sm font-medium text-gray-600 ${fonts.body || ''}`}>{edu.institution || ''}</p>
-                        <p className={`text-sm text-gray-600 ${fonts.body || ''}`}>{edu.field || ''}</p>
+                    <div key={edu.id}>
+                      <div className="flex items-center justify-between">
+                        <h3
+                          className={`text-lg font-semibold ${fonts.heading}`}
+                        >
+                          {edu.degree}
+                        </h3>
+                        <span
+                          className="px-3 py-1 text-xs font-medium text-white rounded-full"
+                          style={{
+                            backgroundColor: settings.colorScheme.accent,
+                          }}
+                        >
+                          {edu.startDate} -{" "}
+                          {edu.current
+                            ? language === "fr"
+                              ? "Présent"
+                              : "Present"
+                            : edu.endDate}
+                        </span>
                       </div>
-                      <div className={`text-sm text-gray-600 ${fonts.body || ''}`}>
-                        {edu.startDate || ''} - {edu.current ? "Présent" : edu.endDate || ''}
+
+                      <div
+                        className={`mb-2 text-base font-medium ${fonts.body}`}
+                        style={{ color: settings.colorScheme.primary }}
+                      >
+                        {edu.institution}
                       </div>
-                    </div>
-                    {edu.description && (
-                      <p className={`mt-2 text-sm ${fonts.body || ''}`}>{edu.description}</p>
-                    )}
+
+                      <div className={`${fonts.body}`}>
+                        <div className="mb-1 font-medium">{edu.field}</div>
+                        {edu.description && (
+                          <p className="text-sm text-gray-600">
+                            {edu.description}
+                          </p>
+                        )}
+                      </div>
                   </div>
                 ))}
               </div>
             </div>
           )}
+          </div>
+
+          {/* Sidebar */}
+          <div className="space-y-8">
+            {/* Address */}
+            {personalInfo.address && (
+              <div>
+                <h2
+                  className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
+                  style={{ borderColor: settings.colorScheme.primary }}
+                >
+                  {language === "fr" ? "Adresse" : "Address"}
+                </h2>
+                <div className="flex items-start">
+                  <MapPin
+                    className="flex-shrink-0 w-5 h-5 mr-2 mt-0.5"
+                    style={{ color: settings.colorScheme.primary }}
+                  />
+                  <span className={`${fonts.body}`}>
+                    {personalInfo.address}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {/* Skills */}
+            {skills.length > 0 && (
+              <div>
+                <h2
+                  className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
+                  style={{ borderColor: settings.colorScheme.primary }}
+                >
+                  {language === "fr" ? "Compétences" : "Skills"}
+                </h2>
+                <div className="space-y-2">
+                  {skills.map((skill) => (
+                    <div key={skill.id}>
+                      <div className="flex items-center justify-between">
+                        <span className={`${fonts.body}`}>{skill.name}</span>
+                        <div className="flex items-center">
+                          {[1, 2, 3, 4].map((level) => (
+                            <div
+                              key={level}
+                              className={`w-2 h-2 rounded-full mx-0.5 ${
+                                level <= skill.level
+                                  ? "bg-cvfacile-primary"
+                                  : "bg-gray-200"
+                              }`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Languages */}
+            {languages.length > 0 && (
+              <div>
+                <h2
+                  className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
+                  style={{ borderColor: settings.colorScheme.primary }}
+                >
+                  {language === "fr" ? "Langues" : "Languages"}
+                </h2>
+                <div className="space-y-2">
+                  {languages.map((lang) => (
+                    <div
+                      key={lang.id}
+                      className="flex items-center justify-between"
+                    >
+                      <span className={`${fonts.body}`}>{lang.name}</span>
+                      <span className="text-sm text-gray-600">
+                        {lang.level}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Certifications */}
+            {certifications.length > 0 && (
+              <div>
+                <h2
+                  className={`pb-2 mb-4 text-xl font-bold border-b-2 ${fonts.heading}`}
+                  style={{ borderColor: settings.colorScheme.primary }}
+                >
+                  {language === "fr" ? "Certifications" : "Certifications"}
+                </h2>
+                <div className="space-y-3">
+                  {certifications.map((cert) => (
+                    <div key={cert.id} className="rounded-md p-3">
+                      <div
+                        className={`font-medium ${fonts.body}`}
+                        style={{ color: settings.colorScheme.primary }}
+                      >
+                        {cert.name}
+                      </div>
+                      <div className="text-sm text-gray-600 mt-1 mb-2">
+                        {cert.issuer}
+                      </div>
+                      <span
+                        className="px-3 py-1 text-xs font-medium text-white rounded-full"
+                        style={{ backgroundColor: settings.colorScheme.accent }}
+                      >
+                        {cert.date} {cert.expiry ? ` - ${cert.expiry}` : ""}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

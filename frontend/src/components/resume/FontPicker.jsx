@@ -7,7 +7,7 @@ import { useLanguage } from '@/context/LanguageContext';
 const FontPicker = ({ selectedFont, onChange }) => {
   const { theme } = useTheme();
   const { language } = useLanguage();
-
+  
   const fonts = [
     {
       id: 'inter',
@@ -39,7 +39,7 @@ const FontPicker = ({ selectedFont, onChange }) => {
       </h3>
       <div className="grid grid-cols-3 gap-2">
         {fonts.map((font) => (
-          <div 
+            <div
             key={font.id}
             onClick={() => onChange(font.id)}
             className={`relative p-2 border rounded-md cursor-pointer transition-all hover:shadow-sm ${
@@ -50,8 +50,8 @@ const FontPicker = ({ selectedFont, onChange }) => {
                 : theme === 'dark'
                   ? 'border-gray-700'
                   : 'border-gray-200'
-            }`}
-          >
+              }`}
+            >
             <div className="flex flex-col items-center text-center">
               <div className={`text-base ${theme === 'dark' ? 'text-white' : ''} ${font.headingClass}`}>
                 Aa
@@ -67,9 +67,9 @@ const FontPicker = ({ selectedFont, onChange }) => {
                 </div>
               </div>
             )}
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
     </div>
   );
 };

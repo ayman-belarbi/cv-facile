@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Upload, X } from 'lucide-react';
+import { Upload, X, User } from 'lucide-react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
 
@@ -36,19 +36,19 @@ const ProfileUpload = ({ onImageChange, currentImage }) => {
 
     if (!file.type.startsWith('image/')) {
       alert(language === 'fr' ? 'Veuillez sélectionner une image valide.' : 'Please select a valid image.');
-      return;
-    }
+        return;
+      }
 
     if (file.size > 5 * 1024 * 1024) {
       alert(language === 'fr' ? 'L\'image est trop volumineuse. Maximum 5MB.' : 'Image is too large. Maximum 5MB.');
-      return;
-    }
+        return;
+      }
 
-    const reader = new FileReader();
+      const reader = new FileReader();
     reader.onload = (e) => {
       onImageChange(e.target.result);
-    };
-    reader.readAsDataURL(file);
+      };
+      reader.readAsDataURL(file);
   };
 
   const handleRemoveImage = () => {
@@ -59,53 +59,47 @@ const ProfileUpload = ({ onImageChange, currentImage }) => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="flex items-center gap-4">
       <div
-        className={`relative border-2 border-dashed rounded-lg p-6 text-center ${
-          isDragging ? 'border-primary bg-primary/5' : 'border-gray-300'
+        className={`relative flex-1 border-2 border-dashed rounded-lg p-4 text-center transition-all duration-200 ${
+          isDragging 
+            ? 'border-primary bg-primary/5' 
+            : 'border-gray-300 hover:border-primary/50'
         } ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
+        onClick={() => fileInputRef.current?.click()}
+        style={{ cursor: 'pointer' }}
       >
-        {currentImage ? (
-          <div className="relative">
-            <img
-              src={currentImage}
-              alt="Profile"
-              className="w-32 h-32 mx-auto rounded-full object-cover"
-            />
-            <button
-              onClick={handleRemoveImage}
-              className="absolute -top-2 -right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600"
-            >
-              <X className="w-4 h-4" />
-            </button>
+        <div className="flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center border-2 border-dashed border-gray-300 overflow-hidden">
+            {currentImage ? (
+              <img
+                src={currentImage}
+                alt="Profile"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <User className="w-10 h-10 text-gray-400" />
+            )}
           </div>
-        ) : (
-          <div className="space-y-2">
-            <Upload className="w-8 h-8 mx-auto text-gray-400" />
-            <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-              {language === 'fr' ? 'Glissez-déposez votre photo ici ou' : 'Drag and drop your photo here or'}
-            </p>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              {language === 'fr' ? 'Télécharger' : 'Upload'}
-            </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={handleFileInput}
-              className="hidden"
-            />
-          </div>
-        )}
+        </div>
+        <p className={`mt-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+          {currentImage 
+            ? (language === 'fr' ? 'Cliquez pour changer la photo' : 'Click to change photo')
+            : (language === 'fr' ? 'Cliquez pour ajouter une photo' : 'Click to add photo')
+          }
+        </p>
+          <input
+          ref={fileInputRef}
+            type="file"
+          accept="image/*"
+          onChange={handleFileInput}
+            className="hidden"
+          />
       </div>
-    </div>
+        </div>
   );
 };
 

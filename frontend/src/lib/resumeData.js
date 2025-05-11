@@ -14,8 +14,14 @@ export const ResumeData = {
   certifications: [],
   settings: {
     template: 'classic',
-    colorScheme: 'default',
-    font: 'default'
+    colorScheme: {
+      primary: '#0F172A',    // Deep Navy
+      secondary: '#1E40AF',  // Royal Blue
+      accent: '#F43F5E',     // Rose Red
+      text: '#0F172A',       // Deep Navy
+      background: '#F8FAFC'  // Cool White
+    },
+    font: 'inter'
   }
 };
 
