@@ -20,35 +20,54 @@ export const ResumeData = {
 };
 
 export const fontMappings = {
-  default: 'Inter',
-  elegant: 'Playfair Display',
-  modern: 'Roboto',
-  technical: 'Source Code Pro'
+  inter: {
+    heading: 'font-inter',
+    body: 'font-inter'
+  },
+  poppins: {
+    heading: 'font-poppins',
+    body: 'font-poppins'
+  },
+  montserrat: {
+    heading: 'font-montserrat',
+    body: 'font-montserrat'
+  }
 };
 
 export const colorSchemes = {
-  default: {
-    primary: '#000000',
-    secondary: '#666666',
-    background: '#ffffff',
-    accent: '#f0f0f0'
+  sapphire: {
+    primary: '#0F172A',    // Deep Navy
+    secondary: '#1E40AF',  // Royal Blue
+    accent: '#F43F5E',     // Rose Red
+    text: '#0F172A',       // Deep Navy
+    background: '#F8FAFC'  // Cool White
   },
-  modern: {
-    primary: '#2563eb',
-    secondary: '#64748b',
-    background: '#ffffff',
-    accent: '#f1f5f9'
+  jade: {
+    primary: '#064E3B',    // Deep Forest
+    secondary: '#047857',  // Emerald
+    accent: '#F59E0B',     // Amber
+    text: '#064E3B',       // Deep Forest
+    background: '#F8FAFC'  // Cool White
   },
-  elegant: {
-    primary: '#4b5563',
-    secondary: '#9ca3af',
-    background: '#ffffff',
-    accent: '#f3f4f6'
+  violet: {
+    primary: '#4C1D95',    // Deep Purple
+    secondary: '#7C3AED',  // Bright Purple
+    accent: '#10B981',     // Mint
+    text: '#4C1D95',       // Deep Purple
+    background: '#F8FAFC'  // Cool White
   },
-  creative: {
-    primary: '#7c3aed',
-    secondary: '#6b7280',
-    background: '#ffffff',
-    accent: '#f5f3ff'
+  ruby: {
+    primary: '#881337',    // Deep Burgundy
+    secondary: '#BE185D',  // Rose
+    accent: '#FBBF24',     // Gold
+    text: '#881337',       // Deep Burgundy
+    background: '#F8FAFC'  // Cool White
+  },
+  azure: {
+    primary: '#0C4A6E',    // Deep Blue
+    secondary: '#0284C7',  // Sky Blue
+    accent: '#F97316',     // Orange
+    text: '#0C4A6E',       // Deep Blue
+    background: '#F8FAFC'  // Cool White
   }
 }; 

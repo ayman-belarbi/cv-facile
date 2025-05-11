@@ -68,9 +68,8 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
                       ? "border border-gray-700 bg-gray-700" 
                       : "border bg-white"
                 }`}
-                style={{ backgroundColor: data.settings.template === template ? `${data.settings.colorScheme.primary}10` : "" }}
               >
-                <span className={`text-xs uppercase font-medium ${theme === 'dark' ? 'text-white' : ''}`} style={{ color: data.settings.colorScheme.primary }}>
+                <span className={`text-xs uppercase font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
                   Aperçu
                 </span>
               </div>
@@ -95,7 +94,7 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
         <PDFButton resumeData={data} previewId="resume-preview" />
       </div>
 
-      <div id="resume-preview" className={`w-full overflow-x-auto ${theme === 'dark' ? 'bg-gray-900' : 'bg-gray-100'} shadow-inner rounded-lg p-6 flex justify-center`}>
+      <div id="resume-preview" className={`w-full overflow-x-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-6 flex justify-center`}>
         {renderTemplate()}
       </div>
     </div>

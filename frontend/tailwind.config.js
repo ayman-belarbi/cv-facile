@@ -18,7 +18,9 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
+        'montserrat': ['Montserrat', 'sans-serif']
       },
       colors: {
         'cvfacile-primary': '#4F46E5',    // Indigo-600
