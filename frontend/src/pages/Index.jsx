@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ResumeData } from "@/lib/resumeData";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -36,11 +36,33 @@ const Index = () => {
   const { theme } = useTheme();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+  const selectedTemplate = location.state?.selectedTemplate;
 
   // Update resume language when app language changes
   useEffect(() => {
     updateResumeSettings({ language });
   }, [language]);
+
+  // عند أول تحميل للصفحة، إذا كان هناك selectedTemplate، حدّث settings.template
+  useEffect(() => {
+    if (selectedTemplate) {
+      setResumeData((prev) => ({
+        ...prev,
+        settings: {
+          ...prev.settings,
+          template: selectedTemplate,
+        },
+      }));
+      // Scroll to the resume builder section after a short delay
+      setTimeout(() => {
+        const section = document.getElementById('resume-builder');
+        if (section) {
+          section.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100); // delay to ensure DOM is updated
+    }
+  }, [selectedTemplate]);
 
   const updateResumeSettings = (settings) => {
     setResumeData({

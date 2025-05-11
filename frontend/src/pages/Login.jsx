@@ -26,8 +26,8 @@ const Login = () => {
     
     if (!email || !password) {
       toast({
-        title: "Erreur",
-        description: "Veuillez remplir tous les champs",
+        title: t('error'),
+        description: t('fill.all.fields'),
         variant: "destructive",
       });
       return;
@@ -39,8 +39,8 @@ const Login = () => {
       navigate('/dashboard');
     } catch (error) {
       toast({
-        title: "Échec de connexion",
-        description: "Email ou mot de passe incorrect",
+        title: t('login.error'),
+        description: t('login.error.desc'),
         variant: "destructive",
       });
     } finally {
@@ -52,12 +52,15 @@ const Login = () => {
     <div className={`min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}>
       <div className="absolute top-4 right-4 flex space-x-4">
         <Button
-          variant="ghost" 
+          variant="ghost"
           size="icon"
-          onClick={toggleTheme}
+          onClick={() => navigate('/')}
           className={theme === 'dark' ? 'text-white' : 'text-gray-700'}
         >
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          <span className="sr-only">Close</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </Button>
       </div>
       
@@ -112,11 +115,11 @@ const Login = () => {
               className="w-full"
               disabled={loading}
             >
-              {loading ? "Chargement..." : t('app.login')}
+              {loading ? t('loading') : t('app.login')}
             </Button>
             
             <div className="text-center text-sm">
-              {t('app.signup')} <Link to="/register" className="text-cvfacile-accent hover:underline">{t('app.signup')}</Link>
+              {t('no.account')} <Link to="/register" className="text-cvfacile-accent hover:underline">{t('app.signup')}</Link>
             </div>
           </CardFooter>
         </form>

@@ -37,7 +37,17 @@ const translations = {
     'cv.font': 'CV Font',
     'cv.template': 'CV Template',
     'cv.preview': 'Preview',
-    'cv.download.pdf': 'Download PDF'
+    'cv.download.pdf': 'Download PDF',
+    'error': 'Error',
+    'fill.all.fields': 'Please fill in all fields',
+    'passwords.not.match': 'Passwords do not match',
+    'register.error': 'Registration failed',
+    'register.error.desc': 'An error occurred during registration',
+    'loading': 'Loading...',
+    'already.have.account': 'Already have an account?',
+    'no.account': "Don't have an account?",
+    'login.error': 'Login failed',
+    'login.error.desc': 'Incorrect email or password'
   },
   fr: {
     'app.title': 'CV Facile',
@@ -75,7 +85,17 @@ const translations = {
     'cv.font': 'Police du CV',
     'cv.template': 'Modèle de CV',
     'cv.preview': 'Aperçu',
-    'cv.download.pdf': 'Télécharger en PDF'
+    'cv.download.pdf': 'Télécharger en PDF',
+    'error': 'Erreur',
+    'fill.all.fields': 'Veuillez remplir tous les champs',
+    'passwords.not.match': 'Les mots de passe ne correspondent pas',
+    'register.error': "Échec de l'inscription",
+    'register.error.desc': "Une erreur est survenue lors de l'inscription",
+    'loading': 'Chargement...',
+    'already.have.account': 'Déjà inscrit ?',
+    'no.account': 'Pas de compte ?',
+    'login.error': 'Échec de connexion',
+    'login.error.desc': 'Email ou mot de passe incorrect'
   }
 };
 

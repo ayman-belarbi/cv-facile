@@ -28,8 +28,8 @@ const Register = () => {
     
     if (!name || !email || !password || !confirmPassword) {
       toast({
-        title: "Erreur",
-        description: "Veuillez remplir tous les champs",
+        title: t('error'),
+        description: t('fill.all.fields'),
         variant: "destructive",
       });
       return;
@@ -37,8 +37,8 @@ const Register = () => {
     
     if (password !== confirmPassword) {
       toast({
-        title: "Erreur",
-        description: "Les mots de passe ne correspondent pas",
+        title: t('error'),
+        description: t('passwords.not.match'),
         variant: "destructive",
       });
       return;
@@ -50,8 +50,8 @@ const Register = () => {
       navigate('/dashboard');
     } catch (error) {
       toast({
-        title: "Échec de l'inscription",
-        description: "Une erreur est survenue lors de l'inscription",
+        title: t('register.error'),
+        description: t('register.error.desc'),
         variant: "destructive",
       });
     } finally {
@@ -63,12 +63,15 @@ const Register = () => {
     <div className={`min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}>
       <div className="absolute top-4 right-4 flex space-x-4">
         <Button
-          variant="ghost" 
+          variant="ghost"
           size="icon"
-          onClick={toggleTheme}
+          onClick={() => navigate('/')}
           className={theme === 'dark' ? 'text-white' : 'text-gray-700'}
         >
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          <span className="sr-only">Close</span>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
         </Button>
       </div>
       
@@ -148,11 +151,11 @@ const Register = () => {
               className="w-full"
               disabled={loading}
             >
-              {loading ? "Chargement..." : t('app.signup')}
+              {loading ? t('loading') : t('app.signup')}
             </Button>
             
             <div className="text-center text-sm">
-              Déjà inscrit ? <Link to="/login" className="text-cvfacile-accent hover:underline">{t('app.login')}</Link>
+              {t('already.have.account')} <Link to="/login" className="text-cvfacile-accent hover:underline">{t('app.login')}</Link>
             </div>
           </CardFooter>
         </form>
