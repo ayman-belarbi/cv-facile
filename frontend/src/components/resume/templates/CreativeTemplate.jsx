@@ -1,6 +1,8 @@
 import React from "react";
 import { Phone, Mail, Globe, MapPin, Linkedin, Calendar } from "lucide-react";
 import { fontMappings } from "@/lib/resumeData";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { UserCircle } from "lucide-react";
 
 const CreativeTemplate = ({ data = {} }) => {
   const {
@@ -23,76 +25,34 @@ const CreativeTemplate = ({ data = {} }) => {
         minHeight: '1123px', // A4 height in px
       }}
     >
-      {/* Header with diagonal accent */}
-      <div className="relative">
-        <div
-          className="absolute top-0 right-0 w-1/3 h-full"
-          style={{ 
-            backgroundColor: settings.colorScheme.primary,
-            clipPath: 'polygon(100% 0, 0 0, 100% 100%)'
-          }}
-        ></div>
+      {/* Header */}
+      <div
+        className="relative px-8 py-12 overflow-hidden"
+        style={{
+          backgroundColor: settings.colorScheme.primary,
+          color: 'white'
+        }}
+      >
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0" style={{ background: `radial-gradient(circle at 50% 50%, ${settings.colorScheme.secondary} 0%, transparent 70%)` }}></div>
+        </div>
         
-        <div className="relative p-8">
-          <div className="flex items-start justify-between">
-            <div>
-              <h1 className={`text-3xl font-bold ${fonts.heading}`} style={{ color: settings.colorScheme.primary }}>
-                {personalInfo.firstName} {personalInfo.lastName}
-              </h1>
-              <p className={`mt-2 text-lg ${fonts.body}`}>{personalInfo.title}</p>
-            </div>
-            
-            {/* Contact info */}
-            <div className="text-right space-y-1">
-              {personalInfo.phone && (
-                <div className="flex items-center justify-end">
-                  <Phone className="w-4 h-4 mr-2" style={{ color: settings.colorScheme.primary }} />
-                  <span className={`${fonts.body}`}>{personalInfo.phone}</span>
-                </div>
-              )}
-              
-              {personalInfo.email && (
-                <div className="flex items-center justify-end">
-                  <Mail className="w-4 h-4 mr-2" style={{ color: settings.colorScheme.primary }} />
-                  <span className={`${fonts.body}`}>{personalInfo.email}</span>
-                </div>
-              )}
-              
-              {personalInfo.website && (
-                <div className="flex items-center justify-end">
-                  <Globe className="w-4 h-4 mr-2" style={{ color: settings.colorScheme.primary }} />
-                  <span className={`${fonts.body}`}>{personalInfo.website}</span>
-                </div>
-              )}
-              
-              {personalInfo.linkedin && (
-                <div className="flex items-center justify-end">
-                  <Linkedin className="w-4 h-4 mr-2" style={{ color: settings.colorScheme.primary }} />
-                  <span className={`${fonts.body}`}>{personalInfo.linkedin}</span>
-                </div>
-              )}
-              
-              {personalInfo.address && (
-                <div className="flex items-center justify-end">
-                  <MapPin className="w-4 h-4 mr-2" style={{ color: settings.colorScheme.primary }} />
-                  <span className={`${fonts.body}`}>{personalInfo.address}</span>
-                </div>
-              )}
-            </div>
+        <div className="relative flex items-center gap-8">
+          <Avatar className="w-28 h-28 border-4 border-white/30">
+            {personalInfo.profileImage ? (
+              <AvatarImage src={personalInfo.profileImage} alt={`${personalInfo.firstName} ${personalInfo.lastName}`} />
+            ) : (
+              <AvatarFallback className="bg-white/10">
+                <UserCircle className="w-14 h-14 text-white" />
+              </AvatarFallback>
+            )}
+          </Avatar>
+          <div>
+            <h1 className={`text-4xl font-bold ${fonts.heading}`}>
+              {personalInfo.firstName} {personalInfo.lastName}
+            </h1>
+            <p className={`mt-2 text-xl ${fonts.body}`}>{personalInfo.title}</p>
           </div>
-          
-          {/* Summary */}
-          {personalInfo.summary && (
-            <div className="mt-6">
-              <h2 
-                className={`text-lg font-semibold mb-2 ${fonts.heading}`}
-                style={{ color: settings.colorScheme.primary }}
-              >
-                Profil
-              </h2>
-              <p className={`${fonts.body}`}>{personalInfo.summary}</p>
-            </div>
-          )}
         </div>
       </div>
       

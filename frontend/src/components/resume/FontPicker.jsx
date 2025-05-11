@@ -1,59 +1,41 @@
 import React from 'react';
 import { fontMappings } from '@/lib/resumeData';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useMobile } from '@/hooks/use-mobile';
-import { Text } from 'lucide-react';
+import { Check } from 'lucide-react';
+import { useTheme } from '@/context/ThemeContext';
 
 const FontPicker = ({ selectedFont, onChange }) => {
-  const isMobile = useMobile();
-  
-  const fontOptions = [
-    { value: 'default', label: 'Standard', sample: 'Aa Bb Cc' },
-    { value: 'elegant', label: 'Élégant', sample: 'Aa Bb Cc' },
-    { value: 'modern', label: 'Moderne', sample: 'Aa Bb Cc' },
-    { value: 'technical', label: 'Technique', sample: 'Aa Bb Cc' },
-  ];
+  const { theme } = useTheme();
 
   return (
-    <Card className="border shadow-sm bg-white">
-      <CardHeader className="p-4 pb-0">
-        <CardTitle className="text-base font-medium flex items-center">
-          <Text className="w-4 h-4 mr-2" />
-          Police du CV
-        </CardTitle>
-      </CardHeader>
-      
-      <CardContent className="p-4">
-        <div className={`grid grid-cols-2 ${!isMobile ? 'md:grid-cols-4' : ''} gap-3`}>
-          {fontOptions.map((font) => (
-            <div
-              key={font.value}
-              onClick={() => onChange(font.value)}
-              className={`p-4 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
-                selectedFont === font.value
-                  ? 'border-cvfacile-primary bg-blue-50'
+    <div className={`p-4 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+      <h3 className={`mb-3 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>Police du CV</h3>
+      <div className="grid grid-cols-2 gap-3">
+        {Object.entries(fontMappings).map(([name, font]) => (
+          <div 
+            key={name}
+            onClick={() => onChange(name)}
+            className={`p-3 border rounded-lg cursor-pointer transition-all hover:shadow-md ${
+              selectedFont === name
+                ? theme === 'dark'
+                  ? 'border-cvfacile-primary bg-gray-700'
+                  : 'border-cvfacile-primary bg-blue-50'
+                : theme === 'dark'
+                  ? 'border-gray-700'
                   : 'border-gray-200'
-              }`}
-            >
-              <p className="mb-2 text-sm text-center">{font.label}</p>
-              <div 
-                className={`flex items-center justify-center p-3 rounded-md bg-white text-lg text-center ${
-                  fontMappings[font.value].heading
-                } ${
-                  selectedFont === font.value ? 'border-2 border-cvfacile-primary' : 'border'
-                }`}
-                style={{ 
-                  height: '50px',
-                  backgroundColor: selectedFont === font.value ? '#f0f7ff' : '#ffffff'
-                }}
-              >
-                {font.sample}
-              </div>
+            }`}
+          >
+            <div className={`text-center ${theme === 'dark' ? 'text-white' : ''}`} style={{ fontFamily: font }}>
+              {name.charAt(0).toUpperCase() + name.slice(1)}
             </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+            {selectedFont === name && (
+              <div className="flex justify-center mt-2">
+                <Check className={`w-4 h-4 ${theme === 'dark' ? 'text-white' : 'text-cvfacile-primary'}`} />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

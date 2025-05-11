@@ -1,6 +1,8 @@
 import React from "react";
 import { Phone, Mail, Globe, MapPin, Linkedin, Calendar } from "lucide-react";
 import { fontMappings } from "@/lib/resumeData";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { UserCircle } from "lucide-react";
 
 const ModernTemplate = ({ data = {} }) => {
   const {
@@ -31,10 +33,21 @@ const ModernTemplate = ({ data = {} }) => {
           color: 'white'
         }}
       >
-        <h1 className={`text-3xl font-bold ${fonts.heading}`}>
-          {personalInfo.firstName} {personalInfo.lastName}
-        </h1>
-        <p className={`mt-2 text-xl ${fonts.body}`}>{personalInfo.title}</p>
+        <div className="flex flex-col items-center">
+          <Avatar className="w-32 h-32 mb-4 border-4 border-white/20">
+            {personalInfo.profileImage ? (
+              <AvatarImage src={personalInfo.profileImage} alt={`${personalInfo.firstName} ${personalInfo.lastName}`} />
+            ) : (
+              <AvatarFallback className="bg-white/10">
+                <UserCircle className="w-16 h-16 text-white" />
+              </AvatarFallback>
+            )}
+          </Avatar>
+          <h1 className={`text-3xl font-bold ${fonts.heading}`}>
+            {personalInfo.firstName} {personalInfo.lastName}
+          </h1>
+          <p className={`mt-2 text-xl ${fonts.body}`}>{personalInfo.title}</p>
+        </div>
         
         {/* Contact info in header */}
         <div className="flex flex-wrap items-center justify-center gap-4 mt-4">

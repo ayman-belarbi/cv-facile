@@ -1,6 +1,8 @@
 import React from "react";
 import { Phone, Mail, Globe, MapPin, Linkedin, Calendar } from "lucide-react";
 import { fontMappings } from "@/lib/resumeData";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { UserCircle } from "lucide-react";
 
 const MedicalTemplate = ({ data = {} }) => {
   const {
@@ -23,82 +25,30 @@ const MedicalTemplate = ({ data = {} }) => {
         minHeight: '1123px', // A4 height in px
       }}
     >
-      {/* Header with medical theme */}
+      {/* Header */}
       <div
+        className="px-8 py-10"
         style={{
-          backgroundColor: 'white',
-          borderBottom: `4px solid ${settings.colorScheme.primary}`,
-          padding: '24px'
+          backgroundColor: settings.colorScheme.primary,
+          color: 'white'
         }}
       >
-        <div className="flex justify-between items-start">
-          <div>
-            <h1 className={`text-3xl font-bold ${fonts.heading}`} style={{ color: settings.colorScheme.primary }}>
-              {personalInfo.firstName} {personalInfo.lastName}
-              <span className={`text-xl ml-2 font-normal ${fonts.body}`} style={{ color: settings.colorScheme.secondary }}>
-                {personalInfo.title && `• ${personalInfo.title}`}
-              </span>
-            </h1>
-            
-            {personalInfo.summary && (
-              <p className={`mt-3 text-base ${fonts.body}`} style={{ maxWidth: '600px' }}>
-                {personalInfo.summary}
-              </p>
+        <div className="flex items-center gap-6">
+          <Avatar className="w-24 h-24 border-2 border-white">
+            {personalInfo.profileImage ? (
+              <AvatarImage src={personalInfo.profileImage} alt={`${personalInfo.firstName} ${personalInfo.lastName}`} />
+            ) : (
+              <AvatarFallback className="bg-white/10">
+                <UserCircle className="w-12 h-12 text-white" />
+              </AvatarFallback>
             )}
+          </Avatar>
+          <div>
+            <h1 className={`text-3xl font-bold ${fonts.heading}`}>
+              {personalInfo.firstName} {personalInfo.lastName}
+            </h1>
+            <p className={`mt-2 text-xl ${fonts.body}`}>{personalInfo.title}</p>
           </div>
-        </div>
-        
-        {/* Contact info */}
-        <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-          {personalInfo.phone && (
-            <div className="flex items-center">
-              <Phone 
-                className="w-4 h-4 mr-2 flex-shrink-0" 
-                style={{ color: settings.colorScheme.primary }} 
-              />
-              <span className={`text-sm ${fonts.body}`}>{personalInfo.phone}</span>
-            </div>
-          )}
-          
-          {personalInfo.email && (
-            <div className="flex items-center">
-              <Mail 
-                className="w-4 h-4 mr-2 flex-shrink-0" 
-                style={{ color: settings.colorScheme.primary }} 
-              />
-              <span className={`text-sm ${fonts.body}`}>{personalInfo.email}</span>
-            </div>
-          )}
-          
-          {personalInfo.website && (
-            <div className="flex items-center">
-              <Globe 
-                className="w-4 h-4 mr-2 flex-shrink-0" 
-                style={{ color: settings.colorScheme.primary }} 
-              />
-              <span className={`text-sm ${fonts.body}`}>{personalInfo.website}</span>
-            </div>
-          )}
-          
-          {personalInfo.address && (
-            <div className="flex items-center">
-              <MapPin 
-                className="w-4 h-4 mr-2 flex-shrink-0" 
-                style={{ color: settings.colorScheme.primary }} 
-              />
-              <span className={`text-sm ${fonts.body}`}>{personalInfo.address}</span>
-            </div>
-          )}
-          
-          {personalInfo.linkedin && (
-            <div className="flex items-center">
-              <Linkedin 
-                className="w-4 h-4 mr-2 flex-shrink-0" 
-                style={{ color: settings.colorScheme.primary }} 
-              />
-              <span className={`text-sm ${fonts.body}`}>{personalInfo.linkedin}</span>
-            </div>
-          )}
         </div>
       </div>
       

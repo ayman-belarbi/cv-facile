@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { ResumeData } from "@/lib/resumeData";
 import { Phone, Mail, MapPin, Globe, Linkedin, Calendar } from "lucide-react";
 import { fontMappings } from "@/lib/resumeData";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { UserCircle } from "lucide-react";
 
 const ClassicTemplate = ({ data }) => {
   if (!data) {
@@ -25,10 +27,23 @@ const ClassicTemplate = ({ data }) => {
         className="px-6 py-8"
         style={{ backgroundColor: settings.colorScheme?.primary || '#000' }}
       >
-        <h1 className={`text-3xl font-bold text-white ${fonts.heading || ''}`}>
-          {personalInfo.firstName || ''} {personalInfo.lastName || ''}
-        </h1>
-        <p className={`mt-1 text-xl text-white/90 ${fonts.body || ''}`}>{personalInfo.title || ''}</p>
+        <div className="flex items-center gap-6">
+          <Avatar className="w-24 h-24 border-2 border-white">
+            {personalInfo.profileImage ? (
+              <AvatarImage src={personalInfo.profileImage} alt={`${personalInfo.firstName} ${personalInfo.lastName}`} />
+            ) : (
+              <AvatarFallback className="bg-white/10">
+                <UserCircle className="w-12 h-12 text-white" />
+              </AvatarFallback>
+            )}
+          </Avatar>
+          <div>
+            <h1 className={`text-3xl font-bold text-white ${fonts.heading || ''}`}>
+              {personalInfo.firstName || ''} {personalInfo.lastName || ''}
+            </h1>
+            <p className={`mt-1 text-xl text-white/90 ${fonts.body || ''}`}>{personalInfo.title || ''}</p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-6 p-6">
