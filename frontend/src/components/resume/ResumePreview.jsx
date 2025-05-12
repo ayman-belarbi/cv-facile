@@ -3,7 +3,6 @@ import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
 import CreativeTemplate from "./templates/CreativeTemplate";
 import MedicalTemplate from "./templates/MedicalTemplate";
-import PDFButton from "../ui/PDFButton";
 import ColorPicker from "./ColorPicker";
 import FontPicker from "./FontPicker";
 import { useMobile } from "@/hooks/use-mobile";
@@ -137,10 +136,6 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
           selectedFont={data.settings.font}
           onChange={handleFontChange}
         />
-      </div>
-
-      <div className="flex items-center justify-end">
-        <PDFButton resumeData={data} previewId="resume-preview" />
       </div>
 
       <div id="resume-preview" className={`w-full overflow-x-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-4 flex justify-center`}>

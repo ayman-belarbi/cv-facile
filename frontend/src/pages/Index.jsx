@@ -139,7 +139,7 @@ const Index = () => {
             </p>
             <a 
               href="#resume-builder" 
-              className={`inline-flex items-center px-6 py-3 text-lg font-medium transition-all rounded-full shadow-lg ${
+              className={`inline-flex items-center px-6 py-3 text-sm font-medium transition-all rounded-full shadow-lg ${
                 theme === 'dark'
                   ? 'bg-white text-indigo-700 hover:bg-gray-100'
                   : 'bg-white text-cvfacile-primary hover:bg-gray-100'
@@ -150,10 +150,10 @@ const Index = () => {
           </div>
           
           {/* Decorative elements */}
-          <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-            <div className="absolute top-10 left-10 w-40 h-40 rounded-full bg-white"></div>
-            <div className="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-white"></div>
-            <div className="absolute top-40 right-20 w-20 h-20 rounded-full bg-white"></div>
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+            <div className="absolute top-[15%] left-[5%] w-[300px] h-[300px] rounded-full bg-white/45 blur-xl animate-float-left"></div>
+            <div className="absolute top-[20%] right-[8%] w-[280px] h-[280px] rounded-full bg-white/50 blur-xl animate-float-right"></div>
+            <div className="absolute bottom-[25%] left-[40%] w-[260px] h-[260px] rounded-full bg-white/40 blur-xl animate-float-center"></div>
           </div>
         </section>
         
