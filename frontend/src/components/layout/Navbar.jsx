@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, LogIn, User, Moon, Sun, Languages, Menu, UserPlus } from 'lucide-react';
+import { FileUser, LogIn, User, Moon, Sun, Languages, Menu, UserPlus } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
@@ -24,114 +24,114 @@ const Navbar = () => {
 
   // Logo Component
   const Logo = () => (
-    <div className="flex items-center space-x-2">
-      <FileText className={`w-8 h-8 ${theme === 'dark' ? 'text-cvfacile-accent' : 'text-cvfacile-primary'}`} />
-      <Link to="/" className={`text-xl font-bold font-poppins ${theme === 'dark' ? 'text-white' : 'text-gradient-primary'}`}>
-        {language === 'fr' ? 'CV Facile' : 'Easy CV'}
-      </Link>
-    </div>
+        <div className="flex items-center space-x-2">
+          <FileUser className={`w-8 h-8 ${theme === 'dark' ? 'text-cvfacile-accent' : 'text-cvfacile-primary'}`} />
+          <Link to="/" className={`text-xl font-bold font-poppins ${theme === 'dark' ? 'text-white' : 'text-gradient-primary'}`}>
+            {language === 'fr' ? 'CV Facile' : 'Easy CV'}
+          </Link>
+        </div>
   );
-
+        
   // Desktop Navigation Links
   const DesktopNav = () => (
-    <nav className="hidden space-x-6 text-sm font-medium md:flex">
-      <Link to="/" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
-        {t('app.home')}
-      </Link>
-      <Link to="/templates" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
-        {t('app.templates')}
-      </Link>
-      <Link to="/how-it-works" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
-        {t('app.how.works')}
-      </Link>
-      <Link to="/faq" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
-        {t('app.faq')}
-      </Link>
-      {isAuthenticated && (
-        <Link to="/dashboard" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
-          {t('app.dashboard')}
-        </Link>
-      )}
-    </nav>
+        <nav className="hidden space-x-6 text-sm font-medium md:flex">
+          <Link to="/" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+            {t('app.home')}
+          </Link>
+          <Link to="/templates" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+            {t('app.templates')}
+          </Link>
+          <Link to="/how-it-works" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+            {t('app.how.works')}
+          </Link>
+          <Link to="/faq" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+            {t('app.faq')}
+          </Link>
+          {isAuthenticated && (
+            <Link to="/dashboard" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+              {t('app.dashboard')}
+            </Link>
+          )}
+        </nav>
   );
-
+        
   // Language Dropdown
   const LanguageDropdown = () => (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="icon" 
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
           className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} hover:text-white`}
-        >
-          <Languages className="w-5 h-5" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setLanguage('fr')}>
-          🇫🇷 Français {language === 'fr' && '✓'}
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setLanguage('en')}>
-          🇺🇸 English {language === 'en' && '✓'}
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+              >
+                <Languages className="w-5 h-5" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => setLanguage('fr')}>
+                🇫🇷 Français {language === 'fr' && '✓'}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setLanguage('en')}>
+                🇺🇸 English {language === 'en' && '✓'}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
   );
 
   // Theme Toggle Button
   const ThemeToggle = () => (
-    <Button 
-      variant="ghost" 
-      size="icon"
-      onClick={toggleTheme}
+          <Button 
+            variant="ghost" 
+            size="icon"
+            onClick={toggleTheme}
       className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} hover:text-white`}
-    >
-      {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-    </Button>
+          >
+            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+          </Button>
   );
-
+          
   // Auth Buttons
   const AuthButtons = () => {
     if (isAuthenticated) {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button 
-              variant="ghost" 
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="ghost" 
               className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} flex items-center hover:text-white`}
-            >
-              <User className="w-4 h-4 mr-2" />
-              <span className="hidden sm:inline">{user?.name || user?.email}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
-              <Link to="/dashboard">{t('app.dashboard')}</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => logout()}>
-              {t('app.logout')}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                >
+                  <User className="w-4 h-4 mr-2" />
+                  <span className="hidden sm:inline">{user?.name || user?.email}</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link to="/dashboard">{t('app.dashboard')}</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => logout()}>
+                  {t('app.logout')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
       );
     }
 
     return (
-      <>
-        <Button 
-          variant="ghost" 
-          asChild 
+            <>
+              <Button 
+                variant="ghost" 
+                asChild 
           className={`hidden sm:inline-flex ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} hover:text-white`}
-        >
-          <Link to="/login">
-            <LogIn className="w-4 h-4 mr-2" />
+              >
+                <Link to="/login">
+                  <LogIn className="w-4 h-4 mr-2" />
             Log in
-          </Link>
-        </Button>
-        <Button 
-          className={theme === 'dark' ? 'bg-gradient-to-r from-purple-600 to-indigo-700 hover:opacity-90' : 'bg-gradient-to-r from-cvfacile-primary to-cvfacile-accent hover:opacity-90'}
-          asChild
-        >
+                </Link>
+              </Button>
+              <Button 
+                className={theme === 'dark' ? 'bg-gradient-to-r from-purple-600 to-indigo-700 hover:opacity-90' : 'bg-gradient-to-r from-cvfacile-primary to-cvfacile-accent hover:opacity-90'}
+                asChild
+              >
           <Link to="/register">
             <UserPlus className="w-4 h-4 mr-2" />
             {t('app.signup')}
@@ -240,9 +240,9 @@ const Navbar = () => {
                     <UserPlus className="w-4 h-4" />
                     {t('app.signup')}
                   </Link>
-                </Button>
-              </>
-            )}
+              </Button>
+            </>
+          )}
           </div>
         </div>
       </SheetContent>

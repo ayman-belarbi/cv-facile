@@ -47,7 +47,16 @@ const translations = {
     'already.have.account': 'Already have an account?',
     'no.account': "Don't have an account?",
     'login.error': 'Login failed',
-    'login.error.desc': 'Incorrect email or password'
+    'login.error.desc': 'Incorrect email or password',
+    'title.login': 'Log in | Easy CV',
+    'title.register': 'Sign up | Easy CV',
+    'title.home': 'Home | Easy CV',
+    'title.templates': 'Templates | Easy CV',
+    'title.dashboard': 'Dashboard | Easy CV',
+    'title.faq': 'FAQ | Easy CV',
+    'title.howitworks': 'How It Works | Easy CV',
+    'title.notfound': '404 Not Found | Easy CV',
+    'title.editresume': 'Edit CV | Easy CV'
   },
   fr: {
     'app.title': 'CV Facile',
@@ -95,7 +104,16 @@ const translations = {
     'already.have.account': 'Déjà inscrit ?',
     'no.account': 'Pas de compte ?',
     'login.error': 'Échec de connexion',
-    'login.error.desc': 'Email ou mot de passe incorrect'
+    'login.error.desc': 'Email ou mot de passe incorrect',
+    'title.login': 'Connexion | CV Facile',
+    'title.register': 'Inscription | CV Facile',
+    'title.home': 'Accueil | CV Facile',
+    'title.templates': 'Modèles | CV Facile',
+    'title.dashboard': 'Tableau de bord | CV Facile',
+    'title.faq': 'FAQ | CV Facile',
+    'title.howitworks': 'Comment ça marche | CV Facile',
+    'title.notfound': '404 Introuvable | CV Facile',
+    'title.editresume': 'Modifier le CV | CV Facile'
   }
 };
 

@@ -14,7 +14,7 @@ const EditResume = () => {
   const [resumeData, setResumeData] = useState(ResumeData);
   const [resumeTitle, setResumeTitle] = useState("");
   const { isAuthenticated } = useAuth();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -33,6 +33,10 @@ const EditResume = () => {
       }
     }
   }, [id, isAuthenticated, navigate]);
+
+  useEffect(() => {
+    document.title = t('title.editresume');
+  }, [t]);
 
   const updateResumeSettings = (settings) => {
     setResumeData({

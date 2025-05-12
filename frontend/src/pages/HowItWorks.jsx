@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import Navbar from '@/components/layout/Navbar';
@@ -39,6 +39,10 @@ const HowItWorks = () => {
         : 'Download your CV as a PDF ready to be sent to recruiters.'
     }
   ];
+
+  useEffect(() => {
+    document.title = t('title.howitworks');
+  }, [t]);
 
   return (
     <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>

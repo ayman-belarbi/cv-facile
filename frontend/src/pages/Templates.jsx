@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import Navbar from '@/components/layout/Navbar';
@@ -13,6 +13,10 @@ const Templates = () => {
   const handleTemplateSelect = (template) => {
     navigate('/#resume-builder', { state: { selectedTemplate: template.toLowerCase() } });
   };
+
+  useEffect(() => {
+    document.title = t('title.templates');
+  }, [t]);
 
   return (
     <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>

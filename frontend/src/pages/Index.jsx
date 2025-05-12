@@ -64,6 +64,10 @@ const Index = () => {
     }
   }, [selectedTemplate]);
 
+  useEffect(() => {
+    document.title = t('title.home');
+  }, [t]);
+
   const updateResumeSettings = (settings) => {
     setResumeData({
       ...resumeData,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import Navbar from '@/components/layout/Navbar';
@@ -12,7 +12,7 @@ import {
 
 const FAQ = () => {
   const { theme } = useTheme();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
 
   const faqs = [
     {
@@ -56,6 +56,10 @@ const FAQ = () => {
         : 'You can delete your account in your profile settings. This action is irreversible.'
     },
   ];
+
+  useEffect(() => {
+    document.title = t('title.faq');
+  }, [t]);
 
   return (
     <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
