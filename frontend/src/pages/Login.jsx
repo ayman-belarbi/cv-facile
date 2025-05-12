@@ -55,7 +55,7 @@ const Login = () => {
           variant="ghost"
           size="icon"
           onClick={() => navigate('/')}
-          className={theme === 'dark' ? 'text-white' : 'text-gray-700'}
+          className={theme === 'dark' ? 'text-white hover:text-white' : 'text-black hover:text-white'}
         >
           <span className="sr-only">Close</span>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
@@ -75,7 +75,7 @@ const Login = () => {
       
       <Card className={`w-full max-w-md ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : ''}`}>
         <CardHeader>
-          <CardTitle>{t('app.login')}</CardTitle>
+          <CardTitle>Log in</CardTitle>
           <CardDescription>
             {t('app.subtitle')}
           </CardDescription>
@@ -112,10 +112,10 @@ const Login = () => {
           <CardFooter className="flex flex-col space-y-4">
             <Button 
               type="submit" 
-              className="w-full"
+              className="w-full text-white"
               disabled={loading}
             >
-              {loading ? t('loading') : t('app.login')}
+              {loading ? t('loading') : 'Log in'}
             </Button>
             
             <div className="text-center text-sm">
