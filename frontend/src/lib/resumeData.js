@@ -1,13 +1,17 @@
 export const ResumeData = {
   personalInfo: {
-    name: '',
+    firstName: '',
+    lastName: '',
+    title: '',
     email: '',
     phone: '',
-    location: '',
+    address: '',
+    website: '',
+    linkedin: '',
     summary: '',
     profileImage: null
   },
-  experience: [],
+  experiences: [],
   education: [],
   skills: [],
   languages: [],
@@ -21,7 +25,8 @@ export const ResumeData = {
       text: '#0F172A',       // Deep Navy
       background: '#F8FAFC'  // Cool White
     },
-    font: 'inter'
+    font: 'inter',
+    language: 'fr'  // Default language
   }
 };
 

@@ -8,7 +8,11 @@ import FontPicker from "./FontPicker";
 import { useMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { Check, Layout, Sparkles, Briefcase, Stethoscope } from "lucide-react";
+import { Check, Layout, Sparkles, Briefcase, Stethoscope, FileDown } from "lucide-react";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { toast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 
 const ResumePreview = ({ data, updateResumeSettings }) => {
   const isMobile = useMobile();
@@ -40,6 +44,48 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
 
   const handleFontChange = (font) => {
     updateResumeSettings({ font });
+  };
+
+  const handleDownloadPDF = async () => {
+    const resumeElement = document.getElementById('resume-preview').children[0];
+    
+    try {
+      // Create canvas from the resume element
+      const canvas = await html2canvas(resumeElement, {
+        scale: 2, // Better quality
+        useCORS: true, // For images
+        logging: false,
+        backgroundColor: '#ffffff'
+      });
+
+      // Calculate dimensions (A4 size)
+      const imgWidth = 210; // A4 width in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      
+      // Create PDF
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      pdf.addImage(
+        canvas.toDataURL('image/png'),
+        'PNG',
+        0,
+        0,
+        imgWidth,
+        imgHeight
+      );
+
+      // Download the PDF
+      const fileName = `${data.personalInfo.firstName}_${data.personalInfo.lastName}_CV.pdf`;
+      pdf.save(fileName);
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast({
+        title: language === 'fr' ? "Erreur" : "Error",
+        description: language === 'fr' 
+          ? "Une erreur s'est produite lors de la génération du PDF" 
+          : "An error occurred while generating the PDF",
+        variant: "destructive",
+      });
+    }
   };
 
   const templates = [
@@ -126,7 +172,7 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
         </div>
       </div>
 
-      <div className={`grid grid-cols-1 gap-3 sm:grid-cols-2`}>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <ColorPicker
           selectedScheme={data.settings.colorScheme}
           onChange={handleColorSchemeChange}
@@ -136,6 +182,20 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
           selectedFont={data.settings.font}
           onChange={handleFontChange}
         />
+      </div>
+
+      <div className="flex justify-end">
+        <Button
+          onClick={handleDownloadPDF}
+          className={`${
+            theme === 'dark' 
+              ? 'bg-cvfacile-primary hover:bg-cvfacile-primary/90' 
+              : 'bg-cvfacile-primary hover:bg-cvfacile-primary/90'
+          }`}
+        >
+          <FileDown className="w-4 h-4 mr-2" />
+          {language === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
+        </Button>
       </div>
 
       <div id="resume-preview" className={`w-full overflow-x-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-4 flex justify-center`}>

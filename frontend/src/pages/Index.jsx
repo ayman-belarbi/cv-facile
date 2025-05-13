@@ -41,7 +41,16 @@ const Index = () => {
 
   // Update resume language when app language changes
   useEffect(() => {
-    updateResumeSettings({ language });
+    const currentLanguage = resumeData.settings.language;
+    if (currentLanguage !== language) {
+      setResumeData(prev => ({
+        ...prev,
+        settings: {
+          ...prev.settings,
+          language
+        }
+      }));
+    }
   }, [language]);
 
   // عند أول تحميل للصفحة، إذا كان هناك selectedTemplate، حدّث settings.template

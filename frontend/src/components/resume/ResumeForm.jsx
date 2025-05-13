@@ -22,8 +22,13 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   const [activeTab, setActiveTab] = useState("personal");
   const isMobile = useMobile();
   const { language } = useLanguage();
-  const [newSkill, setNewSkill] = useState({ name: "", level: 3 });
-  const [newLanguage, setNewLanguage] = useState({ name: "", level: language === 'fr' ? "Intermédiaire" : "Intermediate" });
+  
+  // Initialize form state with default values
+  const [newSkill, setNewSkill] = useState({ name: "", level: 1 });
+  const [newLanguage, setNewLanguage] = useState({ 
+    name: "", 
+    level: language === 'fr' ? "Intermédiaire" : "Intermediate" 
+  });
   const [newExperience, setNewExperience] = useState({
     company: "",
     position: "",
@@ -31,7 +36,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
     endDate: "",
     current: false,
     description: "",
-    achievements: [""],
+    achievements: [""]
   });
   const [newEducation, setNewEducation] = useState({
     institution: "",
@@ -40,13 +45,13 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
     startDate: "",
     endDate: "",
     current: false,
-    description: "",
+    description: ""
   });
   const [newCertification, setNewCertification] = useState({
     name: "",
     issuer: "",
     date: "",
-    expiry: "",
+    expiry: ""
   });
   const [editingSkillId, setEditingSkillId] = useState(null);
   const [editingCertificationId, setEditingCertificationId] = useState(null);
@@ -54,14 +59,15 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   const [editingLanguageId, setEditingLanguageId] = useState(null);
   const [editingEducationId, setEditingEducationId] = useState(null);
 
+  // Ensure personal info values are always defined
   const updatePersonalInfo = (field, value) => {
-    setResumeData({
-      ...resumeData,
+    setResumeData(prev => ({
+      ...prev,
       personalInfo: {
-        ...resumeData.personalInfo,
-        [field]: value,
-      },
-    });
+        ...prev.personalInfo,
+        [field]: value || ""
+      }
+    }));
   };
 
   const handleProfileImageChange = (imageUrl) => {
@@ -187,7 +193,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
       skills: [...(resumeData.skills || []), skill],
     });
 
-    setNewSkill({ name: "", level: 3 });
+    setNewSkill({ name: "", level: 1 });
     toast.success(language === 'fr' ? "Compétence ajoutée" : "Skill added");
   };
 
@@ -288,7 +294,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
       });
       toast.success(language === 'fr' ? "Compétence ajoutée" : "Skill added");
     }
-    setNewSkill({ name: "", level: 3 });
+    setNewSkill({ name: "", level: 1 });
   };
 
   const addOrUpdateCertification = () => {
@@ -902,10 +908,10 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                         <div className="w-full h-2 overflow-hidden bg-gray-200 rounded-full mr-2">
                           <div
                             className="h-full bg-cvfacile-primary rounded-full"
-                            style={{ width: `${(skill.level / 5) * 100}%` }}
+                            style={{ width: `${(skill.level / 4) * 100}%` }}
                           ></div>
                         </div>
-                        <span className="text-xs font-medium">{skill.level}/5</span>
+                        <span className="text-xs font-medium">{skill.level}/4</span>
                       </div>
                     </div>
                     <div className="flex gap-2">
