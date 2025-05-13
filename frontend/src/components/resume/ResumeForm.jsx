@@ -625,7 +625,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 variant="outline"
                 size="sm"
                 onClick={addAchievementField}
-                className="flex items-center mt-2"
+                className="flex items-center mt-2 hover:text-white"
               >
                 <Plus className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Ajouter une réalisation' : 'Add achievement'}
               </Button>
