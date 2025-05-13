@@ -25,6 +25,59 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+const HERO_CIRCLES = [
+  {
+    style: {
+      top: "8%",
+      left: "4%",
+      width: "260px",
+      height: "260px",
+    },
+    anim: "animate-hero-float-1",
+    bg: "bg-white/60 blur-2xl",
+  },
+  {
+    style: {
+      top: "18%",
+      right: "6%",
+      width: "200px",
+      height: "200px",
+    },
+    anim: "animate-hero-float-2",
+    bg: "bg-white/70 blur-2xl",
+  },
+  {
+    style: {
+      bottom: "16%",
+      left: "38%",
+      width: "170px",
+      height: "170px",
+    },
+    anim: "animate-hero-float-3",
+    bg: "bg-white/60 blur-2xl",
+  },
+  {
+    style: {
+      bottom: "10%",
+      right: "14%",
+      width: "140px",
+      height: "140px",
+    },
+    anim: "animate-hero-float-4",
+    bg: "bg-white/50 blur-2xl",
+  },
+  {
+    style: {
+      top: "40%",
+      left: "60%",
+      width: "120px",
+      height: "120px",
+    },
+    anim: "animate-hero-float-5",
+    bg: "bg-white/40 blur-2xl",
+  },
+];
+
 const Index = () => {
   const [resumeData, setResumeData] = useState(ResumeData);
   const [resumeTitle, setResumeTitle] = useState("");
@@ -160,9 +213,13 @@ const Index = () => {
           
           {/* Decorative elements */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-            <div className="absolute top-[15%] left-[5%] w-[300px] h-[300px] rounded-full bg-white/45 blur-xl animate-float-left"></div>
-            <div className="absolute top-[20%] right-[8%] w-[280px] h-[280px] rounded-full bg-white/50 blur-xl animate-float-right"></div>
-            <div className="absolute bottom-[25%] left-[40%] w-[260px] h-[260px] rounded-full bg-white/40 blur-xl animate-float-center"></div>
+            {HERO_CIRCLES.map(({ anim, style, bg }, i) => (
+              <div
+                key={i}
+                className={`absolute rounded-full ${bg} ${anim}`}
+                style={style}
+              ></div>
+            ))}
           </div>
         </section>
         
