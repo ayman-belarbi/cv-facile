@@ -72,7 +72,7 @@ const Login = () => {
           <Link to="/" className="flex items-center justify-center gap-2">
             <LogIn className="h-8 w-8 text-cvfacile-primary dark:text-blue-400" />
             <span className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
-              CV Facile <span className="pro-badge ml-1 text-sm font-bold">PRO</span>
+              CV Facile <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine">PRO</span>
             </span>
           </Link>
         </div>

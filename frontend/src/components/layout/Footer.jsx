@@ -92,8 +92,9 @@ const Footer = () => {
           <div className="space-y-4 md:col-span-2">
             <Link to="/" className="flex items-center space-x-2">
               <FileUser className={`w-6 h-6 ${theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'}`} />
-              <span className="text-xl font-bold font-poppins dark:text-white text-gradient-primary">
+              <span className="text-xl font-bold font-poppins dark:text-white text-gradient-primary flex items-center gap-2">
                 {language === 'fr' ? 'CV Facile' : 'Easy CV'}
+                <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine">PRO</span>
               </span>
             </Link>
             <p className="text-sm text-gray-600 dark:text-gray-400">

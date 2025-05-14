@@ -163,7 +163,7 @@ const Index = () => {
         }`}>
           <div className="container px-4 mx-auto text-center flex flex-col items-center justify-center relative z-20">
             <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins animate-float flex items-center gap-3">
-              {t('app.subtitle')} <span className="pro-badge">PRO</span>
+              {t('app.subtitle')} <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine">PRO</span>
             </h1>
             <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl text-white/90">
               {language === 'fr' 
