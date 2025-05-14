@@ -352,7 +352,7 @@ const Index = () => {
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <Link 
                   to="/register"
-                  className="px-6 py-3 text-lg font-medium transition-all glass-effect rounded-full hover:scale-105"
+                  className="px-6 py-3 text-lg font-medium transition-all glass-effect rounded-full"
                 >
                   {t('app.create.account')}
                 </Link>
