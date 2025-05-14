@@ -258,21 +258,16 @@ const CreativeTemplate = ({ data = {} }) => {
                     <div key={edu.id} className="relative pl-4 border-l-2" style={{ borderColor: settings.colorScheme.primary + '40' }}>
                       <div className="absolute left-[-4px] top-0 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: settings.colorScheme.primary }} />
                       <div className="mb-1">
-                        <h3 className={`text-xs font-semibold ${fonts.heading}`}>{edu.degree}</h3>
-                        <div className="flex items-center gap-1.5">
-                          <div className={`text-[11px] font-medium ${fonts.body}`} style={{ color: settings.colorScheme.primary }}>
-                            {edu.institution}
-                          </div>
-                          <span className="text-[10px] text-gray-500">•</span>
-                          <span className="text-[10px] text-gray-500">
-                            {edu.startDate} - {edu.current ? (language === 'fr' ? "Présent" : "Present") : edu.endDate}
-                          </span>
+                        <h3 className={`text-xs font-semibold ${fonts.heading}`}>{edu.institution}</h3>
+                        <div className={`text-[11px] font-medium ${fonts.body}`} style={{ color: settings.colorScheme.primary }}>
+                          {edu.field}
+                        </div>
+                        <div className="flex items-center mt-0.5 text-[10px] text-gray-500">
+                          <Calendar className="w-2.5 h-2.5 mr-1" />
+                          {edu.startDate} - {edu.current ? (language === 'fr' ? "Présent" : "Present") : edu.endDate}
                         </div>
                       </div>
-                      <div className={`${fonts.body}`}>
-                        <div className="text-[11px] font-medium">{edu.field}</div>
-                        {edu.description && <p className="text-[11px] text-gray-600">{edu.description}</p>}
-                      </div>
+                      {edu.description && <p className={`text-[11px] ${fonts.body}`}>{edu.description}</p>}
                     </div>
                   ))}
                 </div>
@@ -286,3 +281,4 @@ const CreativeTemplate = ({ data = {} }) => {
 };
 
 export default CreativeTemplate;
+

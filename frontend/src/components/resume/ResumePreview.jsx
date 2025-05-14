@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
 import CreativeTemplate from "./templates/CreativeTemplate";
@@ -8,17 +8,23 @@ import FontPicker from "./FontPicker";
 import { useMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { Check, Layout, Sparkles, Briefcase, Stethoscope, FileDown } from "lucide-react";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import { toast } from "@/components/ui/use-toast";
+import { Check, Layout, Sparkles, Briefcase, Stethoscope, ZoomIn, ZoomOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const ResumePreview = ({ data, updateResumeSettings }) => {
   const isMobile = useMobile();
   const { theme } = useTheme();
   const { language } = useLanguage();
+  const [scale, setScale] = useState(1);
   
+  const handleZoomIn = () => {
+    setScale(prev => Math.min(prev + 0.1, 2));
+  };
+
+  const handleZoomOut = () => {
+    setScale(prev => Math.max(prev - 0.1, 0.5));
+  };
+
   const renderTemplate = () => {
     switch (data.settings.template) {
       case "classic":
@@ -44,48 +50,6 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
 
   const handleFontChange = (font) => {
     updateResumeSettings({ font });
-  };
-
-  const handleDownloadPDF = async () => {
-    const resumeElement = document.getElementById('resume-preview').children[0];
-    
-    try {
-      // Create canvas from the resume element
-      const canvas = await html2canvas(resumeElement, {
-        scale: 2, // Better quality
-        useCORS: true, // For images
-        logging: false,
-        backgroundColor: '#ffffff'
-      });
-
-      // Calculate dimensions (A4 size)
-      const imgWidth = 210; // A4 width in mm
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      
-      // Create PDF
-      const pdf = new jsPDF('p', 'mm', 'a4');
-      pdf.addImage(
-        canvas.toDataURL('image/png'),
-        'PNG',
-        0,
-        0,
-        imgWidth,
-        imgHeight
-      );
-
-      // Download the PDF
-      const fileName = `${data.personalInfo.firstName}_${data.personalInfo.lastName}_CV.pdf`;
-      pdf.save(fileName);
-    } catch (error) {
-      console.error('Error generating PDF:', error);
-      toast({
-        title: language === 'fr' ? "Erreur" : "Error",
-        description: language === 'fr' 
-          ? "Une erreur s'est produite lors de la génération du PDF" 
-          : "An error occurred while generating the PDF",
-        variant: "destructive",
-      });
-    }
   };
 
   const templates = [
@@ -163,8 +127,8 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
                   <div className="absolute -top-1 -right-1">
                     <div className="bg-cvfacile-primary rounded-full p-1">
                       <Check className="w-3 h-3 text-white" />
-              </div>
-            </div>
+                    </div>
+                  </div>
                 )}
               </button>
             );
@@ -184,22 +148,39 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
         />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2 mb-2">
         <Button
-          onClick={handleDownloadPDF}
-          className={`${
-            theme === 'dark' 
-              ? 'bg-cvfacile-primary hover:bg-cvfacile-primary/90' 
-              : 'bg-cvfacile-primary hover:bg-cvfacile-primary/90'
-          }`}
+          variant="outline"
+          size="icon"
+          onClick={handleZoomOut}
+          className="w-8 h-8 hover:bg-gray-700 hover:text-white transition-colors"
         >
-          <FileDown className="w-4 h-4 mr-2" />
-          {language === 'fr' ? 'Télécharger PDF' : 'Download PDF'}
+          <ZoomOut className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={handleZoomIn}
+          className="w-8 h-8 hover:bg-gray-700 hover:text-white transition-colors"
+        >
+          <ZoomIn className="w-4 h-4" />
         </Button>
       </div>
 
-      <div id="resume-preview" className={`w-full overflow-x-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-4 flex justify-center`}>
-        {renderTemplate()}
+      <div 
+        id="resume-preview" 
+        className={`w-full overflow-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-4 h-[800px]`}
+      >
+        <div 
+          className="flex justify-center transform-gpu"
+          style={{ 
+            transform: `scale(${scale})`,
+            transformOrigin: 'top center',
+            transition: 'transform 0.2s ease-in-out'
+          }}
+        >
+          {renderTemplate()}
+        </div>
       </div>
     </div>
   );

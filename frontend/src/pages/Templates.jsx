@@ -1,17 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 
 const Templates = () => {
   const { theme } = useTheme();
   const { language, t } = useLanguage();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleTemplateSelect = (template) => {
-    navigate('/#resume-builder', { state: { selectedTemplate: template.toLowerCase() } });
+  const handleTemplateSelect = async (template) => {
+    try {
+      setLoading(true);
+      // Navigate to build page with template info
+      navigate('/build', { 
+        state: { 
+          selectedTemplate: template.toLowerCase(),
+          from: 'templates'
+        }
+      });
+    } catch (error) {
+      console.error('Navigation error:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -23,18 +38,15 @@ const Templates = () => {
       <Navbar />
       
       <main className="flex-1">
-        <div className={`py-12 ${theme === 'dark' ? 'bg-gradient-to-br from-purple-900 to-indigo-900' : 'bg-gradient-to-br from-cvfacile-primary to-cvfacile-accent'}`}>
+        <section className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-900' : ''}`}>
           <div className="container px-4 mx-auto">
-            <h1 className="text-3xl md:text-4xl font-bold text-white">
-              {language === 'fr' ? 'Modèles de CV' : 'CV Templates'}
-            </h1>
-            <p className="mt-4 text-xl text-white/90">
-              {language === 'fr'
-                ? 'Choisissez parmi notre collection de modèles professionnels.'
-                : 'Choose from our collection of professional templates.'}
-            </p>
+            <h2 className={`text-2xl md:text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
+              {language === 'fr' ? 'Choisissez votre' : 'Choose your'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
+                {language === 'fr' ? 'modèle de CV' : 'CV template'}
+              </span>
+            </h2>
           </div>
-        </div>
+        </section>
 
         <div className="container px-4 py-12 mx-auto">
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -54,12 +66,18 @@ const Templates = () => {
                     </h3>
                     <button
                       onClick={() => handleTemplateSelect(template)}
+                      disabled={loading}
                       className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
                         theme === 'dark'
                           ? 'bg-purple-600/20 hover:bg-purple-600 text-purple-300 hover:text-white'
                           : 'bg-cvfacile-primary/10 hover:bg-cvfacile-primary text-cvfacile-primary hover:text-white'
-                      }`}>
-                      {language === 'fr' ? 'Utiliser' : 'Use'}
+                      } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    >
+                      {loading ? (
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                      ) : (
+                        language === 'fr' ? 'Utiliser' : 'Use'
+                      )}
                     </button>
                   </div>
                 </div>

@@ -297,11 +297,11 @@ const MedicalTemplate = ({ data = {} }) => {
                     className="w-3 h-3"
                     style={{ color: settings.colorScheme.primary }}
                   />
-                  <h2 
+                  <h2
                     className={`text-sm font-semibold ml-1.5 ${fonts.heading}`}
                     style={{ color: settings.colorScheme.primary }}
                   >
-                    {language === "fr" ? "Formation" : "Education"}
+                    {language === 'fr' ? 'Formation' : 'Education'}
                   </h2>
                 </div>
                 <div className="space-y-3">
@@ -319,29 +319,19 @@ const MedicalTemplate = ({ data = {} }) => {
                       />
                       <div className="mb-1">
                         <h3 className={`text-xs font-semibold ${fonts.heading}`}>
-                          {edu.degree}
+                          {edu.institution}
                         </h3>
                         <div
                           className={`text-[11px] font-medium ${fonts.body}`}
                           style={{ color: settings.colorScheme.primary }}
                         >
-                          {edu.institution}
+                          {edu.field}
                         </div>
                         <div className="text-[10px] text-gray-600">
-                          {edu.startDate} -{" "}
-                          {edu.current
-                            ? language === "fr"
-                              ? "Présent"
-                              : "Present"
-                            : edu.endDate}
+                          {edu.startDate} - {edu.current ? (language === 'fr' ? "Présent" : "Present") : edu.endDate}
                         </div>
                       </div>
-                      <div className={`${fonts.body}`}>
-                        <div className="text-[11px] font-medium">{edu.field}</div>
-                        {edu.description && (
-                          <p className="text-[11px] text-gray-600">{edu.description}</p>
-                        )}
-                      </div>
+                      {edu.description && <p className={`text-[11px] ${fonts.body}`}>{edu.description}</p>}
                     </div>
                   ))}
                 </div>
@@ -409,3 +399,4 @@ const MedicalTemplate = ({ data = {} }) => {
 };
 
 export default MedicalTemplate;
+

@@ -427,7 +427,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   };
 
   return (
-    <Card className="w-full overflow-hidden border shadow-lg">
+    <Card className="w-full overflow-hidden border">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className={`grid w-full ${isMobile ? 'grid-cols-3' : 'grid-cols-6'} overflow-x-auto`}>
           <TabsTrigger value="personal">{language === 'fr' ? 'Infos Pers' : 'Personal Info'}</TabsTrigger>
@@ -689,6 +689,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                             });
                             setEditingExperienceId(exp.id);
                           }}
+                          className="hover:text-white"
                         >
                           Edit
                         </Button>
@@ -723,22 +724,13 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 />
               </div>
               <div>
-                <label className="block mb-1 text-sm font-medium">{language === 'fr' ? 'Diplôme' : 'Degree'}</label>
+                <label className="block mb-1 text-sm font-medium">{language === 'fr' ? 'Domaine d\'études' : 'Field of Study'}</label>
                 <Input
-                  value={newEducation.degree}
-                  onChange={(e) => setNewEducation({ ...newEducation, degree: e.target.value })}
-                  placeholder={language === 'fr' ? 'Votre diplôme' : 'Your degree'}
+                  value={newEducation.field}
+                  onChange={(e) => setNewEducation({ ...newEducation, field: e.target.value })}
+                  placeholder={language === 'fr' ? 'Votre domaine d\'études' : 'Your field of study'}
                 />
               </div>
-            </div>
-
-            <div>
-              <label className="block mb-1 text-sm font-medium">{language === 'fr' ? 'Domaine d\'études' : 'Field of Study'}</label>
-              <Input
-                value={newEducation.field}
-                onChange={(e) => setNewEducation({ ...newEducation, field: e.target.value })}
-                placeholder={language === 'fr' ? 'Votre domaine d\'études' : 'Your field of study'}
-              />
             </div>
 
             <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
@@ -807,18 +799,14 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                   <AccordionItem key={edu.id} value={edu.id} className="border rounded-lg">
                     <AccordionTrigger className="px-4 py-3 hover:no-underline">
                       <div>
-                        <div className="font-medium">{edu.degree}</div>
-                        <div className="text-sm text-gray-600">{edu.institution}</div>
+                        <div className="font-medium">{edu.institution}</div>
+                        <div className="text-sm text-gray-600">{edu.field}</div>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="px-4 pb-3 pt-1">
                       <div className="mb-2 text-sm">
                         <span className="font-medium">{language === 'fr' ? 'Période' : 'Period'}: </span> 
                         {edu.startDate} - {edu.current ? (language === 'fr' ? 'En cours' : 'Currently studying') : edu.endDate}
-                      </div>
-                      <div className="mb-2 text-sm">
-                        <span className="font-medium">Domaine: </span> 
-                        {edu.field}
                       </div>
                       {edu.description && <p className="mb-3 text-sm">{edu.description}</p>}
                       
@@ -829,7 +817,6 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                           onClick={() => {
                             setNewEducation({
                               institution: edu.institution,
-                              degree: edu.degree,
                               field: edu.field,
                               startDate: edu.startDate,
                               endDate: edu.endDate,
@@ -838,6 +825,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                             });
                             setEditingEducationId(edu.id);
                           }}
+                          className="hover:text-white"
                         >
                           Edit
                         </Button>
@@ -922,7 +910,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                           setNewSkill({ name: skill.name, level: skill.level });
                           setEditingSkillId(skill.id);
                         }}
-                        className="ml-5"
+                        className="ml-5 hover:text-white"
                       >
                         Edit
                       </Button>
@@ -1003,6 +991,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                           });
                           setEditingLanguageId(language.id);
                         }}
+                        className="hover:text-white"
                       >
                         Edit
                       </Button>
@@ -1099,6 +1088,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                           });
                           setEditingCertificationId(cert.id);
                         }}
+                        className="hover:text-white"
                       >
                         Edit
                       </Button>

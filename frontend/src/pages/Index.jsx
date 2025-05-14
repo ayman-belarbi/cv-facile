@@ -1,29 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { ResumeData } from "@/lib/resumeData";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import ResumeForm from "@/components/resume/ResumeForm";
-import ResumePreview from "@/components/resume/ResumePreview";
-import { FileText, ArrowRight, Save } from "lucide-react";
+import { FileText, ArrowRight, Edit, Download, Save, Search, CheckCircle2, HelpCircle } from "lucide-react";
 import { useMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import { saveResume } from "@/services/resumeStorage";
-import { useToast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 const HERO_CIRCLES = [
   {
@@ -79,105 +62,93 @@ const HERO_CIRCLES = [
 ];
 
 const Index = () => {
-  const [resumeData, setResumeData] = useState(ResumeData);
-  const [resumeTitle, setResumeTitle] = useState("");
-  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
-  
   const isMobile = useMobile();
   const { isAuthenticated } = useAuth();
   const { language, t } = useLanguage();
   const { theme } = useTheme();
-  const { toast } = useToast();
-  const navigate = useNavigate();
   const location = useLocation();
-  const selectedTemplate = location.state?.selectedTemplate;
 
-  // Update resume language when app language changes
-  useEffect(() => {
-    const currentLanguage = resumeData.settings.language;
-    if (currentLanguage !== language) {
-      setResumeData(prev => ({
-        ...prev,
-        settings: {
-          ...prev.settings,
-          language
-        }
-      }));
+  const steps = [
+    {
+      icon: FileText,
+      title: language === 'fr' ? 'Choisissez un modèle' : 'Choose a template',
+      description: language === 'fr'
+        ? 'Sélectionnez un modèle de CV parmi notre collection de designs professionnels.'
+        : 'Select a CV template from our collection of professional designs.'
+    },
+    {
+      icon: Edit,
+      title: language === 'fr' ? 'Remplissez vos informations' : 'Fill in your information',
+      description: language === 'fr'
+        ? 'Ajoutez vos coordonnées, expériences, compétences et formation avec notre éditeur simple.'
+        : 'Add your contact details, experiences, skills, and education with our simple editor.'
+    },
+    {
+      icon: Save,
+      title: language === 'fr' ? 'Sauvegardez votre travail' : 'Save your work',
+      description: language === 'fr'
+        ? 'Créez un compte pour sauvegarder votre CV et y revenir plus tard pour le modifier.'
+        : 'Create an account to save your CV and come back to it later for edits.'
+    },
+    {
+      icon: Download,
+      title: language === 'fr' ? 'Téléchargez votre CV' : 'Download your CV',
+      description: language === 'fr'
+        ? 'Téléchargez votre CV au format PDF prêt à être envoyé aux recruteurs.'
+        : 'Download your CV as a PDF ready to be sent to recruiters.'
     }
-  }, [language]);
+  ];
 
-  // عند أول تحميل للصفحة، إذا كان هناك selectedTemplate، حدّث settings.template
-  useEffect(() => {
-    if (selectedTemplate) {
-      setResumeData((prev) => ({
-        ...prev,
-        settings: {
-          ...prev.settings,
-          template: selectedTemplate,
-        },
-      }));
-      // Scroll to the resume builder section after a short delay
-      setTimeout(() => {
-        const section = document.getElementById('resume-builder');
-        if (section) {
-          section.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100); // delay to ensure DOM is updated
+  const faqs = [
+    {
+      question: language === 'fr' 
+        ? 'Comment commencer à créer mon CV ?' 
+        : 'How do I start creating my CV?',
+      answer: language === 'fr'
+        ? 'Cliquez sur "Créer mon CV", choisissez un modèle et commencez à remplir vos informations.'
+        : 'Click on "Create my CV", choose a template and start filling in your information.'
+    },
+    {
+      question: language === 'fr' 
+        ? 'Est-ce que le service est gratuit ?' 
+        : 'Is the service free?',
+      answer: language === 'fr'
+        ? 'Oui, la création et le téléchargement de CV sont entièrement gratuits.'
+        : 'Yes, creating and downloading CVs is completely free.'
+    },
+    {
+      question: language === 'fr' 
+        ? 'Dans quel format puis-je télécharger mon CV ?' 
+        : 'In what format can I download my CV?',
+      answer: language === 'fr'
+        ? 'Vous pouvez télécharger votre CV au format PDF, qui est universellement accepté.'
+        : 'You can download your CV in PDF format, which is universally accepted.'
+    },
+    {
+      question: language === 'fr' 
+        ? 'Puis-je modifier mon CV après l\'avoir sauvegardé ?' 
+        : 'Can I edit my CV after saving it?',
+      answer: language === 'fr'
+        ? 'Oui, vous pouvez modifier votre CV à tout moment après l\'avoir sauvegardé.'
+        : 'Yes, you can edit your CV at any time after saving it.'
     }
-  }, [selectedTemplate]);
+  ];
 
-  useEffect(() => {
+  React.useEffect(() => {
     document.title = t('title.home');
   }, [t]);
 
-  const updateResumeSettings = (settings) => {
-    setResumeData({
-      ...resumeData,
-      settings: {
-        ...resumeData.settings,
-        ...settings,
-      },
-    });
-  };
-
-  const handleSaveResume = () => {
-    if (!isAuthenticated) {
-      toast({
-        title: language === 'fr' ? "Connexion requise" : "Login required",
-        description: language === 'fr' 
-          ? "Veuillez vous connecter pour sauvegarder votre CV" 
-          : "Please log in to save your CV",
-        variant: "destructive",
-      });
-      return;
+  // Add effect to handle scroll after navigation
+  React.useEffect(() => {
+    if (location.state?.scrollTo) {
+      const element = document.getElementById(location.state.scrollTo);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+      // Clean up the state to prevent scrolling on subsequent renders
+      window.history.replaceState({}, document.title);
     }
-
-    if (!resumeTitle.trim()) {
-      toast({
-        title: language === 'fr' ? "Titre requis" : "Title required",
-        description: language === 'fr' 
-          ? "Veuillez donner un titre à votre CV" 
-          : "Please give your CV a title",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    saveResume(resumeData, resumeTitle);
-    setIsSaveDialogOpen(false);
-    
-    toast({
-      title: language === 'fr' ? "CV sauvegardé" : "CV saved",
-      description: language === 'fr' 
-        ? "Votre CV a été sauvegardé avec succès, consultez votre tableau de bord" 
-        : "Your CV has been successfully saved, check your dashboard",
-    });
-    
-    // Navigate to dashboard after saving
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 1500);
-  };
+  }, [location]);
 
   return (
     <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
@@ -199,8 +170,8 @@ const Index = () => {
                 ? 'CV Facile vous permet de créer, personnaliser et télécharger des CV professionnels au format PDF.'
                 : 'Easy CV allows you to create, customize and download professional CVs in PDF format.'}
             </p>
-            <a 
-              href="#resume-builder" 
+            <Link 
+              to="/build"
               className={`inline-flex items-center px-6 py-3 text-sm font-medium transition-all rounded-full shadow-lg ${
                 theme === 'dark'
                   ? 'bg-white text-indigo-700 hover:bg-gray-100'
@@ -208,7 +179,7 @@ const Index = () => {
               }`}
             >
               {isMobile ? t('app.create') : t('app.create.now')} <ArrowRight className="w-5 h-5 ml-2" />
-            </a>
+            </Link>
           </div>
           
           {/* Decorative elements */}
@@ -223,6 +194,94 @@ const Index = () => {
           </div>
         </section>
         
+        {/* How It Works Section */}
+        <section id="how-it-works" className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
+          <div className="container px-4 mx-auto">
+            <h2 className={`mb-12 text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
+              {language === 'fr' ? 'Comment' : 'How'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
+                {language === 'fr' ? 'ça marche' : 'it works'}
+              </span>
+            </h2>
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+              {steps.map((step, index) => {
+                const Icon = step.icon;
+                return (
+                  <div 
+                    key={index}
+                    className={`relative p-6 rounded-xl ${
+                      theme === 'dark' ? 'bg-gray-700' : 'bg-white'
+                    } transition-transform hover:scale-105`}
+                  >
+                    <div className={`w-12 h-12 mb-4 rounded-full flex items-center justify-center ${
+                      theme === 'dark' 
+                        ? 'bg-indigo-600' 
+                        : 'bg-cvfacile-primary'
+                    }`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className={`mb-2 text-xl font-semibold ${
+                      theme === 'dark' ? 'text-white' : ''
+                    }`}>
+                      {step.title}
+                    </h3>
+                    <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                      {step.description}
+                    </p>
+                    {index < steps.length - 1 && (
+                      <div className="hidden lg:block absolute -right-4 top-1/2 transform -translate-y-1/2 z-10">
+                        <ArrowRight className={`w-8 h-8 ${
+                          theme === 'dark' ? 'text-gray-600' : 'text-gray-300'
+                        }`} />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section id="faqs" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
+          <div className="container px-4 mx-auto">
+            <h2 className={`mb-12 text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
+              {language === 'fr' ? 'Questions' : 'Frequently Asked'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
+                {language === 'fr' ? 'fréquentes' : 'Questions'}
+              </span>
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+              {faqs.map((faq, index) => (
+                <div 
+                  key={index}
+                  className={`p-6 rounded-xl ${
+                    theme === 'dark' 
+                      ? 'bg-gray-800 hover:bg-gray-700' 
+                      : 'bg-gray-50 hover:bg-gray-100'
+                  } transition-all duration-200`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className={`mt-1 ${
+                      theme === 'dark' ? 'text-indigo-400' : 'text-cvfacile-primary'
+                    }`}>
+                      <HelpCircle className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className={`mb-2 text-lg font-semibold ${
+                        theme === 'dark' ? 'text-white' : ''
+                      }`}>
+                        {faq.question}
+                      </h3>
+                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Feature Section */}
         <section className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
           <div className="container px-4 mx-auto">
@@ -235,7 +294,6 @@ const Index = () => {
             </h2>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {/* Feature cards */}
               {[
                 {
                   title: t('app.prof.templates'),
@@ -280,14 +338,14 @@ const Index = () => {
                     theme === 'dark' ? 'bg-gray-700' : 'bg-white'
                   }`}
                 >
-                  <div className={`w-12 h-12 mb-4 rounded-full flex items-center justify-center ${
-                    theme === 'dark'
-                      ? (index % 2 === 0 ? 'bg-gradient-to-r from-purple-600 to-indigo-600' : 'bg-gradient-to-r from-blue-600 to-teal-600')
-                      : (index % 2 === 0 ? 'gradient-primary' : 'gradient-secondary')
+                  <CheckCircle2 className={`w-8 h-8 mb-4 ${
+                    theme === 'dark' ? 'text-indigo-400' : 'text-cvfacile-primary'
+                  }`} />
+                  <h3 className={`mb-2 text-lg font-semibold ${
+                    theme === 'dark' ? 'text-white' : ''
                   }`}>
-                    <FileText className="w-6 h-6 text-white" />
-                  </div>
-                  <h3 className="mb-3 text-xl font-semibold font-poppins">{feature.title}</h3>
+                    {feature.title}
+                  </h3>
                   <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
                     {feature.description}
                   </p>
@@ -296,74 +354,8 @@ const Index = () => {
             </div>
           </div>
         </section>
-        
-        {/* Resume Builder Section */}
-        <section id="resume-builder" className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-900' : ''}`}>
-          <div className="container px-4 mx-auto">
-            <h2 className={`mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
-              {t('app.build.prof.cv')} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
-                {language === 'fr' ? 'professionnel' : 'professional CV'}
-              </span>
-            </h2>
-            
-            <div className="flex justify-end mb-6">
-              <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button className={theme === 'dark' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-cvfacile-primary hover:bg-cvfacile-primary/90'}>
-                    <Save className="w-4 h-4 mr-2" />
-                    {t('app.save.cv')}
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>{language === 'fr' ? 'Sauvegarder votre CV' : 'Save your CV'}</DialogTitle>
-                    <DialogDescription>
-                      {language === 'fr' 
-                        ? 'Donnez un titre à votre CV pour le retrouver facilement plus tard.'
-                        : 'Give your CV a title to easily find it later.'}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="resume-title" className="text-right">
-                        {language === 'fr' ? 'Titre' : 'Title'}
-                      </Label>
-                      <Input
-                        id="resume-title"
-                        value={resumeTitle}
-                        onChange={(e) => setResumeTitle(e.target.value)}
-                        className="col-span-3"
-                      />
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button type="submit" onClick={handleSaveResume}>
-                      {language === 'fr' ? 'Sauvegarder' : 'Save'}
-                    </Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
-            
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-              <div>
-                <h3 className={`mb-6 text-xl font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>
-                  {t('app.information')}
-                </h3>
-                <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
-              </div>
-              
-              <div>
-                <h3 className={`mb-6 text-xl font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>
-                  {t('app.preview')}
-                </h3>
-                <ResumePreview data={resumeData} updateResumeSettings={updateResumeSettings} />
-              </div>
-            </div>
-          </div>
-        </section>
-        
-        {/* CTA Section - Only show if not authenticated */}
+
+        {/* CTA Section */}
         {!isAuthenticated && (
           <section className={`py-12 md:py-16 text-white ${
             theme === 'dark'
@@ -387,10 +379,10 @@ const Index = () => {
                   {t('app.create.account')}
                 </Link>
                 <Link 
-                  to="/"
+                  to="/build"
                   className="px-6 py-3 text-lg font-medium transition-all border border-white rounded-full hover:bg-white/10"
                 >
-                  {t('app.learn.more')}
+                  {t('app.create')}
                 </Link>
               </div>
             </div>

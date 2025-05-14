@@ -41,11 +41,8 @@ const Navbar = () => {
           <Link to="/templates" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
             {t('app.templates')}
           </Link>
-          <Link to="/how-it-works" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
-            {t('app.how.works')}
-          </Link>
-          <Link to="/faq" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
-            {t('app.faq')}
+          <Link to="/build" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+            {t('app.create')}
           </Link>
           {isAuthenticated && (
             <Link to="/dashboard" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
@@ -125,7 +122,7 @@ const Navbar = () => {
               >
                 <Link to="/login">
                   <LogIn className="w-4 h-4 mr-2" />
-            Log in
+                  {t('app.login')}
                 </Link>
               </Button>
               <Button 
@@ -169,11 +166,8 @@ const Navbar = () => {
             <Link to="/templates" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
               {t('app.templates')}
             </Link>
-            <Link to="/how-it-works" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
-              {t('app.how.works')}
-            </Link>
-            <Link to="/faq" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
-              {t('app.faq')}
+            <Link to="/build" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
+              {t('app.create')}
             </Link>
             {isAuthenticated && (
               <Link to="/dashboard" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
@@ -227,7 +221,7 @@ const Navbar = () => {
                 >
                   <Link to="/login">
                     <LogIn className="w-4 h-4" />
-                    Log in
+                    {t('app.login')}
                   </Link>
                 </Button>
                 <Button 

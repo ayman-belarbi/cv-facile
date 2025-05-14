@@ -80,7 +80,7 @@ const Login = () => {
       
       <Card className={`w-full max-w-md ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : ''}`}>
         <CardHeader>
-          <CardTitle>Log in</CardTitle>
+          <CardTitle>{t('app.login')}</CardTitle>
           <CardDescription>
             {t('app.subtitle')}
           </CardDescription>
@@ -133,7 +133,7 @@ const Login = () => {
               className="w-full text-white"
               disabled={loading}
             >
-              {loading ? t('loading') : 'Log in'}
+              {loading ? t('loading') : t('app.login')}
             </Button>
             
             <div className="text-center text-sm">

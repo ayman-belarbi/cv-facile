@@ -174,15 +174,14 @@ const ClassicTemplate = ({ data = {} }) => {
                   className={`pb-1.5 mb-2 text-base font-bold border-b-2 ${fonts.heading}`}
                   style={{ borderColor: settings.colorScheme.primary }}
                 >
-                  {language === "fr" ? "Formation" : "Education"}
+                  {language === 'fr' ? 'Formation' : 'Education'}
                 </h2>
-
                 <div className="space-y-4">
                   {education.map((edu) => (
                     <div key={edu.id}>
                       <div className="flex items-center justify-between">
                         <h3 className={`text-sm font-semibold ${fonts.heading}`}>
-                          {edu.degree}
+                          {edu.institution}
                         </h3>
                         <span
                           className="px-2 py-0.5 text-[10px] font-medium text-white rounded-full"
@@ -190,12 +189,7 @@ const ClassicTemplate = ({ data = {} }) => {
                             backgroundColor: settings.colorScheme.accent,
                           }}
                         >
-                          {edu.startDate} -{" "}
-                          {edu.current
-                            ? language === "fr"
-                              ? "Présent"
-                              : "Present"
-                            : edu.endDate}
+                          {edu.startDate} - {edu.current ? (language === 'fr' ? 'En cours' : 'Present') : edu.endDate}
                         </span>
                       </div>
 
@@ -203,17 +197,10 @@ const ClassicTemplate = ({ data = {} }) => {
                         className={`mb-1 text-xs font-medium ${fonts.body}`}
                         style={{ color: settings.colorScheme.primary }}
                       >
-                        {edu.institution}
+                        {edu.field}
                       </div>
 
-                      <div className={`${fonts.body}`}>
-                        <div className="text-[11px] font-medium">{edu.field}</div>
-                        {edu.description && (
-                          <p className="text-[11px] text-gray-600">
-                            {edu.description}
-                          </p>
-                        )}
-                      </div>
+                      {edu.description && <p className={`text-[11px] ${fonts.body}`}>{edu.description}</p>}
                     </div>
                   ))}
                 </div>

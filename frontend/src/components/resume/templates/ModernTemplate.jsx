@@ -203,7 +203,7 @@ const ModernTemplate = ({ data = {} }) => {
 
           {/* Education */}
           {education.length > 0 && (
-            <div className="mb-4">
+            <div>
               <h2 className={`text-sm font-bold mb-2 ${fonts.heading}`} style={{ color: settings.colorScheme.primary }}>
                 {language === 'fr' ? 'Formation' : 'Education'}
               </h2>
@@ -212,18 +212,15 @@ const ModernTemplate = ({ data = {} }) => {
                   <div key={edu.id} className="relative pl-3 border-l-2" style={{ borderColor: settings.colorScheme.primary }}>
                     <div className="absolute left-[-4px] top-1.5 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: settings.colorScheme.primary }} />
                     <div className="mb-1">
-                      <h3 className={`text-xs font-semibold ${fonts.heading}`}>{edu.degree}</h3>
+                      <h3 className={`text-xs font-semibold ${fonts.heading}`}>{edu.institution}</h3>
                       <div className={`text-[11px] font-medium ${fonts.body}`} style={{ color: settings.colorScheme.primary }}>
-                        {edu.institution}
+                        {edu.field}
                       </div>
                       <div className="text-[10px] text-gray-500">
-                        {edu.startDate} - {edu.current ? (language === 'fr' ? "Présent" : "Present") : edu.endDate}
+                        {edu.startDate} - {edu.current ? (language === 'fr' ? "En cours" : "Present") : edu.endDate}
                       </div>
                     </div>
-                    <div className={`text-gray-600 ${fonts.body}`}>
-                      <div className="text-[11px] font-medium">{edu.field}</div>
-                      {edu.description && <p className="mt-0.5 text-[11px] whitespace-pre-wrap">{edu.description}</p>}
-                    </div>
+                    {edu.description && <p className={`text-[11px] text-gray-600 ${fonts.body}`}>{edu.description}</p>}
                   </div>
                 ))}
               </div>
@@ -236,3 +233,4 @@ const ModernTemplate = ({ data = {} }) => {
 };
 
 export default ModernTemplate;
+
