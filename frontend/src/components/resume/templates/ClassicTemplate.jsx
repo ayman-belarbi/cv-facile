@@ -22,11 +22,11 @@ const ClassicTemplate = ({ data = {} }) => {
 
   return (
     <div 
-      className="w-full h-full shadow-lg bg-white resume-shadow"
+      className="w-full h-full bg-white"
       style={{ 
         color: settings.colorScheme.text,
         maxWidth: "794px",
-        minHeight: "1123px",
+        minHeight: "842px"
       }}
     >
       {/* Header */}

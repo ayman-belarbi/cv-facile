@@ -8,8 +8,13 @@ const ColorPicker = ({ selectedScheme, onChange }) => {
   const { theme } = useTheme();
   const { language } = useLanguage();
 
+  const handleColorChange = (schemeName) => {
+    // Pass the scheme name instead of the object
+    onChange(schemeName);
+  };
+
   return (
-    <div className={`p-4 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
+    <div className={`p-4 border rounded-lg ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white'}`}>
       <h3 className={`mb-3 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
         {language === 'fr' ? 'Couleur du CV' : 'CV Color'}
       </h3>
@@ -17,13 +22,13 @@ const ColorPicker = ({ selectedScheme, onChange }) => {
         {Object.entries(colorSchemes).map(([name, scheme]) => (
           <div 
             key={name}
-            onClick={() => onChange(scheme)}
+            onClick={() => handleColorChange(name)}
             className={`flex items-center justify-center w-10 h-10 rounded-full cursor-pointer transition-all hover:scale-110 ${
-              theme === 'dark' ? 'ring-2 ring-gray-700' : ''
+              theme === 'dark' ? 'ring-2 ring-slate-700' : ''
             }`}
             style={{ backgroundColor: scheme.primary }}
           >
-            {selectedScheme.primary === scheme.primary && (
+            {selectedScheme === name && (
               <Check className="w-5 h-5 text-white" />
             )}
           </div>

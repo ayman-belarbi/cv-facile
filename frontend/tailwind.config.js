@@ -23,10 +23,14 @@ module.exports = {
         'montserrat': ['Montserrat', 'sans-serif']
       },
       colors: {
-        'cvfacile-primary': '#4F46E5',    // Indigo-600
-        'cvfacile-accent': '#7C3AED',     // Violet-600
+        'cvfacile-primary': '#0F172A',    // Slate-900 - Dark professional
+        'cvfacile-accent': '#3B82F6',     // Blue-500 - Modern blue
         'cvfacile-secondary': '#0EA5E9',  // Sky-500
         'cvfacile-green': '#10B981',      // Emerald-500
+        'cvfacile-pro': '#1E40AF',        // Blue-800
+        'cvfacile-light': '#F8FAFC',      // Slate-50
+        'cvfacile-dark': '#0F172A',       // Slate-900
+        'cvfacile-gray': '#64748B',       // Slate-500
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

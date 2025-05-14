@@ -19,12 +19,12 @@ const ModernTemplate = ({ data = {} }) => {
   const fonts = fontMappings[settings.font] || fontMappings["inter"];
 
   return (
-    <div
-      className="w-full bg-white resume-shadow"
-      style={{
+    <div 
+      className="w-full bg-white"
+      style={{ 
         color: settings.colorScheme.text,
-        maxWidth: '794px',
-        minHeight: '1123px',
+        maxWidth: "794px",
+        minHeight: "842px" // A4 standard height in pixels
       }}
     >
       <div className="flex min-h-full">
@@ -33,7 +33,7 @@ const ModernTemplate = ({ data = {} }) => {
           className="w-1.5/4 min-h-full"
           style={{ backgroundColor: settings.colorScheme.primary }}
         >
-          <div className="p-4 text-white sticky top-0">
+          <div className="p-4 text-white">
             {/* Profile Section */}
             <div className="flex flex-col items-center mb-4">
               <Avatar className="w-20 h-20 mb-2 border-2 border-white/20">
@@ -127,30 +127,6 @@ const ModernTemplate = ({ data = {} }) => {
               </div>
             )}
 
-            {/* Certifications */}
-            {certifications.length > 0 && (
-              <div className="mb-4">
-                <h2 className={`text-sm font-bold mb-2 ${fonts.heading}`}>
-                  {language === 'fr' ? 'Certifications' : 'Certifications'}
-                </h2>
-                <div className="space-y-3">
-                  {certifications.map((cert) => (
-                    <div key={cert.id} className="border-l-2 border-white/30 pl-2">
-                      <div className={`text-xs font-semibold break-words ${fonts.heading}`}>
-                        {cert.name}
-                      </div>
-                      <div className={`text-[11px] text-white/80 mt-0.5 break-words ${fonts.body}`}>
-                        {cert.issuer}
-                      </div>
-                      <div className="flex items-center gap-1.5 mt-1">
-                        <Calendar className="w-2.5 h-2.5 text-white/60 flex-shrink-0" />
-                        <span className="text-[10px] text-white/60">{cert.date}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
@@ -203,7 +179,7 @@ const ModernTemplate = ({ data = {} }) => {
 
           {/* Education */}
           {education.length > 0 && (
-            <div>
+            <div className="mb-4">
               <h2 className={`text-sm font-bold mb-2 ${fonts.heading}`} style={{ color: settings.colorScheme.primary }}>
                 {language === 'fr' ? 'Formation' : 'Education'}
               </h2>
@@ -221,6 +197,31 @@ const ModernTemplate = ({ data = {} }) => {
                       </div>
                     </div>
                     {edu.description && <p className={`text-[11px] text-gray-600 ${fonts.body}`}>{edu.description}</p>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Certifications */}
+          {certifications.length > 0 && (
+            <div>
+              <h2 className={`text-sm font-bold mb-2 ${fonts.heading}`} style={{ color: settings.colorScheme.primary }}>
+                {language === 'fr' ? 'Certifications' : 'Certifications'}
+              </h2>
+              <div className="space-y-3">
+                {certifications.map((cert) => (
+                  <div key={cert.id} className="relative pl-3 border-l-2" style={{ borderColor: settings.colorScheme.primary }}>
+                    <div className="absolute left-[-4px] top-1.5 w-1.5 h-1.5 rounded-full" style={{ backgroundColor: settings.colorScheme.primary }} />
+                    <div className="mb-1">
+                      <h3 className={`text-xs font-semibold ${fonts.heading}`}>{cert.name}</h3>
+                      <div className={`text-[11px] font-medium ${fonts.body}`} style={{ color: settings.colorScheme.primary }}>
+                        {cert.issuer}
+                      </div>
+                      <div className="text-[10px] text-gray-500">
+                        {cert.date}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

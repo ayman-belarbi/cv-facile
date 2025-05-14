@@ -162,13 +162,13 @@ const BuildResume = () => {
   };
 
   return (
-    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
+    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white'}`}>
       <Navbar />
       
       <main className="flex-1">
-        <section className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-900' : ''}`}>
+        <section className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
           <div className="container px-4 mx-auto">
-            <h2 className={`mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
+            <h2 className={`mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
               {t('app.build.prof.cv')} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
                 {language === 'fr' ? 'professionnel' : 'professional CV'}
               </span>
@@ -178,8 +178,8 @@ const BuildResume = () => {
               <Button 
                 onClick={handleDownloadPDF} 
                 className={theme === 'dark' 
-                  ? 'bg-emerald-600 hover:bg-emerald-600/90' 
-                  : 'bg-emerald-500 hover:bg-emerald-500/90'
+                  ? 'bg-white hover:bg-gray-50 text-gray-800 border border-gray-200' 
+                  : 'bg-white hover:bg-gray-50 text-gray-800 border border-gray-200'
                 }
               >
                 <FileDown className="w-4 h-4 mr-2" />
@@ -189,8 +189,8 @@ const BuildResume = () => {
               <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
                 <DialogTrigger asChild>
                   <Button className={theme === 'dark' 
-                    ? 'bg-gradient-to-r from-purple-600 to-indigo-700 hover:opacity-90' 
-                    : 'bg-gradient-to-r from-cvfacile-primary to-cvfacile-accent hover:opacity-90'
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                    : 'bg-blue-600 hover:bg-blue-700 text-white'
                   }>
                     <Save className="w-4 h-4 mr-2" />
                     {isAuthenticated 
@@ -203,8 +203,8 @@ const BuildResume = () => {
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle>{language === 'fr' ? 'Sauvegarder votre CV' : 'Save your CV'}</DialogTitle>
-                    <DialogDescription>
+                    <DialogTitle className={theme === 'dark' ? 'dark:text-white' : ''}>{language === 'fr' ? 'Sauvegarder votre CV' : 'Save your CV'}</DialogTitle>
+                    <DialogDescription className={theme === 'dark' ? 'dark:text-gray-300' : ''}>
                       {language === 'fr' 
                         ? 'Donnez un titre à votre CV pour le retrouver facilement plus tard.'
                         : 'Give your CV a title to easily find it later.'}
@@ -212,19 +212,26 @@ const BuildResume = () => {
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="resume-title" className="text-right">
+                      <Label htmlFor="resume-title" className={`text-right ${theme === 'dark' ? 'dark:text-white' : ''}`}>
                         {language === 'fr' ? 'Titre' : 'Title'}
                       </Label>
                       <Input
                         id="resume-title"
                         value={resumeTitle}
                         onChange={(e) => setResumeTitle(e.target.value)}
-                        className="col-span-3"
+                        className={`col-span-3 ${theme === 'dark' ? 'dark:bg-gray-700 dark:border-gray-600 dark:text-white' : ''}`}
                       />
                     </div>
                   </div>
                   <DialogFooter>
-                    <Button type="submit" onClick={handleSaveResume}>
+                    <Button 
+                      type="submit" 
+                      onClick={handleSaveResume} 
+                      className={theme === 'dark' 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                      }
+                    >
                       {language === 'fr' ? 'Sauvegarder' : 'Save'}
                     </Button>
                   </DialogFooter>
@@ -234,14 +241,14 @@ const BuildResume = () => {
             
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
               <div>
-                <h3 className={`mb-6 text-xl font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>
+                <h3 className={`mb-6 text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                   {t('app.information')}
                 </h3>
                 <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
               </div>
               
               <div>
-                <h3 className={`mb-6 text-xl font-semibold ${theme === 'dark' ? 'text-white' : ''}`}>
+                <h3 className={`mb-6 text-xl font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                   {t('app.preview')}
                 </h3>
                 <ResumePreview data={resumeData} updateResumeSettings={updateResumeSettings} />

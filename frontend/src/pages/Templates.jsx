@@ -34,13 +34,13 @@ const Templates = () => {
   }, [t]);
 
   return (
-    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
+    <div className="flex flex-col min-h-screen dark:bg-slate-900 dark:text-white">
       <Navbar />
       
       <main className="flex-1">
-        <section className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-900' : ''}`}>
+        <section className="py-12 md:py-16">
           <div className="container px-4 mx-auto">
-            <h2 className={`text-2xl md:text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
+            <h2 className="text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
               {language === 'fr' ? 'Choisissez votre' : 'Choose your'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
                 {language === 'fr' ? 'modèle de CV' : 'CV template'}
               </span>
@@ -53,11 +53,9 @@ const Templates = () => {
             {['Classic', 'Modern', 'Creative', 'Medical'].map((template) => (
               <div 
                 key={template}
-                className={`group relative rounded-lg overflow-hidden transition-all duration-300 shadow-md ${
-                  theme === 'dark' 
-                    ? 'bg-gray-800/50 backdrop-blur-sm hover:bg-gray-800' 
-                    : 'bg-white/80 backdrop-blur-sm hover:bg-white'
-                }`}
+                className="group relative rounded-lg overflow-hidden transition-all duration-300 border
+                           bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm 
+                           hover:bg-white dark:hover:bg-slate-800 dark:border-slate-700"
               >
                 <div className="p-4">
                   <div className="flex items-center justify-between">
@@ -67,11 +65,9 @@ const Templates = () => {
                     <button
                       onClick={() => handleTemplateSelect(template)}
                       disabled={loading}
-                      className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-300 ${
-                        theme === 'dark'
-                          ? 'bg-purple-600/20 hover:bg-purple-600 text-purple-300 hover:text-white'
-                          : 'bg-cvfacile-primary/10 hover:bg-cvfacile-primary text-cvfacile-primary hover:text-white'
-                      } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all duration-500 hover:scale-105 
+                                 bg-cvfacile-primary text-white dark:bg-blue-600 
+                                 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       {loading ? (
                         <Loader2 className="w-4 h-4 animate-spin" />

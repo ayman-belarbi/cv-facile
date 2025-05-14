@@ -84,49 +84,19 @@ const Footer = () => {
   ];
 
   return (
-    <footer className={`${theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-gray-50 border-gray-200'} border-t`}>
+    <footer className="bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-800">
       <div className="container px-4 py-12 mx-auto sm:px-6 lg:px-8">
-        {/* Signup CTA Section */}
-        {!isAuthenticated && (
-          <div className="mb-12 p-6 rounded-xl bg-gradient-to-r from-cvfacile-primary/10 to-cvfacile-accent/10">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <div>
-                <h3 className={`text-lg font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-                  {language === 'fr' ? 'Sauvegardez vos CV' : 'Save your CVs'}
-                </h3>
-                <p className={`mt-1 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {language === 'fr' 
-                    ? 'Créez un compte pour sauvegarder et gérer tous vos CV'
-                    : 'Create an account to save and manage all your CVs'}
-                </p>
-              </div>
-              <Button 
-                asChild
-                className={theme === 'dark' 
-                  ? 'bg-gradient-to-r from-purple-600 to-indigo-700 hover:opacity-90' 
-                  : 'bg-gradient-to-r from-cvfacile-primary to-cvfacile-accent hover:opacity-90'
-                }
-              >
-                <Link to="/register">
-                  <Save className="w-4 h-4 mr-2" />
-                  {language === 'fr' ? 'Créer un compte' : 'Sign up'}
-                </Link>
-              </Button>
-            </div>
-          </div>
-        )}
-
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Brand Section */}
           <div className="space-y-4 md:col-span-2">
             <Link to="/" className="flex items-center space-x-2">
-              <FileUser className={`w-6 h-6 ${theme === 'dark' ? 'text-cvfacile-accent' : 'text-cvfacile-primary'}`} />
-              <span className={`text-xl font-bold font-poppins ${theme === 'dark' ? 'text-white' : 'text-gradient-primary'}`}>
+              <FileUser className={`w-6 h-6 ${theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'}`} />
+              <span className="text-xl font-bold font-poppins dark:text-white text-gradient-primary">
                 {language === 'fr' ? 'CV Facile' : 'Easy CV'}
               </span>
             </Link>
-            <p className={`text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
               {language === 'fr' 
                 ? 'Créez votre CV professionnel en quelques minutes. Des modèles modernes, une interface intuitive, et des conseils personnalisés pour vous démarquer.'
                 : 'Create your professional CV in minutes. Modern templates, intuitive interface, and personalized tips to help you stand out.'}
@@ -139,11 +109,7 @@ const Footer = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`p-2 rounded-full transition-colors ${
-                    theme === 'dark'
-                      ? 'text-gray-400 hover:text-white hover:bg-gray-800'
-                      : 'text-gray-600 hover:text-cvfacile-primary hover:bg-gray-100'
-                  }`}
+                  className="p-2 rounded-full transition-colors text-gray-600 hover:text-cvfacile-primary hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-slate-800"
                   aria-label={social.label}
                 >
                   {social.icon}
@@ -154,23 +120,23 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div>
-            <h3 className={`mb-4 text-sm font-semibold uppercase ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+            <h3 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">
               {footerLinks.quickLinks.title}
             </h3>
-            <ul className={`space-y-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+            <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
               {footerLinks.quickLinks.links.map((link, index) => (
                 <li key={index}>
                   {link.onClick ? (
                     <button
                       onClick={link.onClick}
-                      className="hover:text-cvfacile-primary transition-colors inline-flex items-center gap-2"
+                      className="hover:text-cvfacile-primary dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2"
                     >
                       {link.text}
                     </button>
                   ) : (
                     <Link 
                       to={link.href} 
-                      className="hover:text-cvfacile-primary transition-colors inline-flex items-center gap-2"
+                      className="hover:text-cvfacile-primary dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2"
                     >
                       {link.text}
                     </Link>
@@ -184,23 +150,23 @@ const Footer = () => {
           <div>
             {/* Help Section */}
             <div className="mb-8">
-              <h3 className={`mb-4 text-sm font-semibold uppercase ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 {footerLinks.help.title}
               </h3>
-              <ul className={`space-y-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 {footerLinks.help.links.map((link, index) => (
                   <li key={index}>
                     {link.onClick ? (
                       <button
                         onClick={link.onClick}
-                        className="hover:text-cvfacile-primary transition-colors inline-flex items-center gap-2"
+                        className="hover:text-cvfacile-primary dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2"
                       >
                         {link.text}
                       </button>
                     ) : (
                       <Link 
                         to={link.href} 
-                        className="hover:text-cvfacile-primary transition-colors inline-flex items-center gap-2"
+                        className="hover:text-cvfacile-primary dark:hover:text-blue-400 transition-colors inline-flex items-center gap-2"
                       >
                         {link.text}
                       </Link>
@@ -212,15 +178,15 @@ const Footer = () => {
 
             {/* Legal Section */}
             <div>
-              <h3 className={`mb-4 text-sm font-semibold uppercase ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+              <h3 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">
                 {footerLinks.legal.title}
               </h3>
-              <ul className={`space-y-2 text-sm ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+              <ul className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                 {footerLinks.legal.links.map((link, index) => (
                   <li key={index}>
                     <Link 
                       to={link.href} 
-                      className="hover:text-cvfacile-primary transition-colors"
+                      className="hover:text-cvfacile-primary dark:hover:text-blue-400 transition-colors"
                     >
                       {link.text}
                     </Link>
@@ -232,8 +198,8 @@ const Footer = () => {
         </div>
         
         {/* Copyright */}
-        <div className={`pt-8 mt-8 border-t ${theme === 'dark' ? 'border-gray-800' : 'border-gray-200'}`}>
-          <p className={`text-sm text-center ${theme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+        <div className="pt-8 mt-8 border-t border-gray-200 dark:border-slate-800">
+          <p className="text-sm text-center text-gray-600 dark:text-gray-400">
             &copy; {new Date().getFullYear()} {language === 'fr' ? 'CV Facile' : 'Easy CV'}. {language === 'fr' ? 'Tous droits réservés.' : 'All rights reserved.'}
           </p>
         </div>

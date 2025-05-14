@@ -8,14 +8,45 @@ import FontPicker from "./FontPicker";
 import { useMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { Check, Layout, Sparkles, Briefcase, Stethoscope, ZoomIn, ZoomOut } from "lucide-react";
+import { Check, Layout, Sparkles, Briefcase, Stethoscope, ZoomIn, ZoomOut, Minus, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { fontMappings, colorSchemes } from "@/lib/resumeData";
 
-const ResumePreview = ({ data, updateResumeSettings }) => {
+// Default settings to prevent errors
+const DEFAULT_SETTINGS = {
+  template: "classic",
+  colorScheme: "blue",
+  font: "Inter",
+  language: "en",
+};
+
+const ResumePreview = ({ data, resumeData, updateResumeSettings }) => {
   const isMobile = useMobile();
   const { theme } = useTheme();
   const { language } = useLanguage();
   const [scale, setScale] = useState(1);
+  
+  // Use resumeData prop if data is not provided (handle both prop naming patterns)
+  let resumeInfo = data || resumeData || {};
+  
+  // Ensure we have valid settings with defaults
+  if (!resumeInfo.settings) {
+    console.warn("ResumePreview: Missing settings, using defaults", { data, resumeData });
+    resumeInfo = {
+      ...resumeInfo,
+      settings: { ...DEFAULT_SETTINGS }
+    };
+  } else {
+    // Merge default settings to ensure all settings properties exist
+    resumeInfo = {
+      ...resumeInfo,
+      settings: {
+        ...DEFAULT_SETTINGS,
+        ...resumeInfo.settings
+      }
+    };
+  }
   
   const handleZoomIn = () => {
     setScale(prev => Math.min(prev + 0.1, 2));
@@ -26,30 +57,43 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
   };
 
   const renderTemplate = () => {
-    switch (data.settings.template) {
-      case "classic":
-        return <ClassicTemplate data={data} />;
-      case "modern":
-        return <ModernTemplate data={data} />;
-      case "creative":
-        return <CreativeTemplate data={data} />;
-      case "medical":
-        return <MedicalTemplate data={data} />;
-      default:
-        return <ClassicTemplate data={data} />;
+    try {
+      switch (resumeInfo.settings.template) {
+        case "classic":
+          return <ClassicTemplate data={resumeInfo} />;
+        case "modern":
+          return <ModernTemplate data={resumeInfo} />;
+        case "creative":
+          return <CreativeTemplate data={resumeInfo} />;
+        case "medical":
+          return <MedicalTemplate data={resumeInfo} />;
+        default:
+          return <ClassicTemplate data={resumeInfo} />;
+      }
+    } catch (error) {
+      console.error("Error rendering template:", error);
+      return <div className="p-4 bg-red-50 text-red-500 border border-red-200 rounded">Error rendering template</div>;
     }
   };
 
   const handleTemplateChange = (template) => {
-    updateResumeSettings({ template });
+    if (updateResumeSettings) {
+      updateResumeSettings({ template });
+    }
   };
 
-  const handleColorSchemeChange = (colorScheme) => {
-    updateResumeSettings({ colorScheme });
+  const handleColorSchemeChange = (colorSchemeName) => {
+    if (updateResumeSettings) {
+      updateResumeSettings({ 
+        colorScheme: colorSchemes[colorSchemeName] || colorSchemes['sapphire']
+      });
+    }
   };
 
   const handleFontChange = (font) => {
-    updateResumeSettings({ font });
+    if (updateResumeSettings) {
+      updateResumeSettings({ font });
+    }
   };
 
   const templates = [
@@ -81,69 +125,47 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
 
   return (
     <div className="space-y-4">
-      <div className={`p-4 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
-        <h3 className={`mb-4 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
+      <div className="p-4 border rounded-lg bg-white dark:bg-slate-800 dark:border-slate-700">
+        <h3 className="mb-4 text-base font-medium dark:text-white">
           {language === 'fr' ? 'Modèle de CV' : 'CV Template'}
         </h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {templates.map((template) => {
-            const Icon = template.icon;
-            return (
-              <button
-                key={template.id}
-                onClick={() => handleTemplateChange(template.id)}
-                className={`group relative p-3 rounded-lg transition-all duration-200 ${
-                  data.settings.template === template.id
-                    ? theme === 'dark'
-                      ? 'bg-cvfacile-primary/20 border-2 border-cvfacile-primary'
-                      : 'bg-cvfacile-primary/10 border-2 border-cvfacile-primary'
-                    : theme === 'dark'
-                      ? 'bg-gray-700/50 border border-gray-600 hover:bg-gray-700'
-                      : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
-              }`}
-            >
-                <div className="flex flex-col items-center text-center">
-                  <div className={`p-2 rounded-full mb-2 ${
-                    data.settings.template === template.id
-                      ? 'bg-cvfacile-primary text-white'
-                      : theme === 'dark'
-                        ? 'bg-gray-600 text-gray-300'
-                        : 'bg-gray-200 text-gray-600'
-                  }`}>
-                    <Icon className="w-5 h-5" />
+        
+        <Select 
+          value={resumeInfo.settings.template} 
+          onValueChange={handleTemplateChange}
+          defaultValue="classic"
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder={language === 'fr' ? 'Choisir un modèle' : 'Select a template'} />
+          </SelectTrigger>
+          <SelectContent>
+            {templates.map((template) => {
+              const Icon = template.icon;
+              return (
+                <SelectItem key={template.id} value={template.id}>
+                  <div className="flex items-center gap-2">
+                    <Icon className="w-4 h-4" />
+                    <span>{template.name}</span>
                   </div>
-                  <div className={`text-sm font-medium mb-1 ${
-                    theme === 'dark' ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    {template.name}
-                  </div>
-                  <div className={`text-xs ${
-                    theme === 'dark' ? 'text-gray-400' : 'text-gray-500'
-                  }`}>
-                    {template.description}
-                  </div>
-                </div>
-                {data.settings.template === template.id && (
-                  <div className="absolute -top-1 -right-1">
-                    <div className="bg-cvfacile-primary rounded-full p-1">
-                      <Check className="w-3 h-3 text-white" />
-                    </div>
-                  </div>
-                )}
-              </button>
-            );
-          })}
-        </div>
+                </SelectItem>
+              );
+            })}
+          </SelectContent>
+        </Select>
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <ColorPicker
-          selectedScheme={data.settings.colorScheme}
+          selectedScheme={
+            Object.entries(colorSchemes).find(
+              ([_, scheme]) => scheme.primary === resumeInfo.settings.colorScheme?.primary
+            )?.[0] || 'sapphire'
+          }
           onChange={handleColorSchemeChange}
         />
         
         <FontPicker
-          selectedFont={data.settings.font}
+          selectedFont={resumeInfo.settings.font || "Inter"}
           onChange={handleFontChange}
         />
       </div>
@@ -169,7 +191,7 @@ const ResumePreview = ({ data, updateResumeSettings }) => {
 
       <div 
         id="resume-preview" 
-        className={`w-full overflow-auto ${theme === 'dark' ? 'bg-gray-800 border border-gray-700' : 'bg-gray-100'} shadow-inner rounded-lg p-4 h-[800px]`}
+        className="w-full overflow-auto bg-gray-100 dark:bg-slate-800 dark:border-slate-700 rounded-lg p-4 h-[800px]"
       >
         <div 
           className="flex justify-center transform-gpu"

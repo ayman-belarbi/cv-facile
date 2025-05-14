@@ -52,14 +52,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
+    <div className="flex flex-col min-h-screen dark:bg-slate-900 dark:text-white">
       <Navbar />
       
       <main className="flex-1">
-        <div className={`py-8 md:py-12 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <div className="py-8 md:py-12 bg-gray-50 dark:bg-slate-800">
           <div className="container px-4 mx-auto">
             <h1 className="text-2xl font-bold mb-2">{t('app.dashboard')}</h1>
-            <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+            <p className="text-gray-600 dark:text-gray-300">
               {language === 'fr' 
                 ? `Bienvenue, ${user?.name || user?.email}. Gérez vos CV ici.` 
                 : `Welcome, ${user?.name || user?.email}. Manage your CVs here.`}
@@ -71,7 +71,7 @@ const Dashboard = () => {
           {/* Create new CV button */}
           <div className="mb-8">
             <Link to="/">
-              <Button className={`${theme === 'dark' ? 'bg-cvfacile-accent' : 'bg-cvfacile-primary'}`}>
+              <Button className="bg-cvfacile-primary dark:bg-blue-600 hover:bg-cvfacile-primary/90 dark:hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
                 {language === 'fr' ? 'Créer un nouveau CV' : 'Create a new CV'}
               </Button>
@@ -82,19 +82,19 @@ const Dashboard = () => {
           <h2 className="text-xl font-semibold mb-4">{t('app.saved.cvs')}</h2>
           
           {resumes.length === 0 ? (
-            <div className={`text-center py-12 ${theme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg shadow`}>
+            <div className="text-center py-12 bg-white dark:bg-slate-800 rounded-lg shadow">
               <FileText className="mx-auto h-12 w-12 text-gray-400" />
               <h3 className="mt-2 text-lg font-medium">
                 {language === 'fr' ? "Aucun CV sauvegardé" : "No saved CVs"}
               </h3>
-              <p className={`mt-1 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
+              <p className="mt-1 text-gray-500 dark:text-gray-400">
                 {language === 'fr' 
                   ? "Commencez par créer votre premier CV" 
                   : "Start by creating your first CV"}
               </p>
               <div className="mt-6">
                 <Link to="/">
-                  <Button>
+                  <Button className="bg-cvfacile-primary dark:bg-blue-600 hover:bg-cvfacile-primary/90 dark:hover:bg-blue-700">
                     {language === 'fr' ? 'Créer un CV' : 'Create a CV'}
                   </Button>
                 </Link>
@@ -103,20 +103,20 @@ const Dashboard = () => {
           ) : (
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {resumes.map((resume) => (
-                <Card key={resume.id} className={theme === 'dark' ? 'bg-gray-800 border-gray-700' : ''}>
+                <Card key={resume.id} className="dark:bg-slate-800 dark:border-slate-700">
                   <CardHeader className="pb-2">
                     <CardTitle>{resume.title}</CardTitle>
-                    <CardDescription>
+                    <CardDescription className="dark:text-gray-300">
                       {getFormattedDate(resume.date)}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className={`h-32 flex items-center justify-center rounded-md ${theme === 'dark' ? 'bg-gray-700' : 'bg-gray-100'}`}>
-                      <FileText className={`h-10 w-10 ${theme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`} />
+                    <div className="h-32 flex items-center justify-center rounded-md bg-gray-100 dark:bg-slate-700">
+                      <FileText className="h-10 w-10 text-gray-500 dark:text-gray-400" />
                     </div>
                   </CardContent>
                   <CardFooter className="flex justify-between">
-                    <Button variant="outline" asChild>
+                    <Button variant="outline" asChild className="dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700">
                       <Link to={`/edit/${resume.id}`}>
                         <Edit className="h-4 w-4 mr-2" />
                         {language === 'fr' ? 'Modifier' : 'Edit'}

@@ -37,12 +37,12 @@ const MedicalTemplate = ({ data = {} }) => {
   const fonts = fontMappings[settings.font] || fontMappings["inter"];
 
   return (
-    <div
-      className="w-full h-full shadow-lg bg-white resume-shadow"
-      style={{
+    <div 
+      className="w-full h-full bg-white"
+      style={{ 
         color: settings.colorScheme.text,
         maxWidth: "794px",
-        minHeight: "1123px",
+        minHeight: "842px" // A4 standard height in pixels
       }}
     >
       {/* Medical Header with Professional Design */}

@@ -2,12 +2,17 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
+import { useTheme } from "@/context/ThemeContext";
 import { getResumeById, updateResume } from "@/services/resumeStorage";
 import { ResumeData } from "@/lib/resumeData";
 import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import ResumeForm from "@/components/resume/ResumeForm";
 import ResumePreview from "@/components/resume/ResumePreview";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { Save } from "lucide-react";
 
 const EditResume = () => {
   const { id } = useParams();
@@ -15,6 +20,7 @@ const EditResume = () => {
   const [resumeTitle, setResumeTitle] = useState("");
   const { isAuthenticated } = useAuth();
   const { language, t } = useLanguage();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -71,49 +77,55 @@ const EditResume = () => {
   };
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen dark:bg-slate-900 dark:text-white shadow-non">
       <Navbar />
       
-      <main className="container mx-auto p-4 sm:p-6 lg:p-8">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">
-            {language === 'fr' ? "Modifier le CV" : "Edit CV"}
-          </h1>
-          
-          <div className="flex items-center">
-            <input
-              type="text"
-              value={resumeTitle}
-              onChange={(e) => setResumeTitle(e.target.value)}
-              className="mr-4 p-2 border rounded"
-              placeholder={language === 'fr' ? "Titre du CV" : "CV Title"}
-            />
+      <main className="flex-1 py-12">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h1 className="text-2xl font-bold">
+              {language === 'fr' ? "Modifier le CV" : "Edit CV"}
+            </h1>
             
-            <button
-              onClick={handleSave}
-              className="px-4 py-2 bg-cvfacile-primary text-white rounded hover:bg-opacity-90"
-            >
-              {language === 'fr' ? "Sauvegarder" : "Save"}
-            </button>
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-          <div>
-            <h3 className="mb-6 text-xl font-semibold">
-              {language === 'fr' ? "Informations" : "Information"}
-            </h3>
-            <ResumeForm resumeData={resumeData} setResumeData={setResumeData} />
+            <div className="flex items-center gap-3">
+              <Input
+                type="text"
+                value={resumeTitle}
+                onChange={(e) => setResumeTitle(e.target.value)}
+                className="w-64 dark:bg-slate-700 dark:border-slate-600"
+                placeholder={language === 'fr' ? "Titre du CV" : "CV Title"}
+              />
+              
+              <Button
+                onClick={handleSave}
+                className="bg-cvfacile-primary hover:bg-cvfacile-primary/90 dark:bg-blue-600 dark:hover:bg-blue-700"
+              >
+                <Save className="w-4 h-4 mr-2" />
+                {language === 'fr' ? "Sauvegarder" : "Save"}
+              </Button>
+            </div>
           </div>
           
-          <div>
-            <h3 className="mb-6 text-xl font-semibold">
-              {language === 'fr' ? "Aperçu" : "Preview"}
-            </h3>
-            <ResumePreview data={resumeData} updateResumeSettings={updateResumeSettings} />
+          <div className="flex flex-col lg:flex-row gap-6">
+            <div className="lg:w-1/2">
+              <ResumeForm 
+                resumeData={resumeData} 
+                setResumeData={setResumeData}
+                updateResumeSettings={updateResumeSettings}
+              />
+            </div>
+            
+            <div id="resume-preview" className="lg:w-1/2 sticky top-20">
+              <ResumePreview 
+                resumeData={resumeData} 
+                updateResumeSettings={updateResumeSettings} 
+              />
+            </div>
           </div>
         </div>
       </main>
+      
+      <Footer />
     </div>
   );
 };

@@ -33,43 +33,51 @@ const FontPicker = ({ selectedFont, onChange }) => {
   ];
 
   return (
-    <div className={`p-3 border rounded-lg shadow-sm ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : 'bg-white'}`}>
-      <h3 className={`mb-2 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
+    <div className={`p-4 border rounded-lg ${theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white'}`}>
+      <h3 className={`mb-3 text-base font-medium ${theme === 'dark' ? 'text-white' : ''}`}>
         {language === 'fr' ? 'Police du CV' : 'CV Font'}
       </h3>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-3 gap-3">
         {fonts.map((font) => (
-            <div
+          <button
             key={font.id}
             onClick={() => onChange(font.id)}
-            className={`relative p-2 border rounded-md cursor-pointer transition-all hover:shadow-sm ${
+            className={`group relative p-3 rounded-lg transition-all duration-200 border-2 ${
               selectedFont === font.id
                 ? theme === 'dark'
-                  ? 'border-cvfacile-primary bg-gray-700'
-                  : 'border-cvfacile-primary bg-blue-50'
+                  ? 'border-blue-600'
+                  : 'border-cvfacile-primary'
                 : theme === 'dark'
-                  ? 'border-gray-700'
-                  : 'border-gray-200'
-              }`}
-            >
+                  ? 'border-slate-700 hover:border-slate-600'
+                  : 'border-gray-200 hover:border-gray-300'
+            }`}
+          >
             <div className="flex flex-col items-center text-center">
-              <div className={`text-base ${theme === 'dark' ? 'text-white' : ''} ${font.headingClass}`}>
+              <div className={`text-xl ${
+                selectedFont === font.id
+                  ? theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'
+                  : theme === 'dark' ? 'text-white' : 'text-gray-900'
+              } ${font.headingClass}`}>
                 Aa
               </div>
-              <div className={`mt-1 text-xs ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} ${font.bodyClass}`}>
+              <div className={`mt-1 text-xs ${
+                selectedFont === font.id
+                  ? theme === 'dark' ? 'font-medium text-blue-400' : 'font-medium text-cvfacile-primary' 
+                  : theme === 'dark' ? 'text-gray-300' : 'text-gray-600'
+              } ${font.bodyClass}`}>
                 {font.name}
               </div>
             </div>
             {selectedFont === font.id && (
               <div className="absolute -top-1 -right-1">
-                <div className={`p-1 rounded-full ${theme === 'dark' ? 'bg-cvfacile-primary' : 'bg-cvfacile-primary'}`}>
+                <div className={`${theme === 'dark' ? 'bg-blue-600' : 'bg-cvfacile-primary'} rounded-full p-1`}>
                   <Check className="w-3 h-3 text-white" />
                 </div>
               </div>
             )}
-            </div>
-          ))}
-        </div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 };

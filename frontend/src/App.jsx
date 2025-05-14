@@ -10,7 +10,6 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import EditResume from "./pages/EditResume";
 import NotFound from "./pages/NotFound";
 import Templates from "./pages/Templates";
 import BuildResume from "./pages/BuildResume";
@@ -35,7 +34,6 @@ const App = () => (
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/build" element={<BuildResume />} />
-                <Route path="/edit/:id" element={<EditResume />} />
                 <Route path="/templates" element={<Templates />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

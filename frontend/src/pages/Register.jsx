@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
-import { User, UserPlus, Moon, Sun, Eye, EyeOff } from 'lucide-react';
+import { UserPlus, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const Register = () => {
@@ -20,8 +20,8 @@ const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
   const { register } = useAuth();
-  const { t } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
+  const { t, language } = useLanguage();
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -66,42 +66,42 @@ const Register = () => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-gray-50'}`}>
-      <div className="absolute top-4 right-4 flex space-x-4">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-slate-900 dark:text-white">
+      <div className="absolute top-4 left-4">
         <Button
           variant="ghost"
-          size="icon"
+          size="sm"
           onClick={() => navigate('/')}
-          className={theme === 'dark' ? 'text-white hover:text-white' : 'text-black hover:text-white'}
+          className="flex items-center gap-2"
         >
-          <span className="sr-only">Close</span>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-6 w-6">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <ArrowLeft className="h-4 w-4" />
+          <span>{language === 'fr' ? 'Retour' : 'Back'}</span>
         </Button>
       </div>
       
       <div className="w-full max-w-md mb-8">
         <div className="text-center">
-          <Link to="/" className="flex items-center justify-center space-x-2">
-            <UserPlus className={`h-8 w-8 ${theme === 'dark' ? 'text-cvfacile-accent' : 'text-cvfacile-primary'}`} />
-            <span className="text-2xl font-bold">CV Facile</span>
+          <Link to="/" className="flex items-center justify-center gap-2">
+            <UserPlus className="h-8 w-8 text-cvfacile-primary dark:text-blue-400" />
+            <span className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
+              CV Facile <span className="pro-badge ml-1 text-sm font-bold">PRO</span>
+            </span>
           </Link>
         </div>
       </div>
       
-      <Card className={`w-full max-w-md ${theme === 'dark' ? 'bg-gray-800 border-gray-700' : ''}`}>
-        <CardHeader>
-          <CardTitle>{t('app.signup')}</CardTitle>
-          <CardDescription>
+      <Card className="w-full max-w-md shadow-sm bg-white dark:bg-slate-800 dark:border-slate-700">
+        <CardHeader className="space-y-1">
+          <CardTitle className="text-2xl font-bold text-center">{t('app.signup')}</CardTitle>
+          <CardDescription className="text-center dark:text-gray-300">
             {t('app.subtitle')}
           </CardDescription>
         </CardHeader>
         
         <form onSubmit={handleRegister}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 pt-4">
             <div className="space-y-2">
-              <Label htmlFor="name">{t('app.name')}</Label>
+              <Label htmlFor="name" className="dark:text-gray-200">{t('app.name')}</Label>
               <Input 
                 id="name"
                 type="text" 
@@ -109,12 +109,12 @@ const Register = () => {
                 value={name}
                 onChange={e => setName(e.target.value)}
                 required
-                className={theme === 'dark' ? 'bg-gray-700 border-gray-600' : ''}
+                className="focus:border-cvfacile-primary dark:bg-slate-700 dark:border-slate-600"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="email">{t('app.email')}</Label>
+              <Label htmlFor="email" className="dark:text-gray-200">{t('app.email')}</Label>
               <Input 
                 id="email"
                 type="email" 
@@ -122,12 +122,12 @@ const Register = () => {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
-                className={theme === 'dark' ? 'bg-gray-700 border-gray-600' : ''}
+                className="focus:border-cvfacile-primary dark:bg-slate-700 dark:border-slate-600"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">{t('app.password')}</Label>
+              <Label htmlFor="password" className="dark:text-gray-200">{t('app.password')}</Label>
               <div className="relative">
                 <Input 
                   id="password"
@@ -135,7 +135,7 @@ const Register = () => {
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   required
-                  className={theme === 'dark' ? 'bg-gray-700 border-gray-600 pr-10' : 'pr-10'}
+                  className="focus:border-cvfacile-primary pr-10 dark:bg-slate-700 dark:border-slate-600"
                 />
                 <button
                   type="button"
@@ -152,7 +152,7 @@ const Register = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirmer {t('app.password').toLowerCase()}</Label>
+              <Label htmlFor="confirmPassword" className="dark:text-gray-200">Confirmer {t('app.password').toLowerCase()}</Label>
               <div className="relative">
                 <Input 
                   id="confirmPassword"
@@ -160,7 +160,7 @@ const Register = () => {
                   value={confirmPassword}
                   onChange={e => setConfirmPassword(e.target.value)}
                   required
-                  className={theme === 'dark' ? 'bg-gray-700 border-gray-600 pr-10' : 'pr-10'}
+                  className="focus:border-cvfacile-primary pr-10 dark:bg-slate-700 dark:border-slate-600"
                 />
                 <button
                   type="button"
@@ -180,14 +180,14 @@ const Register = () => {
           <CardFooter className="flex flex-col space-y-4">
             <Button 
               type="submit" 
-              className="w-full"
+              className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90 dark:bg-blue-600 dark:hover:bg-blue-700"
               disabled={loading}
             >
               {loading ? t('loading') : t('app.signup')}
             </Button>
             
-            <div className="text-center text-sm">
-              {t('already.have.account')} <Link to="/login" className="text-cvfacile-accent hover:underline">Log in</Link>
+            <div className="text-center text-sm dark:text-gray-300">
+              {t('already.have.account')} <Link to="/login" className="text-cvfacile-primary font-medium hover:text-cvfacile-primary/90 dark:text-blue-400">{language === 'fr' ? 'Se connecter' : 'Log in'}</Link>
             </div>
           </CardFooter>
         </form>

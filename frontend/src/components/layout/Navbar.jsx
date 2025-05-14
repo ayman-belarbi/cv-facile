@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent } from '@/components/ui/sheet';
 import { useMobile } from '@/hooks/use-mobile';
+import { ChevronDown } from 'lucide-react';
 
 const Navbar = () => {
   const { isAuthenticated, user, logout } = useAuth();
@@ -24,10 +25,12 @@ const Navbar = () => {
 
   // Logo Component
   const Logo = () => (
-        <div className="flex items-center space-x-2">
-          <FileUser className={`w-8 h-8 ${theme === 'dark' ? 'text-cvfacile-accent' : 'text-cvfacile-primary'}`} />
-          <Link to="/" className={`text-xl font-bold font-poppins ${theme === 'dark' ? 'text-white' : 'text-gradient-primary'}`}>
-            {language === 'fr' ? 'CV Facile' : 'Easy CV'}
+        <div className="flex items-center gap-2">
+          <FileUser className={`w-7 h-7 ${theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'}`} />
+          <Link to="/" className="flex items-center gap-2">
+            <span className="text-xl font-bold font-poppins flex items-center gap-2 dark:text-white text-gray-900">
+              {language === 'fr' ? 'CV Facile' : 'Easy CV'} <span className="pro-badge text-sm">PRO</span>
+            </span>
           </Link>
         </div>
   );
@@ -35,17 +38,45 @@ const Navbar = () => {
   // Desktop Navigation Links
   const DesktopNav = () => (
         <nav className="hidden space-x-6 text-sm font-medium md:flex">
-          <Link to="/" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+          <Link 
+            to="/" 
+            className={`transition-colors hover:text-cvfacile-primary ${
+              location.pathname === '/' 
+                ? 'text-cvfacile-primary dark:text-blue-400 font-semibold' 
+                : 'text-gray-600 dark:text-gray-300'
+            }`}
+          >
             {t('app.home')}
           </Link>
-          <Link to="/templates" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+          <Link 
+            to="/templates" 
+            className={`transition-colors hover:text-cvfacile-primary ${
+              location.pathname === '/templates' 
+                ? 'text-cvfacile-primary dark:text-blue-400 font-semibold' 
+                : 'text-gray-600 dark:text-gray-300'
+            }`}
+          >
             {t('app.templates')}
           </Link>
-          <Link to="/build" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+          <Link 
+            to="/build" 
+            className={`transition-colors hover:text-cvfacile-primary ${
+              location.pathname === '/build' 
+                ? 'text-cvfacile-primary dark:text-blue-400 font-semibold' 
+                : 'text-gray-600 dark:text-gray-300'
+            }`}
+          >
             {t('app.create')}
           </Link>
           {isAuthenticated && (
-            <Link to="/dashboard" className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} transition-colors hover:text-cvfacile-primary`}>
+            <Link 
+              to="/dashboard" 
+              className={`transition-colors hover:text-cvfacile-primary ${
+                location.pathname === '/dashboard' 
+                  ? 'text-cvfacile-primary dark:text-blue-400 font-semibold' 
+                  : 'text-gray-600 dark:text-gray-300'
+              }`}
+            >
               {t('app.dashboard')}
             </Link>
           )}
@@ -59,16 +90,22 @@ const Navbar = () => {
               <Button 
                 variant="ghost" 
                 size="icon" 
-          className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} hover:text-white`}
+                className="rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800"
               >
                 <Languages className="w-5 h-5" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setLanguage('fr')}>
+            <DropdownMenuContent align="end" className="bg-white dark:bg-slate-800 dark:border-slate-700">
+              <DropdownMenuItem 
+                onClick={() => setLanguage('fr')}
+                className={language === 'fr' ? 'bg-gray-100 dark:bg-slate-700' : ''}
+              >
                 🇫🇷 Français {language === 'fr' && '✓'}
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setLanguage('en')}>
+              <DropdownMenuItem 
+                onClick={() => setLanguage('en')}
+                className={language === 'en' ? 'bg-gray-100 dark:bg-slate-700' : ''}
+              >
                 🇺🇸 English {language === 'en' && '✓'}
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -81,7 +118,7 @@ const Navbar = () => {
             variant="ghost" 
             size="icon"
             onClick={toggleTheme}
-      className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} hover:text-white`}
+            className="rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800"
           >
             {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
           </Button>
@@ -95,17 +132,21 @@ const Navbar = () => {
               <DropdownMenuTrigger asChild>
                 <Button 
                   variant="ghost" 
-              className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} flex items-center hover:text-white`}
+                  className="rounded-full flex items-center text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800"
                 >
-                  <User className="w-4 h-4 mr-2" />
+                  <User className="w-4 h-4 sm:mr-2" />
                   <span className="hidden sm:inline">{user?.name || user?.email}</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-white dark:bg-slate-800 dark:border-slate-700">
                 <DropdownMenuItem asChild>
-                  <Link to="/dashboard">{t('app.dashboard')}</Link>
+                  <Link to="/dashboard" className="flex items-center gap-2">
+                    <FileUser className="w-4 h-4" />
+                    {t('app.dashboard')}
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => logout()}>
+                <DropdownMenuItem onClick={() => logout()} className="flex items-center gap-2">
+                  <LogIn className="w-4 h-4 rotate-180" />
                   {t('app.logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -118,23 +159,23 @@ const Navbar = () => {
               <Button 
                 variant="ghost" 
                 asChild 
-          className={`hidden sm:inline-flex ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} hover:text-white`}
+                className="hidden sm:inline-flex items-center text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800"
               >
-                <Link to="/login">
-                  <LogIn className="w-4 h-4 mr-2" />
-                  {t('app.login')}
+                <Link to="/login" className="flex items-center gap-2">
+                  <LogIn className="w-4 h-4" />
+                  {language === 'fr' ? t('app.login') : 'Log in'}
                 </Link>
               </Button>
               <Button 
-                className={theme === 'dark' ? 'bg-gradient-to-r from-purple-600 to-indigo-700 hover:opacity-90' : 'bg-gradient-to-r from-cvfacile-primary to-cvfacile-accent hover:opacity-90'}
+                className="flex items-center gap-2 bg-cvfacile-primary hover:opacity-90 dark:bg-blue-600 text-white"
                 asChild
               >
-          <Link to="/register">
-            <UserPlus className="w-4 h-4 mr-2" />
-            {t('app.signup')}
-          </Link>
-        </Button>
-      </>
+                <Link to="/register">
+                  <UserPlus className="w-4 h-4" />
+                  {t('app.signup')}
+                </Link>
+              </Button>
+            </>
     );
   };
 
@@ -144,7 +185,7 @@ const Navbar = () => {
       variant="ghost" 
       size="icon" 
       onClick={() => setOpen(true)} 
-      className={`${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'} hover:text-white md:hidden`}
+      className="rounded-full text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800 md:hidden"
     >
       <Menu className="w-6 h-6" />
     </Button>
@@ -153,24 +194,56 @@ const Navbar = () => {
   // Mobile Drawer
   const MobileDrawer = () => (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetContent side="right" className="w-64 p-0">
+      <SheetContent side="right" className="w-64 p-0 bg-white dark:bg-slate-900 dark:border-slate-800">
         <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between px-4 py-4 border-b">
+          <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-slate-800">
             <Logo />
           </div>
           
-          <nav className="flex flex-col space-y-2 px-4 py-6">
-            <Link to="/" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
+          <nav className="flex flex-col px-4 py-6">
+            <Link 
+              to="/" 
+              className={`py-2 px-3 rounded-md mb-1 transition-colors ${
+                location.pathname === '/' 
+                  ? 'bg-gray-100 text-cvfacile-primary dark:bg-slate-800 dark:text-blue-400'
+                  : ''
+              }`} 
+              onClick={() => setOpen(false)}
+            >
               {t('app.home')}
             </Link>
-            <Link to="/templates" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
+            <Link 
+              to="/templates" 
+              className={`py-2 px-3 rounded-md mb-1 transition-colors ${
+                location.pathname === '/templates' 
+                  ? 'bg-gray-100 text-cvfacile-primary dark:bg-slate-800 dark:text-blue-400'
+                  : ''
+              }`} 
+              onClick={() => setOpen(false)}
+            >
               {t('app.templates')}
             </Link>
-            <Link to="/build" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
+            <Link 
+              to="/build" 
+              className={`py-2 px-3 rounded-md mb-1 transition-colors ${
+                location.pathname === '/build' 
+                  ? 'bg-gray-100 text-cvfacile-primary dark:bg-slate-800 dark:text-blue-400'
+                  : ''
+              }`} 
+              onClick={() => setOpen(false)}
+            >
               {t('app.create')}
             </Link>
             {isAuthenticated && (
-              <Link to="/dashboard" className="py-2 text-base font-medium" onClick={() => setOpen(false)}>
+              <Link 
+                to="/dashboard" 
+                className={`py-2 px-3 rounded-md mb-1 transition-colors ${
+                  location.pathname === '/dashboard' 
+                    ? 'bg-gray-100 text-cvfacile-primary dark:bg-slate-800 dark:text-blue-400'
+                    : ''
+                }`} 
+                onClick={() => setOpen(false)}
+              >
                 {t('app.dashboard')}
               </Link>
             )}
@@ -179,16 +252,25 @@ const Navbar = () => {
           <div className="flex flex-col gap-2 px-4 pb-6 mt-auto">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="w-full flex items-center justify-start gap-2">
-                  <Languages className="w-5 h-5" />
-                  {language === 'fr' ? 'Français' : 'English'}
+                <Button variant="outline" className="w-full flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Languages className="w-5 h-5" />
+                    {language === 'fr' ? 'Français' : 'English'}
+                  </div>
+                  <ChevronDown className="w-4 h-4 opacity-50" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setLanguage('fr')}>
+              <DropdownMenuContent align="end" className="bg-white dark:bg-slate-800 dark:border-slate-700">
+                <DropdownMenuItem 
+                  onClick={() => setLanguage('fr')}
+                  className={language === 'fr' ? 'bg-gray-100 dark:bg-slate-700' : ''}
+                >
                   🇫🇷 Français {language === 'fr' && '✓'}
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => setLanguage('en')}>
+                <DropdownMenuItem 
+                  onClick={() => setLanguage('en')}
+                  className={language === 'en' ? 'bg-gray-100 dark:bg-slate-700' : ''}
+                >
                   🇺🇸 English {language === 'en' && '✓'}
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -196,11 +278,13 @@ const Navbar = () => {
 
             <Button 
               variant="outline" 
-              className="w-full flex items-center justify-start gap-2" 
+              className="w-full flex items-center justify-between gap-2" 
               onClick={toggleTheme}
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              {theme === 'dark' ? t('app.light.mode') : t('app.dark.mode')}
+              <div className="flex items-center gap-2">
+                {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                {theme === 'dark' ? t('app.light.mode') : t('app.dark.mode')}
+              </div>
             </Button>
 
             {isAuthenticated ? (
@@ -215,18 +299,17 @@ const Navbar = () => {
               <>
                 <Button 
                   variant="outline" 
-                  className="w-full flex items-center justify-start gap-2 hover:text-white" 
+                  className="w-full flex items-center justify-start gap-2" 
                   asChild 
                   onClick={() => setOpen(false)}
                 >
                   <Link to="/login">
                     <LogIn className="w-4 h-4" />
-                    {t('app.login')}
+                    {language === 'fr' ? t('app.login') : 'Log in'}
                   </Link>
                 </Button>
                 <Button 
-                  variant="outline" 
-                  className="w-full flex items-center justify-start gap-2" 
+                  className="w-full flex items-center justify-start gap-2 bg-cvfacile-primary hover:opacity-90 dark:bg-blue-600 text-white"
                   asChild 
                   onClick={() => setOpen(false)}
                 >
@@ -234,9 +317,9 @@ const Navbar = () => {
                     <UserPlus className="w-4 h-4" />
                     {t('app.signup')}
                   </Link>
-              </Button>
-            </>
-          )}
+                </Button>
+              </>
+            )}
           </div>
         </div>
       </SheetContent>
@@ -244,7 +327,7 @@ const Navbar = () => {
   );
 
   return (
-    <header className={`sticky top-0 z-50 ${theme === 'dark' ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-200'} border-b`}>
+    <header className="sticky top-0 z-50 glass-effect bg-white/80 backdrop-blur-lg border-b border-gray-100/50 dark:bg-slate-900/80 dark:border-slate-800/50">
       <div className="container flex items-center justify-between h-16 px-4 mx-auto sm:px-6">
         <Logo />
         <DesktopNav />
@@ -255,7 +338,7 @@ const Navbar = () => {
             <MobileDrawer />
           </>
         ) : (
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <LanguageDropdown />
             <ThemeToggle />
             <AuthButtons />

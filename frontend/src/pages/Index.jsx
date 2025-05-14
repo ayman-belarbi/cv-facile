@@ -17,7 +17,7 @@ const HERO_CIRCLES = [
       height: "260px",
     },
     anim: "animate-hero-float-1",
-    bg: "bg-white/60 blur-2xl",
+    bg: "bg-white/60 dark:bg-blue-500/30 blur-2xl",
   },
   {
     style: {
@@ -27,7 +27,7 @@ const HERO_CIRCLES = [
       height: "200px",
     },
     anim: "animate-hero-float-2",
-    bg: "bg-white/70 blur-2xl",
+    bg: "bg-white/70 dark:bg-blue-400/40 blur-2xl",
   },
   {
     style: {
@@ -37,7 +37,7 @@ const HERO_CIRCLES = [
       height: "170px",
     },
     anim: "animate-hero-float-3",
-    bg: "bg-white/60 blur-2xl",
+    bg: "bg-white/60 dark:bg-indigo-500/35 blur-2xl",
   },
   {
     style: {
@@ -47,7 +47,7 @@ const HERO_CIRCLES = [
       height: "140px",
     },
     anim: "animate-hero-float-4",
-    bg: "bg-white/50 blur-2xl",
+    bg: "bg-white/50 dark:bg-blue-600/30 blur-2xl",
   },
   {
     style: {
@@ -57,7 +57,7 @@ const HERO_CIRCLES = [
       height: "120px",
     },
     anim: "animate-hero-float-5",
-    bg: "bg-white/40 blur-2xl",
+    bg: "bg-white/40 dark:bg-indigo-400/40 blur-2xl",
   },
 ];
 
@@ -151,39 +151,35 @@ const Index = () => {
   }, [location]);
 
   return (
-    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : ''}`}>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
       
       <main className="flex-1">
         {/* Hero Section */}
         <section className={`relative py-16 md:py-20 overflow-hidden ${
           theme === 'dark' 
-            ? 'bg-gradient-to-br from-purple-900 to-indigo-900' 
-            : 'bg-gradient-to-br from-cvfacile-primary to-cvfacile-accent'
+            ? 'bg-gradient-to-br from-slate-900 to-slate-800' 
+            : 'bg-gradient-to-br from-cvfacile-dark to-cvfacile-primary'
         }`}>
-          <div className="container px-4 mx-auto text-center">
-            <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins">
-              {t('app.subtitle')}
+          <div className="container px-4 mx-auto text-center flex flex-col items-center justify-center relative z-20">
+            <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins animate-float flex items-center gap-3">
+              {t('app.subtitle')} <span className="pro-badge">PRO</span>
             </h1>
             <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl text-white/90">
               {language === 'fr' 
-                ? 'CV Facile vous permet de créer, personnaliser et télécharger des CV professionnels au format PDF.'
-                : 'Easy CV allows you to create, customize and download professional CVs in PDF format.'}
+                ? 'CV Facile Pro vous permet de créer, personnaliser et télécharger des CV professionnels au format PDF.'
+                : 'Easy CV Pro allows you to create, customize and download professional CVs in PDF format.'}
             </p>
             <Link 
               to="/build"
-              className={`inline-flex items-center px-6 py-3 text-sm font-medium transition-all rounded-full shadow-lg ${
-                theme === 'dark'
-                  ? 'bg-white text-indigo-700 hover:bg-gray-100'
-                  : 'bg-white text-cvfacile-primary hover:bg-gray-100'
-              }`}
+              className="inline-flex items-center px-6 py-3 text-white text-sm font-medium rounded-full shadow-lg glass-effect"
             >
               {isMobile ? t('app.create') : t('app.create.now')} <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>
           
           {/* Decorative elements */}
-          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10">
             {HERO_CIRCLES.map(({ anim, style, bg }, i) => (
               <div
                 key={i}
@@ -195,9 +191,9 @@ const Index = () => {
         </section>
         
         {/* How It Works Section */}
-        <section id="how-it-works" className={`py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <section id="how-it-works" className={`py-16 ${theme === 'dark' ? 'bg-slate-900' : 'bg-slate-50'}`}>
           <div className="container px-4 mx-auto">
-            <h2 className={`mb-12 text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
+            <h2 className="mb-12 text-3xl font-bold text-center font-poppins dark:text-white">
               {language === 'fr' ? 'Comment' : 'How'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
                 {language === 'fr' ? 'ça marche' : 'it works'}
               </span>
@@ -208,30 +204,24 @@ const Index = () => {
                 return (
                   <div 
                     key={index}
-                    className={`relative p-6 rounded-xl ${
-                      theme === 'dark' ? 'bg-gray-700' : 'bg-white'
-                    } transition-transform hover:scale-105`}
+                    className="relative p-6 rounded-xl glass-card transition-transform hover:scale-105"
                   >
                     <div className={`w-12 h-12 mb-4 rounded-full flex items-center justify-center ${
                       theme === 'dark' 
-                        ? 'bg-indigo-600' 
+                        ? 'bg-gradient-to-br from-blue-600 to-blue-500' 
                         : 'bg-cvfacile-primary'
                     }`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className={`mb-2 text-xl font-semibold ${
-                      theme === 'dark' ? 'text-white' : ''
-                    }`}>
+                    <h3 className="mb-2 text-xl font-semibold dark:text-white">
                       {step.title}
                     </h3>
-                    <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                    <p className="dark:text-gray-300 text-gray-600">
                       {step.description}
                     </p>
                     {index < steps.length - 1 && (
                       <div className="hidden lg:block absolute -right-4 top-1/2 transform -translate-y-1/2 z-10">
-                        <ArrowRight className={`w-8 h-8 ${
-                          theme === 'dark' ? 'text-gray-600' : 'text-gray-300'
-                        }`} />
+                        <ArrowRight className="w-8 h-8 text-gray-300 dark:text-gray-600" />
                       </div>
                     )}
                   </div>
@@ -242,9 +232,9 @@ const Index = () => {
         </section>
 
         {/* FAQ Section */}
-        <section id="faqs" className={`py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
+        <section id="faqs" className="py-16 dark:bg-slate-900 bg-white">
           <div className="container px-4 mx-auto">
-            <h2 className={`mb-12 text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : ''}`}>
+            <h2 className="mb-12 text-3xl font-bold text-center font-poppins dark:text-white">
               {language === 'fr' ? 'Questions' : 'Frequently Asked'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
                 {language === 'fr' ? 'fréquentes' : 'Questions'}
               </span>
@@ -253,25 +243,19 @@ const Index = () => {
               {faqs.map((faq, index) => (
                 <div 
                   key={index}
-                  className={`p-6 rounded-xl ${
-                    theme === 'dark' 
-                      ? 'bg-gray-800 hover:bg-gray-700' 
-                      : 'bg-gray-50 hover:bg-gray-100'
-                  } transition-all duration-200`}
+                  className="p-6 rounded-xl glass-card transition-all duration-200 hover:scale-[1.02]"
                 >
                   <div className="flex items-start gap-4">
                     <div className={`mt-1 ${
-                      theme === 'dark' ? 'text-indigo-400' : 'text-cvfacile-primary'
+                      theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'
                     }`}>
                       <HelpCircle className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className={`mb-2 text-lg font-semibold ${
-                        theme === 'dark' ? 'text-white' : ''
-                      }`}>
+                      <h3 className="mb-2 text-lg font-semibold dark:text-white">
                         {faq.question}
                       </h3>
-                      <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                      <p className="dark:text-gray-300 text-gray-600">
                         {faq.answer}
                       </p>
                     </div>
@@ -283,11 +267,9 @@ const Index = () => {
         </section>
 
         {/* Feature Section */}
-        <section className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'}`}>
+        <section className="py-12 md:py-16 dark:bg-slate-900 bg-slate-50">
           <div className="container px-4 mx-auto">
-            <h2 className={`mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins ${
-              theme === 'dark' ? 'text-white' : ''
-            }`}>
+            <h2 className="mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
               {t('app.why.choose')} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
                 {language === 'fr' ? 'CV Facile' : 'Easy CV'}
               </span> ?
@@ -334,19 +316,15 @@ const Index = () => {
               ].map((feature, index) => (
                 <div 
                   key={index} 
-                  className={`p-6 transition-all rounded-xl hover:shadow-lg ${
-                    theme === 'dark' ? 'bg-gray-700' : 'bg-white'
-                  }`}
+                  className="p-6 transition-all rounded-xl glass-card hover:scale-[1.02]"
                 >
                   <CheckCircle2 className={`w-8 h-8 mb-4 ${
-                    theme === 'dark' ? 'text-indigo-400' : 'text-cvfacile-primary'
+                    theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'
                   }`} />
-                  <h3 className={`mb-2 text-lg font-semibold ${
-                    theme === 'dark' ? 'text-white' : ''
-                  }`}>
+                  <h3 className="mb-2 text-lg font-semibold dark:text-white">
                     {feature.title}
                   </h3>
-                  <p className={theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}>
+                  <p className="dark:text-gray-300 text-gray-600">
                     {feature.description}
                   </p>
                 </div>
@@ -359,8 +337,8 @@ const Index = () => {
         {!isAuthenticated && (
           <section className={`py-12 md:py-16 text-white ${
             theme === 'dark'
-              ? 'bg-gradient-to-br from-indigo-900 to-purple-900'
-              : 'bg-gradient-to-br from-cvfacile-accent to-cvfacile-primary'
+              ? 'bg-gradient-to-br from-slate-900 to-slate-800'
+              : 'bg-gradient-to-br from-cvfacile-dark to-cvfacile-primary'
           }`}>
             <div className="container px-4 mx-auto text-center">
               <h2 className="mb-6 text-2xl md:text-4xl font-bold font-poppins">
@@ -374,7 +352,7 @@ const Index = () => {
               <div className="flex flex-wrap items-center justify-center gap-4">
                 <Link 
                   to="/register"
-                  className="px-6 py-3 text-lg font-medium transition-all bg-white rounded-full text-cvfacile-primary hover:bg-gray-100"
+                  className="px-6 py-3 text-lg font-medium transition-all glass-effect rounded-full hover:scale-105"
                 >
                   {t('app.create.account')}
                 </Link>

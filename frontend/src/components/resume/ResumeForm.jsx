@@ -140,8 +140,8 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   };
 
   const addEducation = () => {
-    if (!newEducation.institution || !newEducation.degree) {
-      toast.error(language === 'fr' ? "Veuillez remplir l'établissement et le diplôme" : "Please fill in the institution and degree");
+    if (!newEducation.institution) {
+      toast.error(language === 'fr' ? "Veuillez remplir l'établissement" : "Please fill in the institution");
       return;
     }
 
@@ -391,8 +391,8 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   };
 
   const addOrUpdateEducation = () => {
-    if (!newEducation.institution || !newEducation.degree) {
-      toast.error(language === 'fr' ? "Veuillez remplir l'institution et le diplôme" : "Please fill in the institution and degree");
+    if (!newEducation.institution) {
+      toast.error(language === 'fr' ? "Veuillez remplir l'établissement" : "Please fill in the institution");
       return;
     }
     if (editingEducationId) {
@@ -625,7 +625,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 variant="outline"
                 size="sm"
                 onClick={addAchievementField}
-                className="flex items-center mt-2 hover:text-white"
+                className="flex items-center mt-2"
               >
                 <Plus className="w-4 h-4 mr-1" /> {language === 'fr' ? 'Ajouter une réalisation' : 'Add achievement'}
               </Button>
@@ -633,7 +633,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
 
             <Button 
               onClick={addOrUpdateExperience}
-              className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90"
+              className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700"
             >
               {editingExperienceId
                 ? (language === 'fr' ? 'Mettre à jour cette expérience' : 'Update this experience')
@@ -689,7 +689,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                             });
                             setEditingExperienceId(exp.id);
                           }}
-                          className="hover:text-white"
+                          className=""
                         >
                           Edit
                         </Button>
@@ -781,7 +781,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
 
             <Button 
               onClick={addOrUpdateEducation}
-              className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90"
+              className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700"
             >
               {editingEducationId
                 ? (language === 'fr' ? 'Mettre à jour cette formation' : 'Update this education')
@@ -825,7 +825,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                             });
                             setEditingEducationId(edu.id);
                           }}
-                          className="hover:text-white"
+                          className=""
                         >
                           Edit
                         </Button>
@@ -875,7 +875,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
 
           <Button 
             onClick={addOrUpdateSkill}
-            className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90"
+            className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700"
           >
             {editingSkillId
               ? (language === 'fr' ? 'Mettre à jour la compétence' : 'Update skill')
@@ -910,7 +910,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                           setNewSkill({ name: skill.name, level: skill.level });
                           setEditingSkillId(skill.id);
                         }}
-                        className="ml-5 hover:text-white"
+                        className=""
                       >
                         Edit
                       </Button>
@@ -961,7 +961,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
 
           <Button 
             onClick={addOrUpdateLanguage}
-            className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90"
+            className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700"
           >
             {editingLanguageId
               ? (language === 'fr' ? 'Mettre à jour cette langue' : 'Update this language')
@@ -991,7 +991,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                           });
                           setEditingLanguageId(language.id);
                         }}
-                        className="hover:text-white"
+                        className=""
                       >
                         Edit
                       </Button>
@@ -1053,7 +1053,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
 
           <Button 
             onClick={addOrUpdateCertification}
-            className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90"
+            className="w-full mt-2 bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700"
           >
             {editingCertificationId
               ? (language === 'fr' ? 'Mettre à jour cette certification' : 'Update this certification')
@@ -1088,7 +1088,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                           });
                           setEditingCertificationId(cert.id);
                         }}
-                        className="hover:text-white"
+                        className=""
                       >
                         Edit
                       </Button>
