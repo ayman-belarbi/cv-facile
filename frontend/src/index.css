@@ -102,13 +102,7 @@
   }
 }
 
-@layer utilities {
-  .resume-shadow {
-    /* Removed shadow
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    */
-  }
-  
+@layer utilities {  
   .template-hover {
     @apply transition-all duration-300 hover:scale-[1.02] hover:shadow-xl cursor-pointer;
   }

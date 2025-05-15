@@ -109,9 +109,6 @@ const Login = () => {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password" className="dark:text-gray-200">{t('app.password')}</Label>
-                <Link to="#" className="text-xs text-cvfacile-primary hover:underline dark:text-blue-400">
-                  {t('forgot.password')}
-                </Link>
               </div>
               <div className="relative">
                 <Input 
