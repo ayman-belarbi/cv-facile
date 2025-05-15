@@ -13,6 +13,8 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Templates from "./pages/Templates";
 import BuildResume from "./pages/BuildResume";
+import EditResume from "./pages/EditResume";
+import ViewResume from "./pages/ViewResume";
 import { useEffect } from "react";
 import FaviconSwitcher from "@/components/utils/FaviconSwitcher";
 
@@ -35,6 +37,8 @@ const App = () => (
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/build" element={<BuildResume />} />
                 <Route path="/templates" element={<Templates />} />
+                <Route path="/edit/:id" element={<EditResume />} />
+                <Route path="/view/:id" element={<ViewResume />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>

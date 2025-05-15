@@ -21,7 +21,7 @@ const DEFAULT_SETTINGS = {
   language: "en",
 };
 
-const ResumePreview = ({ data, resumeData, updateResumeSettings }) => {
+const ResumePreview = ({ data, resumeData, updateResumeSettings, viewOnly = false }) => {
   const isMobile = useMobile();
   const { theme } = useTheme();
   const { language } = useLanguage();
@@ -95,6 +95,26 @@ const ResumePreview = ({ data, resumeData, updateResumeSettings }) => {
       updateResumeSettings({ font });
     }
   };
+
+  if (viewOnly) {
+    return (
+      <div 
+        id="resume-preview" 
+        className="w-full overflow-auto bg-gray-100 dark:bg-slate-800 dark:border-slate-700 rounded-lg p-4 h-[800px]"
+      >
+        <div 
+          className="flex justify-center transform-gpu"
+          style={{ 
+            transform: `scale(${scale})`,
+            transformOrigin: 'top center',
+            transition: 'transform 0.2s ease-in-out'
+          }}
+        >
+          {renderTemplate()}
+        </div>
+      </div>
+    );
+  }
 
   const templates = [
     { 

@@ -6,10 +6,10 @@ import { useTheme } from '@/context/ThemeContext';
 import { fetchResumes, deleteResume as deleteResumeAPI } from '@/services/resumeStorage';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { FileText, Trash2, Edit, Plus } from 'lucide-react';
+import { FileText, Trash2, Edit, Plus, Eye, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { formatDistanceToNow } from 'date-fns';
-import { fr, enUS } from 'date-fns/locale';
+import { fr, enUS, ar } from 'date-fns/locale';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
@@ -54,7 +54,7 @@ const Dashboard = () => {
       const date = new Date(dateString);
       return formatDistanceToNow(date, { 
         addSuffix: true,
-        locale: language === 'fr' ? fr : enUS
+        locale: language === 'fr' ? fr : language === 'ar' ? ar : enUS
       });
     } catch (error) {
       return dateString;
@@ -81,7 +81,7 @@ const Dashboard = () => {
           {/* Create new CV button */}
           <div className="mb-8">
             <Link to="/">
-              <Button className="bg-cvfacile-primary dark:bg-blue-600 hover:bg-cvfacile-primary/90 dark:hover:bg-blue-700">
+              <Button className="bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
                 {language === 'fr' ? 'Créer un nouveau CV' : 'Create a new CV'}
               </Button>
@@ -104,41 +104,51 @@ const Dashboard = () => {
               </p>
               <div className="mt-6">
                 <Link to="/">
-                  <Button className="bg-cvfacile-primary dark:bg-blue-600 hover:bg-cvfacile-primary/90 dark:hover:bg-blue-700">
+                  <Button className="bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700">
                     {language === 'fr' ? 'Créer un CV' : 'Create a CV'}
                   </Button>
                 </Link>
               </div>
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 w-full">
               {resumes.map((resume) => (
                 <Card key={resume.id} className="dark:bg-slate-800 dark:border-slate-700">
                   <CardHeader className="pb-2">
-                    <CardTitle>{resume.title}</CardTitle>
-                    <CardDescription className="dark:text-gray-300">
-                      {getFormattedDate(resume.date)}
+                    <CardTitle className="text-lg font-semibold">{resume.title}</CardTitle>
+                    <CardDescription className="dark:text-gray-300 text-sm">
+                      {getFormattedDate(resume.updated_at || resume.created_at || resume.date)}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="h-32 flex items-center justify-center rounded-md bg-gray-100 dark:bg-slate-700">
-                      <FileText className="h-10 w-10 text-gray-500 dark:text-gray-400" />
+                    <div className="h-32 flex flex-col items-center justify-center rounded-md bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 mt-3">
+                      <FileText className="h-10 w-10 text-gray-500 dark:text-gray-400 mb-2" />
+                      <span className="text-sm text-gray-700 dark:text-gray-200 truncate w-full text-center px-2">{resume.title}</span>
                     </div>
                   </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button variant="outline" asChild className="dark:border-slate-600 dark:text-gray-300 dark:hover:bg-slate-700">
-                      <Link to={`/edit/${resume.id}`}>
-                        <Edit className="h-4 w-4 mr-2" />
-                        {language === 'fr' ? 'Modifier' : 'Edit'}
-                      </Link>
-                    </Button>
-                    <Button 
-                      variant="destructive" 
-                      onClick={() => handleDeleteResume(resume.id)}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      {language === 'fr' ? 'Supprimer' : 'Delete'}
-                    </Button>
+                  <CardFooter className="flex flex-wrap gap-2 justify-between pt-4">
+                    <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                      <Button variant="ghost" asChild className="px-3 py-2">
+                        <Link to={`/edit/${resume.id}`}>
+                          <Edit className="h-4 w-4 mr-2" />
+                          {language === 'fr' ? 'Modifier' : 'Edit'}
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" asChild className="px-3 py-2">
+                        <Link to={`/view/${resume.id}`}>
+                          <Eye className="h-4 w-4 mr-2" />
+                          {language === 'fr' ? 'Voir' : 'View'}
+                        </Link>
+                      </Button>
+                      <Button variant="ghost" onClick={() => {navigator.clipboard.writeText(window.location.origin+`/view/${resume.id}`); toast({title: language==='fr'?'Lien copié':'Link copied'});}} className="px-3 py-2">
+                        <Share2 className="h-4 w-4 mr-2" />
+                        {language === 'fr' ? 'Partager' : 'Share'}
+                      </Button>
+                      <Button variant="destructive" onClick={() => handleDeleteResume(resume.id)} className="px-3 py-2">
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        {language === 'fr' ? 'Supprimer' : 'Remove'}
+                      </Button>
+                    </div>
                   </CardFooter>
                 </Card>
               ))}
