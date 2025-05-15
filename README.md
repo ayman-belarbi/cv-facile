@@ -26,6 +26,12 @@ php artisan serve
 
 4. Database setup:
 ```bash
+# Create MySQL database
+mysql -u root -p
+CREATE DATABASE easycv;
+exit;
+
+# Import the database schema
 mysql -u root -p easycv < database/easycv.sql
 ```
 
@@ -52,7 +58,7 @@ mysql -u root -p easycv < database/easycv.sql
 
 ### Backend
 - Laravel (PHP)
-- MySQL/PostgreSQL
+- MySQL
 - RESTful API
 
 ## Development
@@ -66,8 +72,8 @@ mysql -u root -p easycv < database/easycv.sql
 - Access the API at `http://localhost:8000`
 
 ### Database
+- MySQL database named 'easycv'
 - Import the database schema from `database/easycv.sql`
-- Configure your database connection in `backend/.env`
 
 ## Contributing
 
@@ -79,4 +85,4 @@ mysql -u root -p easycv < database/easycv.sql
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.
