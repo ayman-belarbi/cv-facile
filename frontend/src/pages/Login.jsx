@@ -41,7 +41,12 @@ const Login = () => {
     try {
       setLoading(true);
       await login(email, password);
-      navigate('/dashboard');
+      toast({
+        title: language === 'fr' ? 'Bon retour !' : 'Welcome back!',
+        description: language === 'fr' ? 'Connexion réussie.' : 'Login successful.',
+        variant: 'default',
+      });
+      navigate('/');
     } catch (error) {
       toast({
         title: t('login.error'),

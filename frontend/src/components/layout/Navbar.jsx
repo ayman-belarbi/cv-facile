@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FileUser, LogIn, User, Moon, Sun, Languages, Menu, UserPlus } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FileUser, LogIn, User, Moon, Sun, Languages, Menu, UserPlus, Settings } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useAuth } from '@/context/AuthContext';
 import { useTheme } from '@/context/ThemeContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { useToast } from '@/hooks/use-toast';
 import { 
   DropdownMenu, 
   DropdownMenuContent, 
@@ -22,6 +23,8 @@ const Navbar = () => {
   const location = useLocation();
   const isMobile = useMobile();
   const [open, setOpen] = React.useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Logo Component
   const Logo = () => (
@@ -145,7 +148,13 @@ const Navbar = () => {
                     {t('app.dashboard')}
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => logout()} className="flex items-center gap-2">
+                <DropdownMenuItem asChild>
+                  <Link to="/profile" className="flex items-center gap-2">
+                    <Settings className="w-4 h-4" />
+                    {t('app.profile.settings')}
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2">
                   <LogIn className="w-4 h-4 rotate-180" />
                   {t('app.logout')}
                 </DropdownMenuItem>
@@ -291,7 +300,7 @@ const Navbar = () => {
               <Button 
                 variant="outline" 
                 className="w-full flex items-center justify-start gap-2" 
-                onClick={() => { logout(); setOpen(false); }}
+                onClick={() => { handleLogout(); setOpen(false); }}
               >
                 <User className="w-4 h-4" /> {t('app.logout')}
               </Button>
@@ -325,6 +334,16 @@ const Navbar = () => {
       </SheetContent>
     </Sheet>
   );
+
+  const handleLogout = async () => {
+    await logout();
+    toast({
+      title: language === 'fr' ? 'Déconnexion réussie' : 'Logged out successfully',
+      description: language === 'fr' ? 'Vous avez été déconnecté.' : 'You have been logged out.',
+      variant: 'default',
+    });
+    navigate('/');
+  };
 
   return (
     <header className="sticky top-0 z-50 glass-effect bg-white/80 backdrop-blur-lg border-b border-gray-100/50 dark:bg-slate-900/80 dark:border-slate-800/50">

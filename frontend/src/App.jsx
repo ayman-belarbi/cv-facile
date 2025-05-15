@@ -14,6 +14,7 @@ import NotFound from "./pages/NotFound";
 import Templates from "./pages/Templates";
 import BuildResume from "./pages/BuildResume";
 import ViewResume from "./pages/ViewResume";
+import ProfileSettings from "./pages/ProfileSettings";
 import { useEffect } from "react";
 import FaviconSwitcher from "@/components/utils/FaviconSwitcher";
 
@@ -34,6 +35,7 @@ const App = () => (
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/profile" element={<ProfileSettings />} />
                 <Route path="/build" element={<BuildResume />} />
                 <Route path="/templates" element={<Templates />} />
                 <Route path="/edit/:id" element={<BuildResume />} />

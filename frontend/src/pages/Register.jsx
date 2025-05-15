@@ -53,7 +53,12 @@ const Register = () => {
     try {
       setLoading(true);
       await register(name, email, password);
-      navigate('/dashboard');
+      toast({
+        title: language === 'fr' ? 'Bienvenue !' : 'Welcome!',
+        description: language === 'fr' ? 'Inscription réussie.' : 'Signup successful.',
+        variant: 'default',
+      });
+      navigate('/');
     } catch (error) {
       let errorMsg = t('register.error.desc');
       if (error.errors) {

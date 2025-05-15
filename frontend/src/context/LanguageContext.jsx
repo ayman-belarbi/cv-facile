@@ -57,7 +57,8 @@ const translations = {
     'title.howitworks': 'How It Works | Easy CV',
     'title.notfound': '404 Not Found | Easy CV',
     'title.editresume': 'Edit CV | Easy CV',
-    'title.buildresume': 'Build CV | Easy CV'
+    'title.buildresume': 'Build CV | Easy CV',
+    'app.profile.settings': 'Profile Settings'
   },
   fr: {
     'app.title': 'CV Facile',
@@ -115,7 +116,8 @@ const translations = {
     'title.howitworks': 'Comment ça marche | CV Facile',
     'title.notfound': '404 Introuvable | CV Facile',
     'title.editresume': 'Modifier le CV | CV Facile',
-    'title.buildresume': 'Créer CV | CV Facile'
+    'title.buildresume': 'Créer CV | CV Facile',
+    'app.profile.settings': 'Paramètres du profil'
   }
 };
 

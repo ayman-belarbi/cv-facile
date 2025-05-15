@@ -72,6 +72,45 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('token');
   };
 
+  const updateProfile = async ({ name, email, password }) => {
+    const res = await fetch(`${API_URL}/user`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({ name, email, password })
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
+    }
+    const data = await res.json();
+    setUser(data.user);
+    localStorage.setItem('user', JSON.stringify(data.user));
+    return data;
+  };
+
+  const deleteAccount = async () => {
+    const res = await fetch(`${API_URL}/user`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'application/json'
+      }
+    });
+    if (!res.ok) {
+      const error = await res.json();
+      throw error;
+    }
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    return await res.json();
+  };
+
   const value = {
     user,
     token,
@@ -79,6 +118,8 @@ export function AuthProvider({ children }) {
     login,
     register,
     logout,
+    updateProfile,
+    deleteAccount,
     isAuthenticated: !!user && !!token
   };
 
