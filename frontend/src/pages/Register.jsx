@@ -62,7 +62,6 @@ const Register = () => {
     } catch (error) {
       let errorMsg = t('register.error.desc');
       if (error.errors) {
-        // عرض أول رسالة خطأ من backend
         const firstKey = Object.keys(error.errors)[0];
         errorMsg = error.errors[firstKey][0];
       } else if (error.message) {
@@ -118,7 +117,6 @@ const Register = () => {
               <Input 
                 id="name"
                 type="text" 
-                placeholder="John Doe" 
                 value={name}
                 onChange={e => setName(e.target.value)}
                 required
@@ -131,7 +129,6 @@ const Register = () => {
               <Input 
                 id="email"
                 type="email" 
-                placeholder="email@example.com" 
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 required
