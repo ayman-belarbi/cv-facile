@@ -1,80 +1,78 @@
-# Easy CV | Resume Builder
-
+Easy CV - Resume Builder
 A modern web application for creating professional resumes and CVs. Built with React and Laravel.
+Quick Start
 
-## Quick Start
+Clone and setup:
 
-1. **Clone and setup:**
-   ```bash
-   git clone https://github.com/ayman-belarbi/easy-cv.git
-   cd easy-cv
-   ```
+bashgit clone https://github.com/ayman-belarbi/easy-cv.git
+cd easy-cv
 
-2. **Frontend setup:**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
+Frontend setup:
 
-3. **Backend setup:**
-   ```bash
-   cd backend
-   composer install
-   php artisan serve
-   ```
+bashcd frontend
+npm install
+npm run dev
 
-4. **Database setup:**
-   ```bash
-   # Create the database
-   CREATE DATABASE easycv;
+Backend setup:
 
-   # Import the schema (using CMD)
-   cd database
-   mysql -u root -p easycv < easycv.sql
-   ```
-   *Note*: If using XAMPP, use the full MySQL path:
-   ```cmd
-   cd database
-   "C:\xampp\mysql\bin\mysql" -u root -p easycv < easycv.sql
-   ```
+bashcd backend
+composer install
+php artisan serve
 
-## Features
+Database setup:
 
-- Create and edit professional resumes
-- Multiple resume templates
-- Export to PDF
-- User authentication
-- Save and manage multiple resumes
-- Responsive design
+bashCREATE DATABASE easycv;
 
-## Tech Stack
+# For Command Prompt (CMD)
+cd database
+mysql -u root -p easycv < easycv.sql
 
-### Frontend
-- React 19
-- Vite
-- Tailwind CSS
-- Radix UI Components
-- React Router
-- React Query
-- i18next
-- jsPDF
+# For PowerShell
+cd database
+Get-Content .\easycv.sql | & "C:\xampp\mysql\bin\mysql" -u root -p easycv
 
-### Backend
-- Laravel (PHP)
-- MySQL
-- RESTful API
+# For Linux/Mac Terminal
+cd database
+mysql -u root -p easycv < easycv.sql
+Features
 
-## Development
+Create and edit professional resumes
+Multiple resume templates
+Export to PDF
+User authentication
+Save and manage multiple resumes
+Responsive design
 
-### Frontend Development
-- Run `npm run dev` in the `frontend` directory
-- Access the frontend at `http://localhost:5173`
+Tech Stack
+Frontend
 
-### Backend Development
-- Run `php artisan serve` in the `backend` directory
-- Access the API at `http://localhost:8000`
+React 19
+Vite
+Tailwind CSS
+Radix UI Components
+React Router
+React Query
+i18next
+jsPDF
 
-### Database
-- MySQL database named `easycv`
-- Import the database schema from `database/easycv.sql`
+Backend
+
+Laravel (PHP)
+MySQL
+RESTful API
+
+Development
+Frontend Development
+
+Run npm run dev in the frontend directory
+Access the frontend at http://localhost:5173
+
+Backend Development
+
+Run php artisan serve in the backend directory
+Access the API at http://localhost:8000
+
+Database
+
+MySQL database named 'easycv'
+Import the database schema from database/easycv.sql
