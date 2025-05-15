@@ -1,39 +1,43 @@
-# Easy CV - Resume Builder
+# Easy CV | Resume Builder
 
 A modern web application for creating professional resumes and CVs. Built with React and Laravel.
 
 ## Quick Start
 
-1. Clone and setup:
-```bash
-git clone https://github.com/ayman-belarbi/easy-cv.git
-cd easy-cv
-```
+1. **Clone and setup:**
+   ```bash
+   git clone https://github.com/ayman-belarbi/easy-cv.git
+   cd easy-cv
+   ```
 
-2. Frontend setup:
-```bash
-cd frontend
-npm install
-npm run dev
-```
+2. **Frontend setup:**
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-3. Backend setup:
-```bash
-cd backend
-composer install
-php artisan serve
-```
+3. **Backend setup:**
+   ```bash
+   cd backend
+   composer install
+   php artisan serve
+   ```
 
-4. Database setup:
-```bash
-# Create MySQL database
-mysql -u root -p
-CREATE DATABASE easycv;
-exit;
+4. **Database setup:**
+   ```bash
+   # Create the database
+   CREATE DATABASE easycv;
 
-# Import the database schema
-mysql -u root -p easycv < database/easycv.sql
-```
+   # Import the schema (using CMD)
+   cd database
+   mysql -u root -p easycv < easycv.sql
+   ```
+   *Note*: If using XAMPP, use the full MySQL path:
+   ```cmd
+   cd database
+   "C:\xampp\mysql\bin\mysql" -u root -p easycv < easycv.sql
+   ```
 
 ## Features
 
@@ -64,13 +68,13 @@ mysql -u root -p easycv < database/easycv.sql
 ## Development
 
 ### Frontend Development
-- Run `npm run dev` in the frontend directory
+- Run `npm run dev` in the `frontend` directory
 - Access the frontend at `http://localhost:5173`
 
 ### Backend Development
-- Run `php artisan serve` in the backend directory
+- Run `php artisan serve` in the `backend` directory
 - Access the API at `http://localhost:8000`
 
 ### Database
-- MySQL database named 'easycv'
+- MySQL database named `easycv`
 - Import the database schema from `database/easycv.sql`
