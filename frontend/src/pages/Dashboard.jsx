@@ -80,7 +80,7 @@ const Dashboard = () => {
         <div className="container px-4 mx-auto py-8">
           {/* Create new CV button */}
           <div className="mb-8">
-            <Link to="/build">
+            <Link to="/">
               <Button className="bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
                 {language === 'fr' ? 'Créer un nouveau CV' : 'Create a new CV'}
@@ -103,7 +103,7 @@ const Dashboard = () => {
                   : "Start by creating your first CV"}
               </p>
               <div className="mt-6">
-                <Link to="/build">
+                <Link to="/">
                   <Button className="bg-cvfacile-primary hover:bg-cvfacile-primary/90 text-white dark:bg-blue-600 dark:hover:bg-blue-700">
                     {language === 'fr' ? 'Créer un CV' : 'Create a CV'}
                   </Button>
