@@ -9,7 +9,7 @@ import { Save, FileDown } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import { saveResume } from "@/services/resumeStorage";
+import { createResume } from '@/services/resumeStorage';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +31,7 @@ const BuildResume = () => {
   const [resumeTitle, setResumeTitle] = useState("");
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
   
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, token } = useAuth();
   const { language, t } = useLanguage();
   const { theme } = useTheme();
   const { toast } = useToast();
@@ -80,7 +80,7 @@ const BuildResume = () => {
     });
   };
 
-  const handleSaveResume = () => {
+  const handleSaveResume = async () => {
     if (!isAuthenticated) {
       toast({
         title: language === 'fr' ? "Connexion requise" : "Login required",
@@ -103,20 +103,27 @@ const BuildResume = () => {
       return;
     }
 
-    saveResume(resumeData, resumeTitle);
-    setIsSaveDialogOpen(false);
-    
-    toast({
-      title: language === 'fr' ? "CV sauvegardé" : "CV saved",
-      description: language === 'fr' 
-        ? "Votre CV a été sauvegardé avec succès, consultez votre tableau de bord" 
-        : "Your CV has been successfully saved, check your dashboard",
-    });
-    
-    // Navigate to dashboard after saving
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 1500);
+    try {
+      await createResume({ title: resumeTitle, data: resumeData }, token);
+      setIsSaveDialogOpen(false);
+      toast({
+        title: language === 'fr' ? "CV sauvegardé" : "CV saved",
+        description: language === 'fr' 
+          ? "Votre CV a été sauvegardé avec succès, consultez votre tableau de bord" 
+          : "Your CV has been successfully saved, check your dashboard",
+      });
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
+    } catch {
+      toast({
+        title: language === 'fr' ? "Erreur" : "Error",
+        description: language === 'fr' 
+          ? "Échec de la sauvegarde du CV" 
+          : "Failed to save CV",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleDownloadPDF = async () => {
@@ -263,4 +270,4 @@ const BuildResume = () => {
   );
 };
 
-export default BuildResume; 
+export default BuildResume;

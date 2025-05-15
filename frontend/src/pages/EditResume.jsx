@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import { getResumeById, updateResume } from "@/services/resumeStorage";
+import { fetchResumeById, updateResume as updateResumeAPI } from "@/services/resumeStorage";
 import { ResumeData } from "@/lib/resumeData";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -18,7 +18,7 @@ const EditResume = () => {
   const { id } = useParams();
   const [resumeData, setResumeData] = useState(ResumeData);
   const [resumeTitle, setResumeTitle] = useState("");
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, token } = useAuth();
   const { language, t } = useLanguage();
   const { theme } = useTheme();
   const navigate = useNavigate();
@@ -28,17 +28,15 @@ const EditResume = () => {
     if (!isAuthenticated) {
       navigate("/login");
     }
-    
     if (id) {
-      const resume = getResumeById(id);
-      if (resume) {
-        setResumeData(resume.resumeData);
-        setResumeTitle(resume.title);
-      } else {
-        navigate("/dashboard");
-      }
+      fetchResumeById(id, token)
+        .then(resume => {
+          setResumeData(typeof resume.data === 'string' ? JSON.parse(resume.data) : resume.data);
+          setResumeTitle(resume.title);
+        })
+        .catch(() => navigate("/dashboard"));
     }
-  }, [id, isAuthenticated, navigate]);
+  }, [id, isAuthenticated, navigate, token]);
 
   useEffect(() => {
     document.title = t('title.editresume');
@@ -54,25 +52,31 @@ const EditResume = () => {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (id) {
-      updateResume(id, { 
-        title: resumeTitle, 
-        resumeData: {
-          ...resumeData,
-          settings: {
-            ...resumeData.settings,
-            language
+      try {
+        await updateResumeAPI(id, {
+          title: resumeTitle,
+          data: {
+            ...resumeData,
+            settings: {
+              ...resumeData.settings,
+              language
+            }
           }
-        } 
-      });
-      
-      toast({
-        title: language === 'fr' ? "CV sauvegardé" : "CV saved",
-        description: language === 'fr' ? "Votre CV a été mis à jour avec succès" : "Your CV has been successfully updated",
-      });
-      
-      navigate("/dashboard");
+        }, token);
+        toast({
+          title: language === 'fr' ? "CV sauvegardé" : "CV saved",
+          description: language === 'fr' ? "Votre CV a été mis à jour avec succès" : "Your CV has been successfully updated",
+        });
+        navigate("/dashboard");
+      } catch {
+        toast({
+          title: language === 'fr' ? "Erreur" : "Error",
+          description: language === 'fr' ? "Mise à jour échouée" : "Update failed",
+          variant: 'destructive',
+        });
+      }
     }
   };
 

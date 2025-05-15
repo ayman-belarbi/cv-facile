@@ -52,12 +52,20 @@ const Register = () => {
     
     try {
       setLoading(true);
-      await register(email, password, name);
+      await register(name, email, password);
       navigate('/dashboard');
     } catch (error) {
+      let errorMsg = t('register.error.desc');
+      if (error.errors) {
+        // عرض أول رسالة خطأ من backend
+        const firstKey = Object.keys(error.errors)[0];
+        errorMsg = error.errors[firstKey][0];
+      } else if (error.message) {
+        errorMsg = error.message;
+      }
       toast({
         title: t('register.error'),
-        description: t('register.error.desc'),
+        description: errorMsg,
         variant: "destructive",
       });
     } finally {

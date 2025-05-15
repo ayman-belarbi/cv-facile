@@ -1,48 +1,52 @@
-const STORAGE_KEY = 'saved_resumes';
+const API_URL = import.meta.env.VITE_API_URL + '/resumes';
 
-export function saveResume(resume) {
-  const savedResumes = getSavedResumes();
-  const newResume = {
-    id: resume.id || Date.now().toString(),
-    title: resume.title || 'Untitled Resume',
-    data: resume,
-    lastModified: new Date().toISOString(),
-  };
-
-  const existingIndex = savedResumes.findIndex(r => r.id === newResume.id);
-  if (existingIndex >= 0) {
-    savedResumes[existingIndex] = newResume;
-  } else {
-    savedResumes.push(newResume);
-  }
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedResumes));
-  return newResume;
-}
-
-export function getSavedResumes() {
-  const saved = localStorage.getItem(STORAGE_KEY);
-  return saved ? JSON.parse(saved) : [];
-}
-
-export function getResumeById(id) {
-  const savedResumes = getSavedResumes();
-  return savedResumes.find(resume => resume.id === id);
-}
-
-export function deleteResume(id) {
-  const savedResumes = getSavedResumes();
-  const filteredResumes = savedResumes.filter(resume => resume.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredResumes));
-}
-
-export function updateResume(id, newTitle) {
-  const savedResumes = getSavedResumes();
-  const updatedResumes = savedResumes.map(resume => {
-    if (resume.id === id) {
-      return { ...resume, title: newTitle };
-    }
-    return resume;
+export async function fetchResumes(token) {
+  const res = await fetch(API_URL, {
+    headers: { 'Authorization': `Bearer ${token}` }
   });
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedResumes));
-} 
+  if (!res.ok) throw new Error('Failed to fetch resumes');
+  return await res.json();
+}
+
+export async function fetchResumeById(id, token) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  if (!res.ok) throw new Error('Failed to fetch resume');
+  return await res.json();
+}
+
+export async function createResume({ title, data }, token) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ title, data })
+  });
+  if (!res.ok) throw new Error('Failed to create resume');
+  return await res.json();
+}
+
+export async function updateResume(id, { title, data }, token) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ title, data })
+  });
+  if (!res.ok) throw new Error('Failed to update resume');
+  return await res.json();
+}
+
+export async function deleteResume(id, token) {
+  const res = await fetch(`${API_URL}/${id}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+  if (!res.ok) throw new Error('Failed to delete resume');
+  return await res.json();
+}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTheme } from '@/context/ThemeContext';
-import { getSavedResumes, deleteResume } from '@/services/resumeStorage';
+import { fetchResumes, deleteResume as deleteResumeAPI } from '@/services/resumeStorage';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { FileText, Trash2, Edit, Plus } from 'lucide-react';
@@ -15,7 +15,7 @@ import Footer from '@/components/layout/Footer';
 
 const Dashboard = () => {
   const [resumes, setResumes] = useState([]);
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, token } = useAuth();
   const { t, language } = useLanguage();
   const { theme } = useTheme();
   const navigate = useNavigate();
@@ -25,16 +25,26 @@ const Dashboard = () => {
     if (!isAuthenticated) {
       navigate('/login');
     } else {
-      setResumes(getSavedResumes());
+      fetchResumes(token)
+        .then(setResumes)
+        .catch(() => setResumes([]));
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, token]);
 
-  const handleDeleteResume = (id) => {
-    if (deleteResume(id)) {
-      setResumes(getSavedResumes());
+  const handleDeleteResume = async (id) => {
+    try {
+      await deleteResumeAPI(id, token);
+      const updated = await fetchResumes(token);
+      setResumes(updated);
       toast({
         title: language === 'fr' ? "CV supprimé" : "CV deleted",
         description: language === 'fr' ? "Le CV a été supprimé avec succès" : "The CV has been successfully deleted",
+      });
+    } catch {
+      toast({
+        title: language === 'fr' ? "Erreur" : "Error",
+        description: language === 'fr' ? "Suppression échouée" : "Delete failed",
+        variant: 'destructive',
       });
     }
   };
