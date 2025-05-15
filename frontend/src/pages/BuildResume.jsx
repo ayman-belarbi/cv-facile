@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { ResumeData } from "@/lib/resumeData";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -9,7 +9,7 @@ import { Save, FileDown } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
 import { useTheme } from "@/context/ThemeContext";
-import { fetchResumeById, updateResume as updateResumeAPI, createResume } from '@/services/resumeStorage';
+import { createResume } from '@/services/resumeStorage';
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,11 +27,9 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 const BuildResume = () => {
-  const { id } = useParams();
   const [resumeData, setResumeData] = useState(ResumeData);
   const [resumeTitle, setResumeTitle] = useState("");
   const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   
   const { isAuthenticated, token } = useAuth();
   const { language, t } = useLanguage();
@@ -40,20 +38,6 @@ const BuildResume = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const selectedTemplate = location.state?.selectedTemplate;
-
-  // Fetch resume if in edit mode
-  useEffect(() => {
-    if (id) {
-      setLoading(true);
-      fetchResumeById(id, token)
-        .then(resume => {
-          setResumeData(typeof resume.data === 'string' ? JSON.parse(resume.data) : resume.data);
-          setResumeTitle(resume.title);
-        })
-        .catch(() => navigate("/dashboard"))
-        .finally(() => setLoading(false));
-    }
-  }, [id, token, navigate]);
 
   // Update resume language when app language changes
   useEffect(() => {
@@ -83,8 +67,8 @@ const BuildResume = () => {
   }, [selectedTemplate]);
 
   useEffect(() => {
-    document.title = id ? t('title.editresume') : t('title.buildresume');
-  }, [t, id]);
+    document.title = t('title.buildresume');
+  }, [t]);
 
   const updateResumeSettings = (settings) => {
     setResumeData({
@@ -120,31 +104,14 @@ const BuildResume = () => {
     }
 
     try {
-      if (id) {
-        await updateResumeAPI(id, {
-          title: resumeTitle,
-          data: {
-            ...resumeData,
-            settings: {
-              ...resumeData.settings,
-              language
-            }
-          }
-        }, token);
-        toast({
-          title: language === 'fr' ? "CV sauvegardé" : "CV saved",
-          description: language === 'fr' ? "Votre CV a été mis à jour avec succès" : "Your CV has been successfully updated",
-        });
-      } else {
-        await createResume({ title: resumeTitle, data: resumeData }, token);
-        toast({
-          title: language === 'fr' ? "CV sauvegardé" : "CV saved",
-          description: language === 'fr' 
-            ? "Votre CV a été sauvegardé avec succès, consultez votre tableau de bord" 
-            : "Your CV has been successfully saved, check your dashboard",
-        });
-      }
+      await createResume({ title: resumeTitle, data: resumeData }, token);
       setIsSaveDialogOpen(false);
+      toast({
+        title: language === 'fr' ? "CV sauvegardé" : "CV saved",
+        description: language === 'fr' 
+          ? "Votre CV a été sauvegardé avec succès, consultez votre tableau de bord" 
+          : "Your CV has been successfully saved, check your dashboard",
+      });
       setTimeout(() => {
         navigate('/dashboard');
       }, 1500);
@@ -152,8 +119,8 @@ const BuildResume = () => {
       toast({
         title: language === 'fr' ? "Erreur" : "Error",
         description: language === 'fr' 
-          ? (id ? "Mise à jour échouée" : "Échec de la sauvegarde du CV")
-          : (id ? "Update failed" : "Failed to save CV"),
+          ? "Échec de la sauvegarde du CV" 
+          : "Failed to save CV",
         variant: "destructive",
       });
     }
@@ -200,20 +167,6 @@ const BuildResume = () => {
       });
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex flex-col min-h-screen dark:bg-slate-900 dark:text-white">
-        <Navbar />
-        <main className="flex-1 flex items-center justify-center">
-          <p className="text-gray-600 dark:text-gray-300">
-            {language === 'fr' ? 'Chargement...' : 'Loading...'}
-          </p>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white'}`}>
