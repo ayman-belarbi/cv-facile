@@ -74,7 +74,3 @@ mysql -u root -p easycv < database/easycv.sql
 ### Database
 - MySQL database named 'easycv'
 - Import the database schema from `database/easycv.sql`
-
-## License
-
-This project is licensed under the MIT License.
