@@ -55,13 +55,6 @@ cd database
 Get-Content .\easycv.sql | & "C:\xampp\mysql\bin\mysql" -u root -p easycv
 ```
 
-**For Linux/Mac Terminal:**
-
-```bash
-cd database
-mysql -u root -p easycv < easycv.sql
-```
-
 ---
 
 ## Features
