@@ -1,4 +1,4 @@
-# Easy CV - Resume Builder
+# Easy CV | Resume Builder
 
 A modern web application for creating professional resumes and CVs. Built with React and Laravel.
 
