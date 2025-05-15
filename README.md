@@ -11,6 +11,7 @@ A modern web application for creating professional resumes and CVs. Built with R
 ```bash
 git clone https://github.com/ayman-belarbi/easy-cv.git
 cd easy-cv
+code .
 ```
 
 ---
