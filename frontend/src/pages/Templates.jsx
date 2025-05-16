@@ -41,9 +41,7 @@ const Templates = () => {
         <section className="py-12 md:py-16">
           <div className="container px-4 mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
-              {language === 'fr' ? 'Choisissez votre' : 'Choose your'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
-                {language === 'fr' ? 'modèle de CV' : 'CV template'}
-              </span>
+              {language === 'fr' ? 'Choisissez votre modèle de CV' : 'Choose your CV template'}
             </h2>
           </div>
         </section>

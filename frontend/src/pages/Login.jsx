@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -20,6 +20,7 @@ const Login = () => {
   const { t, language } = useLanguage();
   const { theme } = useTheme();
   const navigate = useNavigate();
+  const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
@@ -46,7 +47,11 @@ const Login = () => {
         description: language === 'fr' ? 'Connexion réussie.' : 'Login successful.',
         variant: 'default',
       });
-      navigate('/');
+      if (location.state && location.state.from && location.state.from !== '/login' && location.state.from !== '/register') {
+        navigate(location.state.from);
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       toast({
         title: t('login.error'),
@@ -64,7 +69,7 @@ const Login = () => {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
           className="flex items-center gap-2"
         >
           <ArrowLeft className="h-4 w-4" />

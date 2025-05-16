@@ -203,16 +203,14 @@ const BuildResume = () => {
   };
 
   return (
-    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900 text-white' : 'bg-white'}`}>
+    <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'dark:bg-slate-900 text-white' : 'bg-gray-50'}`}>
       <Navbar />
       
       <main className="flex-1">
-        <section className={`py-12 md:py-16 ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
+        <section className={`py-12 md:py-16 ${theme === 'dark' ? 'dark:bg-slate-900' : 'bg-gray-50'}`}>
           <div className="container px-4 mx-auto">
             <h2 className={`mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              {t('app.build.prof.cv')} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
-                {language === 'fr' ? 'professionnel' : 'professional CV'}
-              </span>
+              {t('app.build.prof.cv')}
             </h2>
             
             <div className="flex justify-end mb-6 gap-2">
@@ -229,28 +227,41 @@ const BuildResume = () => {
 
               <Dialog open={isSaveDialogOpen} onOpenChange={setIsSaveDialogOpen}>
                 <DialogTrigger asChild>
-                  <Button className={theme === 'dark' 
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                    : 'bg-blue-600 hover:bg-blue-700 text-white'
-                  }>
-                    <Save className="w-4 h-4 mr-2" />
-                    {isAuthenticated 
-                      ? (isEditMode 
-                          ? (language === 'fr' ? 'Mettre à jour le CV' : 'Update CV')
-                          : t('app.save.cv'))
-                      : language === 'fr' 
-                        ? 'Connectez-vous pour sauvegarder'
-                        : 'Login to save'
-                    }
-                  </Button>
+                  {isAuthenticated ? (
+                    <Button
+                      className={theme === 'dark' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}
+                      onClick={() => setIsSaveDialogOpen(true)}
+                    >
+                      <Save className="w-4 h-4 mr-2" />
+                      {isEditMode
+                        ? (language === 'fr' ? 'Mettre à jour' : 'Update')
+                        : (language === 'fr' ? 'Sauvegarder le CV' : 'Save CV')}
+                    </Button>
+                  ) : (
+                    <Button
+                      className={theme === 'dark' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}
+                      onClick={() => navigate('/login')}
+                    >
+                      <Save className="w-4 h-4 mr-2" />
+                      {language === 'fr' ? 'Connectez-vous pour sauvegarder' : 'Login to save'}
+                    </Button>
+                  )}
                 </DialogTrigger>
                 <DialogContent>
                   <DialogHeader>
-                    <DialogTitle className={theme === 'dark' ? 'dark:text-white' : ''}>{language === 'fr' ? 'Sauvegarder votre CV' : 'Save your CV'}</DialogTitle>
+                    <DialogTitle className={theme === 'dark' ? 'dark:text-white' : ''}>
+                      {isEditMode
+                        ? (language === 'fr' ? 'Mettre à jour' : 'Update')
+                        : (language === 'fr' ? 'Sauvegarder votre CV' : 'Save your CV')}
+                    </DialogTitle>
                     <DialogDescription className={theme === 'dark' ? 'dark:text-gray-300' : ''}>
-                      {language === 'fr' 
-                        ? 'Donnez un titre à votre CV pour le retrouver facilement plus tard.'
-                        : 'Give your CV a title to easily find it later.'}
+                      {isEditMode
+                        ? (language === 'fr'
+                            ? 'Modifiez le titre de votre CV si nécessaire.'
+                            : 'Edit your CV title if needed.')
+                        : (language === 'fr'
+                            ? 'Donnez un titre à votre CV pour le retrouver facilement plus tard.'
+                            : 'Give your CV a title to easily find it later.')}
                     </DialogDescription>
                   </DialogHeader>
                   <div className="grid gap-4 py-4">
@@ -275,7 +286,9 @@ const BuildResume = () => {
                         : 'bg-blue-600 hover:bg-blue-700 text-white'
                       }
                     >
-                      {language === 'fr' ? 'Sauvegarder' : 'Save'}
+                      {isEditMode
+                        ? (language === 'fr' ? 'Mettre à jour' : 'Update')
+                        : (language === 'fr' ? 'Sauvegarder' : 'Save')}
                     </Button>
                   </DialogFooter>
                 </DialogContent>

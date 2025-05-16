@@ -101,32 +101,32 @@ const Index = () => {
 
   const faqs = [
     {
-      question: language === 'fr' 
-        ? 'Comment commencer à créer mon CV ?' 
+      question: language === 'fr'
+        ? 'Comment commencer à créer mon CV ?'
         : 'How do I start creating my CV?',
       answer: language === 'fr'
         ? 'Cliquez sur "Créer mon CV", choisissez un modèle et commencez à remplir vos informations.'
         : 'Click on "Create my CV", choose a template and start filling in your information.'
     },
     {
-      question: language === 'fr' 
-        ? 'Est-ce que le service est gratuit ?' 
+      question: language === 'fr'
+        ? 'Est-ce que le service est gratuit ?'
         : 'Is the service free?',
       answer: language === 'fr'
         ? 'Oui, la création et le téléchargement de CV sont entièrement gratuits.'
         : 'Yes, creating and downloading CVs is completely free.'
     },
     {
-      question: language === 'fr' 
-        ? 'Dans quel format puis-je télécharger mon CV ?' 
+      question: language === 'fr'
+        ? 'Dans quel format puis-je télécharger mon CV ?'
         : 'In what format can I download my CV?',
       answer: language === 'fr'
         ? 'Vous pouvez télécharger votre CV au format PDF, qui est universellement accepté.'
         : 'You can download your CV in PDF format, which is universally accepted.'
     },
     {
-      question: language === 'fr' 
-        ? 'Puis-je modifier mon CV après l\'avoir sauvegardé ?' 
+      question: language === 'fr'
+        ? 'Puis-je modifier mon CV après l\'avoir sauvegardé ?'
         : 'Can I edit my CV after saving it?',
       answer: language === 'fr'
         ? 'Oui, vous pouvez modifier votre CV à tout moment après l\'avoir sauvegardé.'
@@ -153,31 +153,33 @@ const Index = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      
+
       <main className="flex-1">
         {/* Hero Section */}
-        <section className={`relative py-16 md:py-20 overflow-hidden ${
-          theme === 'dark' 
-            ? 'bg-gradient-to-br from-slate-900 to-slate-800' 
+        <section className={`relative py-16 md:py-20 overflow-hidden ${theme === 'dark'
+            ? 'bg-gradient-to-br from-slate-900 to-slate-800'
             : 'bg-gradient-to-br from-cvfacile-dark to-cvfacile-primary'
-        }`}>
+          }`}>
           <div className="container px-4 mx-auto text-center flex flex-col items-center justify-center relative z-20">
-            <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins animate-float flex items-center gap-3">
-              {t('app.subtitle')} <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine">PRO</span>
-            </h1>
+            <div className="relative inline-block">
+              <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins animate-float flex flex-wrap items-center gap-3 justify-center">
+                {t('app.subtitle')}
+                <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine ml-2 align-middle">PRO</span>
+              </h1>
+            </div>
             <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl text-white/90">
-              {language === 'fr' 
+              {language === 'fr'
                 ? 'CV Facile Pro vous permet de créer, personnaliser et télécharger des CV professionnels au format PDF.'
                 : 'Easy CV Pro allows you to create, customize and download professional CVs in PDF format.'}
             </p>
-            <Link 
+            <Link
               to="/build"
               className="inline-flex items-center px-6 py-3 text-white text-sm font-medium rounded-full shadow-lg glass-effect"
             >
               {isMobile ? t('app.create') : t('app.create.now')} <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>
-          
+
           {/* Decorative elements */}
           <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-10">
             {HERO_CIRCLES.map(({ anim, style, bg }, i) => (
@@ -189,28 +191,25 @@ const Index = () => {
             ))}
           </div>
         </section>
-        
+
         {/* How It Works Section */}
         <section id="how-it-works" className={`py-16 ${theme === 'dark' ? 'bg-slate-900' : 'bg-slate-50'}`}>
           <div className="container px-4 mx-auto">
             <h2 className="mb-12 text-3xl font-bold text-center font-poppins dark:text-white">
-              {language === 'fr' ? 'Comment' : 'How'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
-                {language === 'fr' ? 'ça marche' : 'it works'}
-              </span>
+              {language === 'fr' ? 'Comment ça marche' : 'How it works'}
             </h2>
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
               {steps.map((step, index) => {
                 const Icon = step.icon;
                 return (
-                  <div 
+                  <div
                     key={index}
                     className="relative p-6 rounded-xl glass-card transition-transform hover:scale-105"
                   >
-                    <div className={`w-12 h-12 mb-4 rounded-full flex items-center justify-center ${
-                      theme === 'dark' 
-                        ? 'bg-gradient-to-br from-blue-600 to-blue-500' 
+                    <div className={`w-12 h-12 mb-4 rounded-full flex items-center justify-center ${theme === 'dark'
+                        ? 'bg-gradient-to-br from-blue-600 to-blue-500'
                         : 'bg-cvfacile-primary'
-                    }`}>
+                      }`}>
                       <Icon className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="mb-2 text-xl font-semibold dark:text-white">
@@ -235,20 +234,17 @@ const Index = () => {
         <section id="faqs" className="py-16 dark:bg-slate-900 bg-white">
           <div className="container px-4 mx-auto">
             <h2 className="mb-12 text-3xl font-bold text-center font-poppins dark:text-white">
-              {language === 'fr' ? 'Questions' : 'Frequently Asked'} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
-                {language === 'fr' ? 'fréquentes' : 'Questions'}
-              </span>
+              {language === 'fr' ? 'Questions fréquentes' : 'Frequently Asked Questions'}
             </h2>
             <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
               {faqs.map((faq, index) => (
-                <div 
+                <div
                   key={index}
                   className="p-6 rounded-xl glass-card transition-all duration-200 hover:scale-[1.02]"
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`mt-1 ${
-                      theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'
-                    }`}>
+                    <div className={`mt-1 ${theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'
+                      }`}>
                       <HelpCircle className="w-5 h-5" />
                     </div>
                     <div>
@@ -270,11 +266,9 @@ const Index = () => {
         <section className="py-12 md:py-16 dark:bg-slate-900 bg-slate-50">
           <div className="container px-4 mx-auto">
             <h2 className="mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
-              {t('app.why.choose')} <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
-                {language === 'fr' ? 'CV Facile' : 'Easy CV'}
-              </span> ?
+              {t('app.why.choose')}
             </h2>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {[
                 {
@@ -314,13 +308,12 @@ const Index = () => {
                     : "Create an account to save your CVs and access them at any time from any device."
                 }
               ].map((feature, index) => (
-                <div 
-                  key={index} 
+                <div
+                  key={index}
                   className="p-6 transition-all rounded-xl glass-card hover:scale-[1.02]"
                 >
-                  <CheckCircle2 className={`w-8 h-8 mb-4 ${
-                    theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'
-                  }`} />
+                  <CheckCircle2 className={`w-8 h-8 mb-4 ${theme === 'dark' ? 'text-blue-400' : 'text-cvfacile-primary'
+                    }`} />
                   <h3 className="mb-2 text-lg font-semibold dark:text-white">
                     {feature.title}
                   </h3>
@@ -335,11 +328,10 @@ const Index = () => {
 
         {/* CTA Section */}
         {!isAuthenticated && (
-          <section className={`py-12 md:py-16 text-white ${
-            theme === 'dark'
+          <section className={`py-12 md:py-16 text-white ${theme === 'dark'
               ? 'bg-gradient-to-br from-slate-900 to-slate-800'
               : 'bg-gradient-to-br from-cvfacile-dark to-cvfacile-primary'
-          }`}>
+            }`}>
             <div className="container px-4 mx-auto text-center">
               <h2 className="mb-6 text-2xl md:text-4xl font-bold font-poppins">
                 {t('app.boost.career')}
@@ -350,13 +342,13 @@ const Index = () => {
                   : 'Create a free account to save your CVs, access premium templates and share your achievements.'}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-4">
-                <Link 
+                <Link
                   to="/register"
                   className="px-6 py-3 text-lg font-medium transition-all glass-effect rounded-full"
                 >
                   {t('app.create.account')}
                 </Link>
-                <Link 
+                <Link
                   to="/build"
                   className="px-6 py-3 text-lg font-medium transition-all border border-white rounded-full hover:bg-white/10"
                 >
@@ -367,7 +359,7 @@ const Index = () => {
           </section>
         )}
       </main>
-      
+
       <Footer />
     </div>
   );

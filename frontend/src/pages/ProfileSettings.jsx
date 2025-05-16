@@ -1,178 +1,337 @@
 import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { Eye, EyeOff } from 'lucide-react';
 
 const ProfileSettings = () => {
   const { user, updateProfile, deleteAccount } = useAuth();
   const { t, language } = useLanguage();
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
-  const [deleteError, setDeleteError] = useState("");
+  const [isEditNameDialogOpen, setIsEditNameDialogOpen] = useState(false);
+  const [isEditEmailDialogOpen, setIsEditEmailDialogOpen] = useState(false);
+  const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+  const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
+  const [editName, setEditName] = useState(name);
+  const [editEmail, setEditEmail] = useState(email);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [deleteConfirm, setDeleteConfirm] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSuccess("");
-    setError("");
-    if (password && password !== confirmPassword) {
-      setError(language === 'fr' ? 'Les mots de passe ne correspondent pas.' : 'Passwords do not match.');
-      return;
-    }
+  // Handlers for dialogs
+  const handleNameSave = async () => {
+    setLoading(true);
     try {
-      setLoading(true);
-      await updateProfile({ name, email, password: password || undefined });
+      await updateProfile({ name: editName });
+      setName(editName);
+      setIsEditNameDialogOpen(false);
       toast({
-        title: language === 'fr' ? 'Profil mis à jour' : 'Profile updated',
-        description: language === 'fr' ? 'Votre profil a été modifié avec succès.' : 'Your profile was updated successfully.',
+        title: t('success'),
+        description: t('profile.updated'),
         variant: 'default',
       });
-      setPassword("");
-      setConfirmPassword("");
-      navigate("/");
-    } catch (err) {
-      setError(err?.message || (language === 'fr' ? "Erreur lors de la mise à jour." : "Error updating profile."));
+      navigate('/');
+    } catch {
+      toast({
+        title: t('error'),
+        description: t('profile.update.failed'),
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
   };
-
-  const handleDelete = async () => {
-    setDeleteError("");
+  const handleEmailSave = async () => {
+    setLoading(true);
     try {
-      setDeleting(true);
-      await deleteAccount();
+      await updateProfile({ email: editEmail });
+      setEmail(editEmail);
+      setIsEditEmailDialogOpen(false);
       toast({
-        title: language === 'fr' ? 'Compte supprimé' : 'Account removed',
-        description: language === 'fr' ? 'Votre compte a été supprimé avec succès.' : 'Your account has been successfully removed.',
+        title: t('success'),
+        description: t('profile.updated'),
         variant: 'default',
       });
-      navigate("/");
-    } catch (err) {
-      setDeleteError(err?.message || (language === 'fr' ? "Erreur lors de la suppression du compte." : "Error deleting account."));
+      navigate('/');
+    } catch {
+      toast({
+        title: t('error'),
+        description: t('profile.update.failed'),
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handlePasswordSave = async () => {
+    if (!currentPassword || !newPassword || !confirmNewPassword) {
+      toast({ title: t('error'), description: t('fill.all.fields'), variant: 'destructive' });
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      toast({ title: t('error'), description: t('passwords.not.match'), variant: 'destructive' });
+      return;
+    }
+    setLoading(true);
+    try {
+      await updateProfile({ password: newPassword, currentPassword });
+      setIsPasswordDialogOpen(false);
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmNewPassword("");
+      toast({
+        title: t('success'),
+        description: t('password.updated'),
+        variant: 'default',
+      });
+      navigate('/');
+    } catch {
+      toast({
+        title: t('error'),
+        description: t('password.update.failed'),
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+  const handleRemoveAccount = async () => {
+    if (deleteConfirm !== 'delete') {
+      toast({ title: t('error'), description: t('type.delete.to.confirm'), variant: 'destructive' });
+      return;
+    }
+    setDeleting(true);
+    try {
+      await deleteAccount();
+      setIsRemoveDialogOpen(false);
+      toast({
+        title: t('success'),
+        description: t('account.removed'),
+        variant: 'default',
+      });
+      navigate('/');
+    } catch {
+      toast({
+        title: t('error'),
+        description: t('account.remove.failed'),
+        variant: 'destructive',
+      });
     } finally {
       setDeleting(false);
+      setDeleteConfirm("");
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8 bg-gray-50 dark:bg-slate-900 dark:text-white">
-      <div className="absolute top-4 left-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => navigate('/dashboard')}
-          className="flex items-center gap-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span>{language === 'fr' ? 'Retour' : 'Back'}</span>
-        </Button>
-      </div>
-      <Card className="w-full max-w-md shadow-sm bg-white dark:bg-slate-800 dark:border-slate-700">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">
-            {t('app.profile.settings')}
-          </CardTitle>
-        </CardHeader>
-        <form onSubmit={handleSubmit}>
-          <CardContent className="space-y-4 pt-4">
-            <div>
-              <label className="block mb-1 text-sm font-medium dark:text-gray-200">
-                {t('app.name')}
-              </label>
-              <Input
-                type="text"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                required
-                placeholder={language === 'fr' ? 'Votre nom complet' : 'Your full name'}
-              />
-            </div>
-            <div>
-              <label className="block mb-1 text-sm font-medium dark:text-gray-200">
-                {t('app.email')}
-              </label>
-              <Input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                placeholder="email@example.com"
-              />
-            </div>
-            <div>
-              <label className="block mb-1 text-sm font-medium dark:text-gray-200">
-                {t('app.password')} ({language === 'fr' ? 'laisser vide pour ne pas changer' : 'leave blank to keep unchanged'})
-              </label>
-              <Input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder={language === 'fr' ? 'Nouveau mot de passe' : 'New password'}
-              />
-            </div>
-            <div>
-              <label className="block mb-1 text-sm font-medium dark:text-gray-200">
-                {language === 'fr' ? 'Confirmer le mot de passe' : 'Confirm password'}
-              </label>
-              <Input
-                type="password"
-                value={confirmPassword}
-                onChange={e => setConfirmPassword(e.target.value)}
-                placeholder={language === 'fr' ? 'Confirmez le mot de passe' : 'Confirm password'}
-              />
-            </div>
-            {error && <div className="w-full rounded bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-sm text-center py-2 px-3 font-medium border border-red-200 dark:border-red-800 mb-2">{error}</div>}
-            {success && <div className="w-full rounded bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-sm text-center py-2 px-3 font-medium border border-green-200 dark:border-green-800 mb-2">{success}</div>}
-          </CardContent>
-          <CardFooter>
-            <Button
-              type="submit"
-              className="w-full bg-cvfacile-primary hover:bg-cvfacile-primary/90 dark:bg-blue-600 dark:hover:bg-blue-700"
-              disabled={loading}
-            >
-              {loading ? (language === 'fr' ? 'Enregistrement...' : 'Saving...') : (language === 'fr' ? 'Enregistrer' : 'Save')}
-            </Button>
-          </CardFooter>
-        </form>
-        <div className="border-t mt-6 pt-6 px-2 bg-transparent">
-          <div className="flex flex-col items-center">
-            <AlertTriangle className="w-6 h-6 text-red-400 mb-2" />
-            <h3 className="text-base font-semibold text-gray-800 dark:text-gray-100 mb-1 text-center">{language === 'fr' ? 'Supprimer le compte' : 'Delete Account'}</h3>
-            <p className="text-xs text-center mb-3 text-gray-500 dark:text-gray-400">{language === 'fr' ? 'Cette action est irréversible.' : 'This action cannot be undone.'}</p>
-            {deleteError && (
-              <div className="w-full rounded bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-300 text-xs text-center mb-2 py-2 px-3 font-medium border border-red-200 dark:border-red-800">
-                {deleteError}
+    <div className="flex flex-col min-h-screen bg-white dark:bg-slate-900 dark:text-white">
+      <Navbar />
+      <main className="flex-1">
+        <section className="py-12 md:py-16">
+          <div className="container px-4 mx-auto max-w-2xl">
+            <h2 className="mb-10 text-2xl md:text-3xl font-bold text-center font-poppins">
+              {t('app.profile.settings')}
+            </h2>
+            {/* Name Section */}
+            <div className="group relative rounded-lg overflow-hidden transition-all duration-300 border bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 dark:border-slate-700 mb-4">
+              <div className="p-4 flex items-center gap-2">
+                <div className="font-semibold text-lg text-gray-900 dark:text-white w-24">{t('app.name')}</div>
+                <div className="flex-1 text-gray-500 dark:text-gray-300">{name}</div>
+                <Button onClick={() => { setEditName(name); setIsEditNameDialogOpen(true); }} className="px-3 py-2 text-sm font-medium rounded-md transition-all duration-500 hover:scale-105 bg-cvfacile-primary text-white dark:bg-blue-600">{t('change')}</Button>
               </div>
-            )}
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full border border-red-400 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 font-medium py-2 mt-1 transition"
-              onClick={handleDelete}
-              disabled={deleting}
-            >
-              {deleting
-                ? (language === 'fr' ? 'Suppression...' : 'Deleting...')
-                : (language === 'fr' ? 'Supprimer mon compte' : 'Delete my account')}
-            </Button>
+            </div>
+            {/* Email Section */}
+            <div className="group relative rounded-lg overflow-hidden transition-all duration-300 border bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 dark:border-slate-700 mb-4">
+              <div className="p-4 flex items-center gap-2">
+                <div className="font-semibold text-lg text-gray-900 dark:text-white w-24">{t('app.email')}</div>
+                <div className="flex-1 text-gray-500 dark:text-gray-300">{email}</div>
+                <Button onClick={() => { setEditEmail(email); setIsEditEmailDialogOpen(true); }} className="px-3 py-2 text-sm font-medium rounded-md transition-all duration-500 hover:scale-105 bg-cvfacile-primary text-white dark:bg-blue-600">{t('change')}</Button>
+              </div>
+            </div>
+            {/* Name Dialog */}
+            <Dialog open={isEditNameDialogOpen} onOpenChange={setIsEditNameDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('edit.name')}</DialogTitle>
+                  <DialogDescription>{t('edit.name.desc')}</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="edit-name" className="text-right">{t('app.name')}</Label>
+                    <Input
+                      id="edit-name"
+                      value={editName}
+                      onChange={e => setEditName(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="button" className="px-3 py-2 text-sm font-medium rounded-md transition-all duration-500 hover:scale-105 bg-cvfacile-primary text-white dark:bg-blue-600" onClick={handleNameSave} disabled={loading}>{t('save')}</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            {/* Email Dialog */}
+            <Dialog open={isEditEmailDialogOpen} onOpenChange={setIsEditEmailDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('edit.email')}</DialogTitle>
+                  <DialogDescription>{t('edit.email.desc')}</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="edit-email" className="text-right">{t('app.email')}</Label>
+                    <Input
+                      id="edit-email"
+                      value={editEmail}
+                      onChange={e => setEditEmail(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="button" className="px-3 py-2 text-sm font-medium rounded-md transition-all duration-500 hover:scale-105 bg-cvfacile-primary text-white dark:bg-blue-600" onClick={handleEmailSave} disabled={loading}>{t('save')}</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            {/* Password Section */}
+            <div className="group relative rounded-lg overflow-hidden transition-all duration-300 border bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 dark:border-slate-700 mb-4">
+              <div className="p-4 flex items-center justify-between gap-4">
+                <div className="font-medium text-lg">{t('password.section')}</div>
+                <Button onClick={() => setIsPasswordDialogOpen(true)} className="px-3 py-2 text-sm font-medium rounded-md transition-all duration-500 hover:scale-105 bg-cvfacile-primary text-white dark:bg-blue-600">{t('change')}</Button>
+              </div>
+            </div>
+            {/* Password Dialog */}
+            <Dialog open={isPasswordDialogOpen} onOpenChange={setIsPasswordDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('change.password')}</DialogTitle>
+                  <DialogDescription>{t('change.password.desc')}</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="current-password" className="text-right">{t('current.password')}</Label>
+                    <div className="relative col-span-3">
+                      <Input
+                        id="current-password"
+                        type={showCurrentPassword ? 'text' : 'password'}
+                        value={currentPassword}
+                        onChange={e => setCurrentPassword(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3"
+                        tabIndex={-1}
+                      >
+                        {showCurrentPassword ? (
+                          <EyeOff className="h-4 w-4 text-gray-400" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="new-password" className="text-right">{t('new.password')}</Label>
+                    <div className="relative col-span-3">
+                      <Input
+                        id="new-password"
+                        type={showNewPassword ? 'text' : 'password'}
+                        value={newPassword}
+                        onChange={e => setNewPassword(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPassword(!showNewPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3"
+                        tabIndex={-1}
+                      >
+                        {showNewPassword ? (
+                          <EyeOff className="h-4 w-4 text-gray-400" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="confirm-new-password" className="text-right">{t('confirm.new.password')}</Label>
+                    <div className="relative col-span-3">
+                      <Input
+                        id="confirm-new-password"
+                        type={showConfirmNewPassword ? 'text' : 'password'}
+                        value={confirmNewPassword}
+                        onChange={e => setConfirmNewPassword(e.target.value)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3"
+                        tabIndex={-1}
+                      >
+                        {showConfirmNewPassword ? (
+                          <EyeOff className="h-4 w-4 text-gray-400" />
+                        ) : (
+                          <Eye className="h-4 w-4 text-gray-400" />
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="button" className="px-3 py-2 text-sm font-medium rounded-md transition-all duration-500 hover:scale-105 bg-cvfacile-primary text-white dark:bg-blue-600" onClick={handlePasswordSave} disabled={loading}>{t('change')}</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            {/* Remove Account Section */}
+            <div className="group relative rounded-lg overflow-hidden transition-all duration-300 border bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 dark:border-slate-700">
+              <div className="p-4 flex items-center justify-between gap-4">
+                <div className="font-medium text-lg text-red-600">{t('remove.account')}</div>
+                <Button onClick={() => setIsRemoveDialogOpen(true)} variant="destructive" className="px-3 py-2">{t('remove')}</Button>
+              </div>
+            </div>
+            {/* Remove Account Dialog */}
+            <Dialog open={isRemoveDialogOpen} onOpenChange={setIsRemoveDialogOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('remove.account')}</DialogTitle>
+                  <DialogDescription>{t('remove.account.desc')}</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <Input
+                    id="delete-confirm"
+                    value={deleteConfirm}
+                    onChange={e => setDeleteConfirm(e.target.value)}
+                    placeholder={t('type.delete.to.confirm')}
+                  />
+                </div>
+                <DialogFooter>
+                  <Button type="button" variant="destructive" className="px-3 py-2" onClick={handleRemoveAccount} disabled={deleting}>{t('remove')}</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
-        </div>
-      </Card>
+        </section>
+      </main>
+      <Footer />
     </div>
   );
 };
 
-export default ProfileSettings; 
+export default ProfileSettings;
