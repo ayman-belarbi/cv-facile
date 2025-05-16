@@ -96,17 +96,6 @@ const Register = () => {
         </Button>
       </div>
       
-      <div className="w-full max-w-md mb-8">
-        <div className="text-center">
-          <Link to="/" className="flex items-center justify-center gap-2">
-            <UserPlus className="h-8 w-8 text-cvfacile-primary dark:text-blue-400" />
-            <span className="text-2xl font-bold flex items-center gap-2 text-gray-900 dark:text-white">
-              CV Facile <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine">PRO</span>
-            </span>
-          </Link>
-        </div>
-      </div>
-      
       <Card className="w-full max-w-md shadow-sm bg-white dark:bg-slate-800 dark:border-slate-700">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">{t('app.signup')}</CardTitle>

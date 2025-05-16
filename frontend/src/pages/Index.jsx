@@ -162,7 +162,7 @@ const Index = () => {
           }`}>
           <div className="container px-4 mx-auto text-center flex flex-col items-center justify-center relative z-20">
             <div className="relative inline-block">
-              <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins animate-float flex flex-wrap items-center gap-3 justify-center">
+              <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins animate-float flex flex-wrap items-center gap-1 justify-center">
                 {t('app.subtitle')}
                 <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine ml-2 align-middle">PRO</span>
               </h1>

@@ -13,7 +13,7 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:8',
         ]);
 
         $user = User::create([
@@ -70,7 +70,7 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
             'email' => 'sometimes|required|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:6',
+            'password' => 'nullable|string|min:8',
         ]);
 
         if (isset($validated['name'])) {
