@@ -21,6 +21,7 @@ import CVCompleteness from "./CVCompleteness";
 import ColorPicker from "./ColorPicker";
 import FontPicker from "./FontPicker";
 import { colorSchemes } from "@/lib/resumeData";
+import { skillSuggestions } from "@/lib/skillSuggestions";
 
 const ResumeForm = ({ resumeData, setResumeData }) => {
   const [activeTab, setActiveTab] = useState("personal");
@@ -891,6 +892,57 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
 
           {/* Skills */}
           <TabsContent value="skills" className="p-4 space-y-4">
+            <div className="mb-6 space-y-4">
+              <h3 className="text-lg font-semibold">{language === 'fr' ? 'Suggestions par domaine' : 'Field Suggestions'}</h3>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {Object.entries(skillSuggestions).map(([field, data]) => (
+                  <div 
+                    key={field} 
+                    className="p-3 bg-white dark:bg-slate-800 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700 cursor-pointer shadow-sm border-2 border-dashed border-gray-200 dark:border-slate-700 hover:border-gray-300 dark:hover:border-slate-600 transition-colors"
+                    onClick={() => {
+                      const skills = data.skills.filter(skill => 
+                        !resumeData.skills?.some(existingSkill => 
+                          existingSkill.name === skill.name[language]
+                        )
+                      );
+                      
+                      if (skills.length === 0) {
+                        toast.info(
+                          language === 'fr' 
+                            ? 'Toutes les compétences de ce domaine ont déjà été ajoutées' 
+                            : 'All skills from this field have already been added'
+                        );
+                        return;
+                      }
+
+                      const newSkills = skills.map(skill => ({
+                        id: uuidv4(),
+                        name: skill.name[language],
+                        level: skill.level
+                      }));
+
+                      setResumeData({
+                        ...resumeData,
+                        skills: [...(resumeData.skills || []), ...newSkills]
+                      });
+
+                      toast.success(
+                        language === 'fr'
+                          ? `${newSkills.length} compétences ajoutées depuis ${data.label[language]}`
+                          : `${newSkills.length} skills added from ${data.label[language]}`
+                      );
+                    }}
+                  >
+                    <div className="font-medium text-gray-900 dark:text-white">{data.label[language]}</div>
+                    <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                      {data.skills.slice(0, 3).map(skill => skill.name[language]).join(', ')}
+                      {data.skills.length > 3 && '...'}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 gap-4 mb-4 md:grid-cols-3">
               <div className="col-span-2">
                 <label className="block mb-1 text-sm font-medium">{language === 'fr' ? 'Compétence' : 'Skill'}</label>
