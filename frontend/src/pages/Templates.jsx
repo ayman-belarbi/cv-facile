@@ -228,10 +228,10 @@ const Templates = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
               {language === 'fr' ? 'Choisissez votre modèle de CV' : 'Choose your CV template'}
             </h2>
-            <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+            <p className="mt-4 text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               {language === 'fr' 
-                ? 'Découvrez nos recommandations par domaine professionnel' 
-                : 'Discover our recommendations by professional field'}
+                ? 'Des modèles professionnels adaptés à votre domaine.' 
+                : 'Professional templates tailored to your field.'}
             </p>
           </div>
         </section>

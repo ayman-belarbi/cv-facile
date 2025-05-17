@@ -212,10 +212,10 @@ const BuildResume = () => {
             <h2 className="text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
               {language === 'fr' ? 'Créez votre CV' : 'Build your CV'}
             </h2>
-            <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+            <p className="mt-4 text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
               {language === 'fr' 
-                ? 'Découvrez nos recommandations de modèles adaptés à votre domaine professionnel' 
-                : 'Discover our template recommendations tailored to your professional field'}
+                ? 'Créez un CV professionnel en quelques minutes.' 
+                : 'Create a professional CV in minutes.'}
             </p>
           </div>
         </section>

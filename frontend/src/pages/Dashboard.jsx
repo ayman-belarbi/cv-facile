@@ -69,11 +69,13 @@ const Dashboard = () => {
         <section className="py-12 md:py-16">
           <div className="container px-4 mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
-              {t('app.dashboard')} 
-              <span className={theme === 'dark' ? 'dark-text-gradient-primary' : 'text-gradient-primary'}>
-                {`, ${user?.name || user?.email}`}
-              </span>
+              {t('app.dashboard')}
             </h2>
+            <p className="mt-4 text-center text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              {language === 'fr' 
+                ? 'Gérez et partagez vos CV en toute simplicité.'
+                : 'Manage and share your CVs with ease.'}
+            </p>
           </div>
         </section>
 
