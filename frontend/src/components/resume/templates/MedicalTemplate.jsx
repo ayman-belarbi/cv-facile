@@ -199,17 +199,20 @@ const MedicalTemplate = ({ data = {} }) => {
                                 ? 100
                                 : lang.level === "Fluent" ||
                                   lang.level === "Courant"
+                                ? 95
+                                : lang.level === "C2"
                                 ? 90
-                                : lang.level === "Advanced" ||
-                                  lang.level === "Avancé"
+                                : lang.level === "C1"
                                 ? 80
-                                : lang.level === "Intermediate" ||
-                                  lang.level === "Intermédiaire"
+                                : lang.level === "B2"
+                                ? 70
+                                : lang.level === "B1"
                                 ? 60
-                                : lang.level === "Basic" ||
-                                  lang.level === "Débutant"
+                                : lang.level === "A2"
                                 ? 40
-                                : 20
+                                : lang.level === "A1"
+                                ? 20
+                                : 0
                             }%`,
                             backgroundColor: settings.colorScheme.primary,
                           }}

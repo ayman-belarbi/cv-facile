@@ -27,7 +27,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
   const [newSkill, setNewSkill] = useState({ name: "", level: 1 });
   const [newLanguage, setNewLanguage] = useState({ 
     name: "", 
-    level: language === 'fr' ? "Intermédiaire" : "Intermediate" 
+    level: "A1"
   });
   const [newExperience, setNewExperience] = useState({
     company: "",
@@ -222,7 +222,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
       languages: [...(resumeData.languages || []), languageItem],
     });
 
-    setNewLanguage({ name: "", level: language === 'fr' ? "Intermédiaire" : "Intermediate" });
+    setNewLanguage({ name: "", level: "A1" });
     toast.success(language === 'fr' ? "Langue ajoutée" : "Language added");
   };
 
@@ -387,7 +387,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
       });
       toast.success(language === 'fr' ? "Langue ajoutée" : "Language added");
     }
-    setNewLanguage({ name: "", level: language === 'fr' ? "Intermédiaire" : "Intermediate" });
+    setNewLanguage({ name: "", level: "A1" });
   };
 
   const addOrUpdateEducation = () => {
@@ -949,11 +949,13 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-cvfacile-primary
                   bg-white text-gray-900 dark:bg-gray-800 dark:text-gray-100 dark:border-gray-700"
               >
-                <option value={language === 'fr' ? 'Débutant' : 'Beginner'}>{language === 'fr' ? 'Débutant' : 'Beginner'}</option>
-                <option value={language === 'fr' ? 'Intermédiaire' : 'Intermediate'}>{language === 'fr' ? 'Intermédiaire' : 'Intermediate'}</option>
-                <option value={language === 'fr' ? 'Avancé' : 'Advanced'}>{language === 'fr' ? 'Avancé' : 'Advanced'}</option>
+                <option value="A1">A1</option>
+                <option value="A2">A2</option>
+                <option value="B1">B1</option>
+                <option value="B2">B2</option>
+                <option value="C1">C1</option>
+                <option value="C2">C2</option>
                 <option value={language === 'fr' ? 'Courant' : 'Fluent'}>{language === 'fr' ? 'Courant' : 'Fluent'}</option>
-                <option value={language === 'fr' ? 'Bilingue' : 'Bilingual'}>{language === 'fr' ? 'Bilingue' : 'Bilingual'}</option>
                 <option value={language === 'fr' ? 'Natif' : 'Native'}>{language === 'fr' ? 'Natif' : 'Native'}</option>
               </select>
             </div>

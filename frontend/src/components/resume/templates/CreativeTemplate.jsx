@@ -149,10 +149,13 @@ const CreativeTemplate = ({ data = {} }) => {
                           className="h-full rounded-full"
                           style={{
                             width: `${(lang.level === 'Native' || lang.level === 'Natif' ? 100 : 
-                                     lang.level === 'Fluent' || lang.level === 'Courant' ? 90 :
-                                     lang.level === 'Advanced' || lang.level === 'Avancé' ? 80 :
-                                     lang.level === 'Intermediate' || lang.level === 'Intermédiaire' ? 60 :
-                                     lang.level === 'Basic' || lang.level === 'Débutant' ? 40 : 20)}%`,
+                                     lang.level === 'Fluent' || lang.level === 'Courant' ? 95 :
+                                     lang.level === 'C2' ? 90 :
+                                     lang.level === 'C1' ? 80 :
+                                     lang.level === 'B2' ? 70 :
+                                     lang.level === 'B1' ? 60 :
+                                     lang.level === 'A2' ? 40 :
+                                     lang.level === 'A1' ? 20 : 0)}%`,
                             backgroundColor: settings.colorScheme.primary
                           }}
                         />
