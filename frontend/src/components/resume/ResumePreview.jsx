@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import ClassicTemplate from "./templates/ClassicTemplate";
 import ModernTemplate from "./templates/ModernTemplate";
 import CreativeTemplate from "./templates/CreativeTemplate";
 import MedicalTemplate from "./templates/MedicalTemplate";
-import ColorPicker from "./ColorPicker";
-import FontPicker from "./FontPicker";
 import { useMobile } from "@/hooks/use-mobile";
 import { useTheme } from "@/context/ThemeContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { Check, Layout, Sparkles, Briefcase, Stethoscope, ZoomIn, ZoomOut, Minus, ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Check, Layout, Sparkles, Briefcase, Stethoscope } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { fontMappings, colorSchemes } from "@/lib/resumeData";
 
@@ -25,7 +22,6 @@ const ResumePreview = ({ data, resumeData, updateResumeSettings, viewOnly = fals
   const isMobile = useMobile();
   const { theme } = useTheme();
   const { language } = useLanguage();
-  const [scale, setScale] = useState(1);
   
   // Use resumeData prop if data is not provided (handle both prop naming patterns)
   let resumeInfo = data || resumeData || {};
@@ -47,14 +43,6 @@ const ResumePreview = ({ data, resumeData, updateResumeSettings, viewOnly = fals
       }
     };
   }
-  
-  const handleZoomIn = () => {
-    setScale(prev => Math.min(prev + 0.1, 2));
-  };
-
-  const handleZoomOut = () => {
-    setScale(prev => Math.max(prev - 0.1, 0.5));
-  };
 
   const renderTemplate = () => {
     try {
@@ -82,34 +70,13 @@ const ResumePreview = ({ data, resumeData, updateResumeSettings, viewOnly = fals
     }
   };
 
-  const handleColorSchemeChange = (colorSchemeName) => {
-    if (updateResumeSettings) {
-      updateResumeSettings({ 
-        colorScheme: colorSchemes[colorSchemeName] || colorSchemes['sapphire']
-      });
-    }
-  };
-
-  const handleFontChange = (font) => {
-    if (updateResumeSettings) {
-      updateResumeSettings({ font });
-    }
-  };
-
   if (viewOnly) {
     return (
       <div 
         id="resume-preview" 
-        className="w-full overflow-auto bg-gray-100 dark:bg-slate-800 dark:border-slate-700 rounded-lg p-4 h-[800px]"
+        className="w-full bg-gray-100 border dark:bg-slate-800 dark:border-slate-700 rounded-lg p-4"
       >
-        <div 
-          className="flex justify-center transform-gpu"
-          style={{ 
-            transform: `scale(${scale})`,
-            transformOrigin: 'top center',
-            transition: 'transform 0.2s ease-in-out'
-          }}
-        >
+        <div className="flex justify-center">
           {renderTemplate()}
         </div>
       </div>
@@ -174,53 +141,11 @@ const ResumePreview = ({ data, resumeData, updateResumeSettings, viewOnly = fals
         </Select>
       </div>
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        <ColorPicker
-          selectedScheme={
-            Object.entries(colorSchemes).find(
-              ([_, scheme]) => scheme.primary === resumeInfo.settings.colorScheme?.primary
-            )?.[0] || 'sapphire'
-          }
-          onChange={handleColorSchemeChange}
-        />
-        
-        <FontPicker
-          selectedFont={resumeInfo.settings.font || "Inter"}
-          onChange={handleFontChange}
-        />
-      </div>
-
-      <div className="flex justify-end gap-2 mb-2">
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleZoomOut}
-          className="w-8 h-8 hover:bg-gray-700 hover:text-white transition-colors"
-        >
-          <ZoomOut className="w-4 h-4" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={handleZoomIn}
-          className="w-8 h-8 hover:bg-gray-700 hover:text-white transition-colors"
-        >
-          <ZoomIn className="w-4 h-4" />
-        </Button>
-      </div>
-
       <div 
         id="resume-preview" 
-        className="w-full overflow-auto bg-gray-100 dark:bg-slate-800 dark:border-slate-700 rounded-lg p-4 h-[800px]"
+        className="w-full bg-gray-100 border dark:bg-slate-800 dark:border-slate-700 rounded-lg p-4"
       >
-        <div 
-          className="flex justify-center transform-gpu"
-          style={{ 
-            transform: `scale(${scale})`,
-            transformOrigin: 'top center',
-            transition: 'transform 0.2s ease-in-out'
-          }}
-        >
+        <div className="flex justify-center">
           {renderTemplate()}
         </div>
       </div>

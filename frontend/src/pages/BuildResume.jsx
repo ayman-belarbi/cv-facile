@@ -217,7 +217,7 @@ const BuildResume = () => {
               <Button 
                 onClick={handleDownloadPDF} 
                 className={theme === 'dark' 
-                  ? 'bg-white hover:bg-gray-50 text-gray-800 border border-gray-200' 
+                  ? 'bg-white hover:bg-gray-50 text-gray-800 border border-gray-200 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-white dark:border-slate-700' 
                   : 'bg-white hover:bg-gray-50 text-gray-800 border border-gray-200'
                 }
               >
@@ -229,7 +229,10 @@ const BuildResume = () => {
                 <DialogTrigger asChild>
                   {isAuthenticated ? (
                     <Button
-                      className={theme === 'dark' ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-blue-600 hover:bg-blue-700 text-white'}
+                      className={theme === 'dark' 
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white border border-blue-700 dark:border-blue-500' 
+                        : 'bg-blue-600 hover:bg-blue-700 text-white border border-blue-700'
+                      }
                       onClick={() => setIsSaveDialogOpen(true)}
                     >
                       <Save className="w-4 h-4 mr-2" />
@@ -273,7 +276,10 @@ const BuildResume = () => {
                         id="resume-title"
                         value={resumeTitle}
                         onChange={(e) => setResumeTitle(e.target.value)}
-                        className={`col-span-3 ${theme === 'dark' ? 'dark:bg-gray-700 dark:border-gray-600 dark:text-white' : ''}`}
+                        className={`col-span-3 ${theme === 'dark' 
+                          ? 'dark:bg-slate-800 dark:border-slate-700 dark:text-white dark:focus:border-blue-500' 
+                          : ''
+                        }`}
                       />
                     </div>
                   </div>
@@ -282,8 +288,8 @@ const BuildResume = () => {
                       type="submit" 
                       onClick={handleSaveResume} 
                       className={theme === 'dark' 
-                        ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                        ? 'bg-blue-600 hover:bg-blue-700 text-white border border-blue-700 dark:border-blue-500' 
+                        : 'bg-blue-600 hover:bg-blue-700 text-white border border-blue-700'
                       }
                     >
                       {isEditMode
