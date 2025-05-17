@@ -207,12 +207,21 @@ const BuildResume = () => {
       <Navbar />
       
       <main className="flex-1">
+        <section className="py-12 md:py-16">
+          <div className="container px-4 mx-auto">
+            <h2 className="text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
+              {language === 'fr' ? 'Créez votre CV' : 'Build your CV'}
+            </h2>
+            <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
+              {language === 'fr' 
+                ? 'Découvrez nos recommandations de modèles adaptés à votre domaine professionnel' 
+                : 'Discover our template recommendations tailored to your professional field'}
+            </p>
+          </div>
+        </section>
+        
         <section className={`py-12 md:py-16 ${theme === 'dark' ? 'dark:bg-slate-900' : 'bg-gray-50'}`}>
           <div className="container px-4 mx-auto">
-            <h2 className={`mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
-              {t('app.build.prof.cv')}
-            </h2>
-            
             <div className="flex justify-end mb-6 gap-2">
               <Button 
                 onClick={handleDownloadPDF} 
