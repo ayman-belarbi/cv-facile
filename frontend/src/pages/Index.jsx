@@ -162,19 +162,19 @@ const Index = () => {
           }`}>
           <div className="container px-4 mx-auto text-center flex flex-col items-center justify-center relative z-20">
             <div className="relative inline-block">
-              <h1 className="mb-6 text-3xl md:text-5xl font-bold text-white font-poppins animate-float flex flex-wrap items-center gap-1 justify-center">
+              <h1 className="mb-6 text-4xl md:text-5xl font-bold text-white font-poppins animate-float flex flex-wrap items-center gap-1 justify-center">
                 {t('app.subtitle')}
                 <span className="pro-badge text-sm font-bold bg-gradient-to-r from-blue-600 via-purple-500 to-blue-600 bg-[length:200%_100%] text-white px-2 py-0.5 rounded-md inline-flex items-center justify-center shadow-sm animate-shine ml-2 align-middle">PRO</span>
               </h1>
             </div>
-            <p className="max-w-2xl mx-auto mb-8 text-lg md:text-xl text-white/90">
+            <p className="max-w-2xl mx-auto w-80 mb-8 text-sm md:text-xl md:w-auto text-white/90">
               {language === 'fr'
                 ? 'CV Facile Pro vous permet de créer, personnaliser et télécharger des CV professionnels au format PDF.'
                 : 'Easy CV Pro allows you to create, customize and download professional CVs in PDF format.'}
             </p>
             <Link
               to="/build"
-              className="inline-flex items-center px-6 py-3 text-white text-sm font-medium rounded-full shadow-lg glass-effect"
+              className="inline-flex items-center px-6 py-3 text-white text-[13px] font-medium rounded-full shadow-lg glass-effect"
             >
               {isMobile ? t('app.create') : t('app.create.now')} <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
@@ -265,7 +265,7 @@ const Index = () => {
         {/* Feature Section */}
         <section className="py-12 md:py-16 dark:bg-slate-900 bg-slate-50">
           <div className="container px-4 mx-auto">
-            <h2 className="mb-10 md:mb-12 text-2xl md:text-3xl font-bold text-center font-poppins dark:text-white">
+            <h2 className="mb-10 md:mb-12 text-xl md:text-3xl font-bold text-center font-poppins dark:text-white">
               {t('app.why.choose')}
             </h2>
 
