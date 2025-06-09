@@ -694,7 +694,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 {resumeData.experiences.map((exp) => (
                     <AccordionItem key={exp.id} value={exp.id} className="border border-gray-200 dark:border-slate-700 rounded-lg">
                     <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                      <div>
+                      <div className="text-left">
                         <div className="font-medium">{exp.position}</div>
                         <div className="text-sm text-gray-600">{exp.company}</div>
                       </div>
@@ -842,7 +842,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                 {resumeData.education.map((edu) => (
                     <AccordionItem key={edu.id} value={edu.id} className="border border-gray-200 dark:border-slate-700 rounded-lg">
                     <AccordionTrigger className="px-4 py-3 hover:no-underline">
-                      <div>
+                      <div className="text-left">
                         <div className="font-medium">{edu.institution}</div>
                         <div className="text-sm text-gray-600">{edu.field}</div>
                       </div>
@@ -997,7 +997,7 @@ const ResumeForm = ({ resumeData, setResumeData }) => {
                         <span className="text-xs font-medium">{skill.level}/4</span>
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 ml-5">
                       <Button
                         variant="ghost"
                         size="sm"

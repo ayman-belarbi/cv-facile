@@ -106,7 +106,7 @@ const ClassicTemplate = ({ data = {} }) => {
           </div>
         )}
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="flex gap-10">
           {/* Main column */}
           <div className="lg:col-span-1 space-y-6">
             {/* Experience */}
@@ -298,7 +298,7 @@ const ClassicTemplate = ({ data = {} }) => {
                 </h2>
                 <div className="space-y-2">
                   {certifications.map((cert) => (
-                    <div key={cert.id} className="rounded-md p-2">
+                    <div key={cert.id} className="rounded-md">
                       <div
                         className={`text-xs font-medium ${fonts.body}`}
                         style={{ color: settings.colorScheme.primary }}
