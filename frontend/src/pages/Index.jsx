@@ -169,12 +169,12 @@ const Index = () => {
             </div>
             <p className="max-w-2xl mx-auto w-80 mb-8 text-sm md:text-xl md:w-auto text-white/90">
               {language === 'fr'
-                ? 'CV Facile Pro vous permet de créer, personnaliser et télécharger des CV professionnels au format PDF.'
-                : 'Easy CV Pro allows you to create, customize and download professional CVs in PDF format.'}
+                ? 'CV Facile Pro vous permet de créer, personnaliser et télécharger des CV professionnels au format PDF'
+                : 'Easy CV Pro allows you to create, customize and download professional CVs in PDF format'}
             </p>
             <Link
               to="/build"
-              className="inline-flex items-center px-6 py-3 text-white text-[13px] font-medium rounded-full shadow-lg glass-effect"
+              className="inline-flex items-center px-6 py-3 text-white text-sm md:text-base font-medium rounded-full shadow-lg glass-effect"
             >
               {isMobile ? t('app.create') : t('app.create.now')} <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
