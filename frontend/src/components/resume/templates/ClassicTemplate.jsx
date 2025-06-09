@@ -39,12 +39,12 @@ const ClassicTemplate = ({ data = {} }) => {
       >
         <div className="flex items-center justify-between">
           <div>
-            <h1 className={`text-xl font-bold ${fonts.heading}`}>
+            <h1 className={`text-3xl font-bold ${fonts.heading}`}>
               {personalInfo.firstName} {personalInfo.lastName}
             </h1>
             <p className={`mt-1 text-base ${fonts.body}`}>{personalInfo.title}</p>
           </div>
-          <Avatar className="w-20 h-20 border-2 border-white">
+          <Avatar className="w-28 h-28 border-2 border-white">
             {personalInfo.profileImage ? (
               <AvatarImage
                 src={personalInfo.profileImage}

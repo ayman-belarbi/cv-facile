@@ -24,7 +24,7 @@ const ModernTemplate = ({ data = {} }) => {
       style={{ 
         color: settings.colorScheme.text,
         maxWidth: "794px",
-        minHeight: "842px" // A4 standard height in pixels
+        minHeight: "842px"
       }}
     >
       <div className="flex min-h-full">
@@ -36,7 +36,7 @@ const ModernTemplate = ({ data = {} }) => {
           <div className="p-4 text-white">
             {/* Profile Section */}
             <div className="flex flex-col items-center mb-4">
-              <Avatar className="w-20 h-20 mb-2 border-2 border-white/20">
+              <Avatar className="w-28 h-28 mb-2 border-2 border-white/20">
                 {personalInfo.profileImage ? (
                   <AvatarImage src={personalInfo.profileImage} alt={`${personalInfo.firstName} ${personalInfo.lastName}`} className="object-cover" />
                 ) : (
@@ -45,7 +45,7 @@ const ModernTemplate = ({ data = {} }) => {
                   </AvatarFallback>
                 )}
               </Avatar>
-              <h1 className={`text-base font-bold text-center ${fonts.heading}`}>
+              <h1 className={`text-2xl font-bold text-center ${fonts.heading}`}>
                 {personalInfo.firstName} {personalInfo.lastName}
               </h1>
               <p className={`mt-0.5 text-xs text-white/90 text-center ${fonts.body}`}>{personalInfo.title}</p>

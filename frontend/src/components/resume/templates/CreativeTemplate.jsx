@@ -36,12 +36,12 @@ const CreativeTemplate = ({ data = {} }) => {
         <div className="pl-4 pr-4 py-3">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className={`text-base font-bold ${fonts.heading}`} style={{ color: settings.colorScheme.primary }}>
+              <h1 className={`text-3xl font-bold ${fonts.heading}`} style={{ color: settings.colorScheme.primary }}>
                 {personalInfo.firstName} {personalInfo.lastName}
               </h1>
-              <p className={`mt-0.5 text-xs ${fonts.body}`}>{personalInfo.title}</p>
+              <p className={`mt-0.5 ${fonts.body}`}>{personalInfo.title}</p>
             </div>
-            <Avatar className="w-16 h-16 border-2" style={{ borderColor: settings.colorScheme.primary }}>
+            <Avatar className="w-28 h-28 border-2" style={{ borderColor: settings.colorScheme.primary }}>
               {personalInfo.profileImage ? (
                 <AvatarImage src={personalInfo.profileImage} alt={`${personalInfo.firstName} ${personalInfo.lastName}`} className="object-cover" />
               ) : (
