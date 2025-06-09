@@ -125,7 +125,7 @@ const Dashboard = () => {
                   <CardContent>
                     <div className="h-32 flex flex-col items-center justify-center rounded-md bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-600 mt-3">
                       <FileText className="h-10 w-10 text-gray-500 dark:text-gray-400 mb-2" />
-                      <span className="text-sm text-gray-700 dark:text-gray-200 truncate w-full text-center px-2">{resume.title}</span>
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate w-full text-center px-2">{resume.title}</span>
                     </div>
                   </CardContent>
                   <CardFooter className="flex flex-wrap gap-2 justify-between pt-4">

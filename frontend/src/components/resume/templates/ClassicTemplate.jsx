@@ -75,6 +75,13 @@ const ClassicTemplate = ({ data = {} }) => {
             </div>
           )}
 
+          {personalInfo.address && (
+            <div className="flex items-center">
+              <MapPin className="w-3 h-3 mr-1" />
+              <span className="text-xs">{personalInfo.address}</span>
+            </div>
+          )}
+
           {personalInfo.website && (
             <div className="flex items-center">
               <Globe className="w-3 h-3 mr-1" />
@@ -106,9 +113,9 @@ const ClassicTemplate = ({ data = {} }) => {
           </div>
         )}
 
-        <div className="flex gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main column */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className="lg:col-span-2 space-y-6">
             {/* Experience */}
             {Array.isArray(experiences) && experiences.length > 0 && (
               <div>
@@ -209,28 +216,7 @@ const ClassicTemplate = ({ data = {} }) => {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Address */}
-            {personalInfo.address && (
-              <div>
-                <h2
-                  className={`pb-1.5 mb-2 text-base font-bold border-b-2 ${fonts.heading}`}
-                  style={{ borderColor: settings.colorScheme.primary }}
-                >
-                  {language === "fr" ? "Adresse" : "Address"}
-                </h2>
-                <div className="flex items-start">
-                  <MapPin
-                    className="flex-shrink-0 w-3.5 h-3.5 mr-1.5 mt-0.5"
-                    style={{ color: settings.colorScheme.primary }}
-                  />
-                  <span className={`text-xs ${fonts.body}`}>
-                    {personalInfo.address}
-                  </span>
-                </div>
-              </div>
-            )}
-
+          <div className="lg:col-span-1 space-y-6">
             {/* Skills */}
             {skills.length > 0 && (
               <div>

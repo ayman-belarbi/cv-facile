@@ -231,7 +231,7 @@ const Index = () => {
         </section>
 
         {/* FAQ Section */}
-        <section id="faqs" className="py-16 dark:bg-slate-900 bg-white">
+        <section id="faqs" className="py-16 dark:bg-slate-900 bg-slate-50">
           <div className="container px-4 mx-auto">
             <h2 className="mb-12 text-3xl font-bold text-center font-poppins dark:text-white">
               {language === 'fr' ? 'Questions fréquentes' : 'Frequently Asked Questions'}
